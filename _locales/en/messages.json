@@ -1,0 +1,11 @@
+{
+  "extensionName": {
+    "message": "No-Code Parsing tool",
+    "description": "Name of the extension."
+  },
+
+  "extensionDescription": {
+    "message": "Select blocks for scraping.",
+    "description": "Description of the extension."
+  }
+}
