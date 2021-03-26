@@ -5,7 +5,7 @@ document.addEventListener('contextmenu', function (event) {
   RMB_TARGET = event.target;
 });
 
-const ncpt = {
+const tool = {
 	markedElement: false,
 	clickedElement: false,
 	selectedElement: false,
@@ -21,41 +21,41 @@ const ncpt = {
 	},
 
 	highlightSelected: function() {
-		if (!ncpt.clickedElement) return;
+		if (!tool.clickedElement) return;
 		
-		if (ncpt.markedElement && (ncpt.markedElement != ncpt.clickedElement)) {
-			ncpt.removeHighlightStyle(ncpt.markedElement);
+		if (tool.markedElement && (tool.markedElement != tool.clickedElement)) {
+			tool.removeHighlightStyle(tool.markedElement);
 		}
 
-		ncpt.markedElement = ncpt.clickedElement;
-		// if (ncpt.markedElement.className == "ncpt_overlay") { // this is just a proxy for an iframe
-		// 	ncpt.markedElement = ncpt.markedElement.relatedElement;
+		tool.markedElement = tool.clickedElement;
+		// if (tool.markedElement.className == "tool_overlay") { // this is just a proxy for an iframe
+		// 	tool.markedElement = tool.markedElement.relatedElement;
 		// }
 		let i = 0;
-		for (i = 0; i < ncpt.transpose; i++) {
-			if (ncpt.markedElement.parentNode != window.document) {
-				ncpt.markedElement = ncpt.markedElement.parentNode;
+		for (i = 0; i < tool.transpose; i++) {
+			if (tool.markedElement.parentNode != window.document) {
+				tool.markedElement = tool.markedElement.parentNode;
 			} else {
 				break;
 			}
 		}
 		
-		ncpt.transpose = i;
-		ncpt.selectedElement = ncpt.markedElement
-		ncpt.addHighlightStyle(ncpt.selectedElement);
+		tool.transpose = i;
+		tool.selectedElement = tool.markedElement
+		tool.addHighlightStyle(tool.selectedElement);
 
-		document.querySelector('#ncpt_selected_elm').innerHTML = ncpt.getPathHTML(ncpt.markedElement, ncpt.transpose);
-		document.querySelector('#ncpt_selected_elm').scrollTop = 9999;
+		document.querySelector('#tool_selected_elm').innerHTML = tool.getPathHTML(tool.markedElement, tool.transpose);
+		document.querySelector('#tool_selected_elm').scrollTop = 9999;
 	},
 
 
 	addHighlightStyle: function (elm) {
-		if (ncpt.selectedElement) {
-			ncpt.selectedElement.style.outline = 'solid 5px rgba(230,126,34,0.5)';
-			ncpt.selectedElement.style.outlineOffset = '-5px';			
+		if (tool.selectedElement) {
+			tool.selectedElement.style.outline = 'solid 5px rgba(230,126,34,0.5)';
+			tool.selectedElement.style.outlineOffset = '-5px';			
 			return;}
-		ncpt.markedElement.style.outline = 'solid 5px rgba(230,126,34,0.5)';
-		ncpt.markedElement.style.outlineOffset = '-5px';
+		tool.markedElement.style.outline = 'solid 5px rgba(230,126,34,0.5)';
+		tool.markedElement.style.outlineOffset = '-5px';
 	},
 
 	removeHighlightStyle: function (elm) {
@@ -65,45 +65,45 @@ const ncpt = {
 	
 	keyDown: function(e) {
 
-		if (!ncpt.clickedElement) return;
+		if (!tool.clickedElement) return;
 		
 		if (e.keyCode == 27) {
-			ncpt.deactivate();
+			tool.deactivate();
 		}
 		
 		if (e.keyCode == 87) { // w
-			if (ncpt.transpose > 0) ncpt.transpose--;
-			ncpt.highlightSelected();
+			if (tool.transpose > 0) tool.transpose--;
+			tool.highlightSelected();
 		} else if (e.keyCode == 81) { // q
-			ncpt.transpose++;
-			ncpt.highlightSelected();
+			tool.transpose++;
+			tool.highlightSelected();
 		}
 		return false;
 	},
 	
 	keyUp: function(e) {
-		if (!ncpt.clickedElement) return;
+		if (!tool.clickedElement) return;
 		return false;
 	},
 	
 	select_Target: function(e) {
 		if (RMB_TARGET) {
-			ncpt.clickedElement = RMB_TARGET;
-			ncpt.selectedElement = RMB_TARGET;
+			tool.clickedElement = RMB_TARGET;
+			tool.selectedElement = RMB_TARGET;
 
-			// if (ncpt.markedElement.className == "ncpt_overlay") { // this is just a proxy for an iframe
-			// 	ncpt.markedElement = ncpt.markedElement.relatedElement;
+			// if (tool.markedElement.className == "tool_overlay") { // this is just a proxy for an iframe
+			// 	tool.markedElement = tool.markedElement.relatedElement;
 			// }
 
-			ncpt.addHighlightStyle(ncpt.markedElement);
+			tool.addHighlightStyle(tool.markedElement);
 
-			ncpt.selectedElements.push({
+			tool.selectedElements.push({
 				RMB_TARGET,
 			});
 
-			ncpt.updateCSS();
-			ncpt.updateElementList();
-			ncpt.triggerResize();
+			tool.updateCSS();
+			tool.updateElementList();
+			tool.triggerResize();
 			return false;
 
 		}
@@ -123,7 +123,7 @@ const ncpt = {
 		let path = [];
 		let currentElm = element;
 
-		// if (currentElm.className == "ncpt_overlay") { // this is just a proxy for an iframe
+		// if (currentElm.className == "tool_overlay") { // this is just a proxy for an iframe
 		// 	currentElm = currentElm.relatedElement;
 		// }
 
@@ -145,125 +145,7 @@ const ncpt = {
 	updateCSS: function() {
 		let cssLines = [
 			`
-			#ncpt_wnd {
-				display: none;
-				position: fixed;
-				bottom: 35%;
-				right: 10px;
-				width: 460px;
-				max-height: 350px; 
-				padding: 10px 20px;
-				box-sizing: content-box;
-				background: #fff;
-				margin: 15px;
-				box-shadow: 
-				0 7px 14px rgba(0,0,0,0.25), 
-				0 5px 5px rgba(0,0,0,0.22);  
-				padding: 10px;
-				margin-top: 15px;
-				text-align: center;
-				z-index: 2147483647;
 
-			}
-			#ncpt_wnd * {
-				line-height: 1.3; font-size: inherit; color: inherit;
-				font-weight: normal; font-style: normal; font-family: inherit;
-				cursor: default;
-			}
-
-
-				display: inline-block; cursor: pointer;
-				transform: rotate(45deg); transition: transform 0.5s;
-			}
-			#ncpt_wnd .key {
-				display: inline-block;
-				font-family: monospace;
-				background: #f7f7f7; color: #999;
-				padding: 0 2px; margin: 0 2px;
-				border: solid 1px #d5d5d5; border-radius: 3px;
-			}
-			#ncpt_wnd .ct_logo { 
-				font-size: 18px; 
-			}
-			#ncpt_wnd .ct_logo.small { display: none; }
-			#ncpt_wnd .ct_logo svg {
-				fill: #666; vertical-align: -15%;
-				transform: rotate(-240deg); transition: transform 1s;
-			}
-			#ncpt_wnd .ct_logo.anim svg { transform: rotate(0deg); }
-
-			#ncpt_current_elm {
-				font-family: monospace; background: #f7f7f7; color: #d5d5d5; padding: 2px; margin: 10px 0;
-				height: 84px; overflow: hidden;
-			}
-			#ncpt_current_elm .pathNode { color: #999; border-bottom: solid 2px rgba(0,0,0,0); }
-			#ncpt_current_elm .pathNode.active { border-bottom: solid 2px #555; }
-
-			#ncpt_clicked_elm,
-			#ncpt_selected_elm { 
-				margin-top: 5px; 
-				background: #f7f7f7; 
-				border: solid 12px #f7f7f7; 
-				border-width: 12px 0 12px 0; 
-				max-height: 84px; 
-				overflow: hidden;
-				color: black; 
-			}
-
-			#ncpt_wnd > div > button.shorter,
-			#ncpt_wnd > div > button.longer {
-				margin: 5px;
-				color: black;
-			}
-			#ncpt_wnd.hasContent { display: inline-block; }
-
-			#ncpt_wnd.minimized { width: 147px; height: 12px; }
-			#ncpt_wnd.minimized > * { display: none; }
-			#ncpt_wnd.minimized .ct_logo.small { display: block; margin: -4px 0 0 -10px; }
-
-
-			#ct_btns {
-				width: 100%;
-				text-align: center;
-				margin-top: 15px;
-				margin-bottom: 12px;
-			}
-
-
-
-
-
-			.send_selected,
-			.ct_btns_space,
-			#ncpt_wnd .ct_close {
-				display: inline-block;
-				vertical-align: middle;
-			}
-
-			.ct_btns_space {
-				width: 70px;
-			}
-
-
-			.send_selected > button,
-			#ncpt_wnd .ct_close > button {
-				text-align: center;
-				font-size: 21px;
-				width: 100px;
-				height: 41px;
-				border: 0;
-			}
-
-
-
-
-			.send_selected > button {
-				background-color: #3498DB;
-
-			}
-			#ncpt_wnd .ct_close > button {
-				background-color: #E67E22;
-			}
 
 
 
@@ -271,18 +153,18 @@ const ncpt = {
 			`
 		];
 
-		for (let i in ncpt.selectedElements) {
-			let selector = ncpt.selectedElements[i].selector;
+		for (let i in tool.selectedElements) {
+			let selector = tool.selectedElements[i].selector;
 			if (selector == 'body' || selector == 'html') {
 			} else {
 			}
 		}
 
-		let styleElm = document.querySelector('#ncpt_styles');
+		let styleElm = document.querySelector('#tool_styles');
 		if (!styleElm) {
 			styleElm = document.createElement('style');
 			styleElm.type = "text/css";
-			styleElm.id = "ncpt_styles";
+			styleElm.id = "tool_styles";
 			document.head.appendChild(styleElm);
 		}
 
@@ -293,16 +175,16 @@ const ncpt = {
 	},
 
 	updateElementList: function() {
-		if (!ncpt.helpWindow) return;
+		if (!tool.helpWindow) return;
 
-		let elmList_selected = document.querySelector('#ncpt_selected_elm');
-		let wind = document.querySelector('#ncpt_wnd');
+		let elmList_selected = document.querySelector('#tool_selected_elm');
+		let wind = document.querySelector('#tool_wnd');
 
 		let line = "";
 
-		if (ncpt.selectedElements.length) {
+		if (tool.selectedElements.length) {
 
-			line = ncpt.getPathHTML(ncpt.selectedElement);
+			line = tool.getPathHTML(tool.selectedElement);
 
 
 			elmList_selected.classList.add('hasContent');
@@ -314,35 +196,142 @@ const ncpt = {
 		}
 		
 		elmList_selected.innerHTML = line;
-		document.querySelector('#ncpt_clicked_elm').innerHTML = ncpt.getPathHTML(ncpt.clickedElement);
+		document.querySelector('#tool_clicked_elm').innerHTML = tool.getPathHTML(tool.clickedElement);
 		
-		document.getElementById('ncpt_selected_elm').scrollTop = 9999;
-		document.getElementById('ncpt_clicked_elm').scrollTop = 9999;
+		document.getElementById('tool_selected_elm').scrollTop = 9999;
+		document.getElementById('tool_clicked_elm').scrollTop = 9999;
 
 		let i = -1;
-		for (let tr of document.querySelectorAll('#ncpt_selected_elm table tr')) {
+		for (let tr of document.querySelectorAll('#tool_selected_elm table tr')) {
 			if (i < 0) { // skip heading
 				i++;
 				continue;
 			}
 
-			tr.selector = ncpt.selectedElements[i].selector;
+			tr.selector = tool.selectedElements[i].selector;
 
 			i++;
 		}
 	},
 	
 	activate: function() {
-		if (!ncpt.helpWindow) ncpt.updateCSS();
+		if (!tool.helpWindow) tool.updateCSS();
 
 		let div = document.createElement('div');
-		div.setAttribute("id", "ncpt_wnd");
+		div.setAttribute("id", "tool_wnd");
 		document.body.appendChild(div);
 
 		div.innerHTML = `
+
+			<style>
+			#tool_wnd {
+			  display: none;
+			  position: fixed;
+			  bottom: 35%;
+			  right: 10px;
+			  width: 200px;
+			  padding: 10px 20px;
+			  box-sizing: content-box;
+			  background: #fff;
+			  margin: 15px;
+			  box-shadow:
+			    0 7px 14px rgba(0,0,0,0.25), 
+			    0 5px 5px rgba(0,0,0,0.22);  
+			  padding: 10px;
+			  margin-top: 15px;
+			  text-align: center;
+			  z-index: 2147483647;
+
+			}
+			      
+			#tool_wnd * {
+			  line-height: 1.3; 
+			  font-size: inherit; 
+			  color: inherit;
+			  font-weight: normal; 
+			  font-style: normal; 
+			  font-family: inherit;
+			  cursor: default;
+			}
+
+			#tool_wnd .ct_logo { 
+			  font-size: 18px;
+			  display:block;
+			}
+
+			#tool_clicked_elm,
+			#tool_selected_elm { 
+			  margin-top: 5px; 
+			  background: #f7f7f7; 
+			  border: solid 12px #f7f7f7; 
+			  border-width: 12px 0 12px 0; 
+			  max-height: 84px; 
+			  overflow: hidden;
+			  color: black; 
+			}
+
+			#tool_wnd > div > button.shorter,
+			#tool_wnd > div > button.longer {
+			  margin: 5px;
+			  color: black;
+			}
+
+			#tool_wnd.hasContent { 
+			  display: inline-block; }
+
+			#ct_btns {
+			  width: 100%;
+			  text-align: center;
+			  margin-top: 15px;
+			  margin-bottom: 12px;
+			}
+
+			.send_selected,
+			.ct_btns_space,
+			#tool_wnd {
+			  display: inline-block;
+			  vertical-align: middle;
+			}
+
+			#tool_wnd .ct_close {
+			  position: absolute;
+			  top: 0px;
+			  right: 0px;			
+			}
+
+			#tool_wnd .ct_close > button {
+			  text-align: center;
+			  font-size: 21px;
+			  width: 40px;
+			  height: 40px;
+			  border: 0;
+			}
+
+			.ct_btns_space {
+			  width: 70px;
+			}
+
+			.send_selected > button {
+			  text-align: center;
+			  font-size: 21px;
+			  width: 100px;
+			  height: 41px;
+			  border: 0;
+			}
+
+			.send_selected > button {
+			  background-color: #3498DB;
+
+			}
+			#tool_wnd .ct_close > button {
+			  background-color: #E67E22;
+			}
+			</style>
+
 			<span class="ct_logo">No-Code Parsing tool</span>
-			<div id="ncpt_clicked_elm"></div>
-			<div id="ncpt_selected_elm"></div>
+			<div class="ct_close"><button>✖️</button></div>
+			<div id="tool_clicked_elm"></div>
+			<div id="tool_selected_elm"></div>
 
 			<div>
 				<button class="shorter">< Q</button>
@@ -352,100 +341,99 @@ const ncpt = {
 			<div id="ct_btns">
 				<div class="send_selected"><button>✔️</button></div>
 				<div class="ct_btns_space"></div>
-				<div class="ct_close"><button>✖️</button></div>
 			</div>
 
 		`;
 
 		div.querySelector('.longer').addEventListener('click', function (e) {
-			if (ncpt.transpose > 0) ncpt.transpose--;
-			ncpt.highlightSelected();
+			if (tool.transpose > 0) tool.transpose--;
+			tool.highlightSelected();
 		});
 		div.querySelector('.shorter').addEventListener('click', function (e) {
-			ncpt.transpose++;
-			ncpt.highlightSelected();
+			tool.transpose++;
+			tool.highlightSelected();
 		});
 
 		div.querySelector('.send_selected').addEventListener('click', function (e) {
-			// var element = encodeURIComponent(ncpt.getPathHTML(ncpt.clickedElement));
-			// var block = encodeURIComponent(ncpt.getPathHTML(ncpt.selectedElement));
+			// var element = encodeURIComponent(tool.getPathHTML(tool.clickedElement));
+			// var block = encodeURIComponent(tool.getPathHTML(tool.selectedElement));
 			// var url = encodeURIComponent(document.location.href);
 			// var line = HOME_URL + url + "&element=" + element + "&block=" + block;
 			// window.location = line;
-			var element = ncpt.getPathHTML(ncpt.clickedElement);
-			var block = ncpt.getPathHTML(ncpt.selectedElement);
+			var element = tool.getPathHTML(tool.clickedElement);
+			var block = tool.getPathHTML(tool.selectedElement);
 			var url = document.location.href;
 			var line = HOME_URL + url + "&element=" + element + "&block=" + block;
 			alert(line);
 		});
 
 		div.querySelector('.ct_close').addEventListener('click', function (e) {
-			ncpt.deactivate();
+			tool.deactivate();
 		});
 
 		for (let elm of div.querySelectorAll('.ct_more a')) {
 			elm.addEventListener('click', function (e) {
 
-				ncpt.deactivate();
+				tool.deactivate();
 			});
 		}
 		
-		ncpt.helpWindow = div;
+		tool.helpWindow = div;
 
-		ncpt.updateElementList();
+		tool.updateElementList();
 		
 		chrome.extension.sendMessage({action: 'status', active: true});
 	},
 	
 	deactivate: function() {
 		
-		if (ncpt.markedElement) {
-			ncpt.removeHighlightStyle(ncpt.markedElement);
+		if (tool.markedElement) {
+			tool.removeHighlightStyle(tool.markedElement);
 		}
-		ncpt.markedElement = false;
+		tool.markedElement = false;
 
-		if (ncpt.selectedElement) {
-			ncpt.removeHighlightStyle(ncpt.selectedElement);
+		if (tool.selectedElement) {
+			tool.removeHighlightStyle(tool.selectedElement);
 		}
-		ncpt.selectedElement = false;
-		if (ncpt.clickedElement) {
-			ncpt.removeHighlightStyle(ncpt.clickedElement);
+		tool.selectedElement = false;
+		if (tool.clickedElement) {
+			tool.removeHighlightStyle(tool.clickedElement);
 		}
-		ncpt.clickedElement = false;
+		tool.clickedElement = false;
 
-		ncpt.helpWindow.parentNode.removeChild(ncpt.helpWindow);
+		tool.helpWindow.parentNode.removeChild(tool.helpWindow);
 		
 		chrome.extension.sendMessage({action: 'status', active: false});
 	},
 	
 	toggle: function() {
-		if (ncpt.clickedElement) ncpt.deactivate();
-		else ncpt.activate();
+		if (tool.clickedElement) tool.deactivate();
+		else tool.activate();
 	},
 	
 	init: function() {
-		document.addEventListener('keydown', ncpt.keyDown);
-		document.addEventListener('keyup', ncpt.keyUp);
+		document.addEventListener('keydown', tool.keyDown);
+		document.addEventListener('keyup', tool.keyUp);
 		
 		chrome.extension.onMessage.addListener(function(msg, sender, responseFun) {
 			if (msg.action == "toggle") {
-				ncpt.toggle();
+				tool.toggle();
 				responseFun(2.0);
 			}
 
 			if (msg.action == "rmb_event") {
-				if (ncpt.clickedElement) {
-					ncpt.deactivate();
-					ncpt.activate(); 
+				if (tool.clickedElement) {
+					tool.deactivate();
+					tool.activate(); 
 				} else {
-					ncpt.activate(); 
+					tool.activate(); 
 				}
 				responseFun(2.0);
-				ncpt.select_Target(RMB_TARGET)
+				tool.select_Target(RMB_TARGET)
 			}
 
 		});
 	}
 }
 
-ncpt.init();
+tool.init();
