@@ -10,9 +10,8 @@
 		"16": "images/btn_16.png"
 	},
 	"browser_action": {
-		"default_icon": "images/btn_48.png",
-		"default_popup": "popup.html"
-
+		"default_icon": "images/btn_48.png"
+		
 	},
 
 	"background": {
