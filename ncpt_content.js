@@ -367,11 +367,16 @@ const ncpt = {
 		});
 
 		div.querySelector('.send_selected').addEventListener('click', function (e) {
-			var element = encodeURIComponent(ncpt.getPathHTML(ncpt.clickedElement));
-			var block = encodeURIComponent(ncpt.getPathHTML(ncpt.selectedElement));
-			var url = encodeURIComponent(document.location.href);
+			// var element = encodeURIComponent(ncpt.getPathHTML(ncpt.clickedElement));
+			// var block = encodeURIComponent(ncpt.getPathHTML(ncpt.selectedElement));
+			// var url = encodeURIComponent(document.location.href);
+			// var line = HOME_URL + url + "&element=" + element + "&block=" + block;
+			// window.location = line;
+			var element = ncpt.getPathHTML(ncpt.clickedElement);
+			var block = ncpt.getPathHTML(ncpt.selectedElement);
+			var url = document.location.href;
 			var line = HOME_URL + url + "&element=" + element + "&block=" + block;
-			window.location = line;
+			alert(line);
 		});
 
 		div.querySelector('.ct_close').addEventListener('click', function (e) {
