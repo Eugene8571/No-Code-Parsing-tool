@@ -1,11 +1,11 @@
 
 function setActive() {
-	chrome.browserAction.setIcon( { path: 'images/btn_16.png' } );
+	chrome.browserAction.setIcon( { path: 'images/ncpt_logo_16.png' } );
 	chrome.browserAction.setTitle( { title: 'Click to select element' });
 }
 
 function setInactive() {
-	chrome.browserAction.setIcon( { path: 'images/btn_48.png' } );
+	chrome.browserAction.setIcon( { path: 'images/ncpt_logo_48.png' } );
 	chrome.browserAction.setTitle( { title: 'Click to select element' });
 }
 
@@ -31,7 +31,7 @@ function checkActive() {
 
 chrome.contextMenus.create({
   contexts: ['all'],
-  title: 'parsing tool',
+  title: 'Parsing tool',
   onclick: function(info, tab) {
 	chrome.tabs.getSelected(null, function(tab) {
 		chrome.tabs.sendMessage(tab.id, { 'action': 'rmb_event' }, function(response) {
