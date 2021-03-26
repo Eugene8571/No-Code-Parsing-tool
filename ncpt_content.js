@@ -244,16 +244,7 @@ const tool = {
 
 			}
 			      
-			#tool_wnd * {
-			  line-height: 1.3; 
-			  font-size: inherit; 
-			  color: inherit;
-			  font-weight: normal; 
-			  font-style: normal; 
-			  font-family: inherit;
-			  cursor: default;
-			}
-
+			
 			#tool_wnd .ct_logo { 
 			  font-size: 18px;
 			  text-align: left;
@@ -287,7 +278,6 @@ const tool = {
 			}
 
 			.send_selected,
-			.ct_btns_space,
 			#tool_wnd {
 			  display: inline-block;
 			  vertical-align: middle;
@@ -307,10 +297,6 @@ const tool = {
 			  border: 0;
 			}
 
-			.ct_btns_space {
-			  width: 70px;
-			}
-
 			.send_selected > button {
 			  text-align: center;
 			  font-size: 21px;
@@ -328,7 +314,7 @@ const tool = {
 			}
 			</style>
 
-			<span class="ct_logo">No-Code Parsing tool</span>
+			<span class="ct_logo">Parsing tool</span>
 			<div class="ct_close"><button>✖️</button></div>
 			<div id="tool_clicked_elm"></div>
 			<div id="tool_selected_elm"></div>
@@ -340,7 +326,6 @@ const tool = {
 
 			<div id="ct_btns">
 				<div class="send_selected"><button>✔️</button></div>
-				<div class="ct_btns_space"></div>
 			</div>
 
 		`;
