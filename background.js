@@ -31,7 +31,7 @@ function checkActive() {
 
 chrome.contextMenus.create({
   contexts: ['all'],
-  title: 'manga.garden',
+  title: 'parsing tool',
   onclick: function(info, tab) {
 	chrome.tabs.getSelected(null, function(tab) {
 		chrome.tabs.sendMessage(tab.id, { 'action': 'rmb_event' }, function(response) {
@@ -41,7 +41,7 @@ chrome.contextMenus.create({
 
 			if (!response) {
 				chrome.tabs.executeScript(tab.id, {
-					// code: "if (confirm('This tab was loaded before Manga.garden Extension was installed. Would you like to reload it?\\nThis is necessary only the first time.')) location.reload();"
+					// code: "if (confirm('This tab was loaded before Extension was installed. Would you like to reload it?\\nThis is necessary only the first time.')) location.reload();"
 					code: "location.reload();"
 				});
 			}

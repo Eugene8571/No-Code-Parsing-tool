@@ -5,7 +5,7 @@ document.addEventListener('contextmenu', function (event) {
   RMB_TARGET = event.target;
 });
 
-const mge = {
+const ncpt = {
 	markedElement: false,
 	clickedElement: false,
 	selectedElement: false,
@@ -21,41 +21,41 @@ const mge = {
 	},
 
 	highlightSelected: function() {
-		if (!mge.clickedElement) return;
+		if (!ncpt.clickedElement) return;
 		
-		if (mge.markedElement && (mge.markedElement != mge.clickedElement)) {
-			mge.removeHighlightStyle(mge.markedElement);
+		if (ncpt.markedElement && (ncpt.markedElement != ncpt.clickedElement)) {
+			ncpt.removeHighlightStyle(ncpt.markedElement);
 		}
 
-		mge.markedElement = mge.clickedElement;
-		// if (mge.markedElement.className == "mge_overlay") { // this is just a proxy for an iframe
-		// 	mge.markedElement = mge.markedElement.relatedElement;
+		ncpt.markedElement = ncpt.clickedElement;
+		// if (ncpt.markedElement.className == "ncpt_overlay") { // this is just a proxy for an iframe
+		// 	ncpt.markedElement = ncpt.markedElement.relatedElement;
 		// }
 		let i = 0;
-		for (i = 0; i < mge.transpose; i++) {
-			if (mge.markedElement.parentNode != window.document) {
-				mge.markedElement = mge.markedElement.parentNode;
+		for (i = 0; i < ncpt.transpose; i++) {
+			if (ncpt.markedElement.parentNode != window.document) {
+				ncpt.markedElement = ncpt.markedElement.parentNode;
 			} else {
 				break;
 			}
 		}
 		
-		mge.transpose = i;
-		mge.selectedElement = mge.markedElement
-		mge.addHighlightStyle(mge.selectedElement);
+		ncpt.transpose = i;
+		ncpt.selectedElement = ncpt.markedElement
+		ncpt.addHighlightStyle(ncpt.selectedElement);
 
-		document.querySelector('#mge_selected_elm').innerHTML = mge.getPathHTML(mge.markedElement, mge.transpose);
-		document.querySelector('#mge_selected_elm').scrollTop = 9999;
+		document.querySelector('#ncpt_selected_elm').innerHTML = ncpt.getPathHTML(ncpt.markedElement, ncpt.transpose);
+		document.querySelector('#ncpt_selected_elm').scrollTop = 9999;
 	},
 
 
 	addHighlightStyle: function (elm) {
-		if (mge.selectedElement) {
-			mge.selectedElement.style.outline = 'solid 5px rgba(230,126,34,0.5)';
-			mge.selectedElement.style.outlineOffset = '-5px';			
+		if (ncpt.selectedElement) {
+			ncpt.selectedElement.style.outline = 'solid 5px rgba(230,126,34,0.5)';
+			ncpt.selectedElement.style.outlineOffset = '-5px';			
 			return;}
-		mge.markedElement.style.outline = 'solid 5px rgba(230,126,34,0.5)';
-		mge.markedElement.style.outlineOffset = '-5px';
+		ncpt.markedElement.style.outline = 'solid 5px rgba(230,126,34,0.5)';
+		ncpt.markedElement.style.outlineOffset = '-5px';
 	},
 
 	removeHighlightStyle: function (elm) {
@@ -65,45 +65,45 @@ const mge = {
 	
 	keyDown: function(e) {
 
-		if (!mge.clickedElement) return;
+		if (!ncpt.clickedElement) return;
 		
 		if (e.keyCode == 27) {
-			mge.deactivate();
+			ncpt.deactivate();
 		}
 		
 		if (e.keyCode == 87) { // w
-			if (mge.transpose > 0) mge.transpose--;
-			mge.highlightSelected();
+			if (ncpt.transpose > 0) ncpt.transpose--;
+			ncpt.highlightSelected();
 		} else if (e.keyCode == 81) { // q
-			mge.transpose++;
-			mge.highlightSelected();
+			ncpt.transpose++;
+			ncpt.highlightSelected();
 		}
 		return false;
 	},
 	
 	keyUp: function(e) {
-		if (!mge.clickedElement) return;
+		if (!ncpt.clickedElement) return;
 		return false;
 	},
 	
 	select_Target: function(e) {
 		if (RMB_TARGET) {
-			mge.clickedElement = RMB_TARGET;
-			mge.selectedElement = RMB_TARGET;
+			ncpt.clickedElement = RMB_TARGET;
+			ncpt.selectedElement = RMB_TARGET;
 
-			// if (mge.markedElement.className == "mge_overlay") { // this is just a proxy for an iframe
-			// 	mge.markedElement = mge.markedElement.relatedElement;
+			// if (ncpt.markedElement.className == "ncpt_overlay") { // this is just a proxy for an iframe
+			// 	ncpt.markedElement = ncpt.markedElement.relatedElement;
 			// }
 
-			mge.addHighlightStyle(mge.markedElement);
+			ncpt.addHighlightStyle(ncpt.markedElement);
 
-			mge.selectedElements.push({
+			ncpt.selectedElements.push({
 				RMB_TARGET,
 			});
 
-			mge.updateCSS();
-			mge.updateElementList();
-			mge.triggerResize();
+			ncpt.updateCSS();
+			ncpt.updateElementList();
+			ncpt.triggerResize();
 			return false;
 
 		}
@@ -123,7 +123,7 @@ const mge = {
 		let path = [];
 		let currentElm = element;
 
-		// if (currentElm.className == "mge_overlay") { // this is just a proxy for an iframe
+		// if (currentElm.className == "ncpt_overlay") { // this is just a proxy for an iframe
 		// 	currentElm = currentElm.relatedElement;
 		// }
 
@@ -145,7 +145,7 @@ const mge = {
 	updateCSS: function() {
 		let cssLines = [
 			`
-			#mge_wnd {
+			#ncpt_wnd {
 				display: none;
 				position: fixed;
 				bottom: 35%;
@@ -165,7 +165,7 @@ const mge = {
 				z-index: 2147483647;
 
 			}
-			#mge_wnd * {
+			#ncpt_wnd * {
 				line-height: 1.3; font-size: inherit; color: inherit;
 				font-weight: normal; font-style: normal; font-family: inherit;
 				cursor: default;
@@ -175,32 +175,32 @@ const mge = {
 				display: inline-block; cursor: pointer;
 				transform: rotate(45deg); transition: transform 0.5s;
 			}
-			#mge_wnd .key {
+			#ncpt_wnd .key {
 				display: inline-block;
 				font-family: monospace;
 				background: #f7f7f7; color: #999;
 				padding: 0 2px; margin: 0 2px;
 				border: solid 1px #d5d5d5; border-radius: 3px;
 			}
-			#mge_wnd .ct_logo { 
+			#ncpt_wnd .ct_logo { 
 				font-size: 18px; 
 			}
-			#mge_wnd .ct_logo.small { display: none; }
-			#mge_wnd .ct_logo svg {
+			#ncpt_wnd .ct_logo.small { display: none; }
+			#ncpt_wnd .ct_logo svg {
 				fill: #666; vertical-align: -15%;
 				transform: rotate(-240deg); transition: transform 1s;
 			}
-			#mge_wnd .ct_logo.anim svg { transform: rotate(0deg); }
+			#ncpt_wnd .ct_logo.anim svg { transform: rotate(0deg); }
 
-			#mge_current_elm {
+			#ncpt_current_elm {
 				font-family: monospace; background: #f7f7f7; color: #d5d5d5; padding: 2px; margin: 10px 0;
 				height: 84px; overflow: hidden;
 			}
-			#mge_current_elm .pathNode { color: #999; border-bottom: solid 2px rgba(0,0,0,0); }
-			#mge_current_elm .pathNode.active { border-bottom: solid 2px #555; }
+			#ncpt_current_elm .pathNode { color: #999; border-bottom: solid 2px rgba(0,0,0,0); }
+			#ncpt_current_elm .pathNode.active { border-bottom: solid 2px #555; }
 
-			#mge_clicked_elm,
-			#mge_selected_elm { 
+			#ncpt_clicked_elm,
+			#ncpt_selected_elm { 
 				margin-top: 5px; 
 				background: #f7f7f7; 
 				border: solid 12px #f7f7f7; 
@@ -210,16 +210,16 @@ const mge = {
 				color: black; 
 			}
 
-			#mge_wnd > div > button.shorter,
-			#mge_wnd > div > button.longer {
+			#ncpt_wnd > div > button.shorter,
+			#ncpt_wnd > div > button.longer {
 				margin: 5px;
 				color: black;
 			}
-			#mge_wnd.hasContent { display: inline-block; }
+			#ncpt_wnd.hasContent { display: inline-block; }
 
-			#mge_wnd.minimized { width: 147px; height: 12px; }
-			#mge_wnd.minimized > * { display: none; }
-			#mge_wnd.minimized .ct_logo.small { display: block; margin: -4px 0 0 -10px; }
+			#ncpt_wnd.minimized { width: 147px; height: 12px; }
+			#ncpt_wnd.minimized > * { display: none; }
+			#ncpt_wnd.minimized .ct_logo.small { display: block; margin: -4px 0 0 -10px; }
 
 
 			#ct_btns {
@@ -235,7 +235,7 @@ const mge = {
 
 			.send_selected,
 			.ct_btns_space,
-			#mge_wnd .ct_close {
+			#ncpt_wnd .ct_close {
 				display: inline-block;
 				vertical-align: middle;
 			}
@@ -246,7 +246,7 @@ const mge = {
 
 
 			.send_selected > button,
-			#mge_wnd .ct_close > button {
+			#ncpt_wnd .ct_close > button {
 				text-align: center;
 				font-size: 21px;
 				width: 100px;
@@ -261,7 +261,7 @@ const mge = {
 				background-color: #3498DB;
 
 			}
-			#mge_wnd .ct_close > button {
+			#ncpt_wnd .ct_close > button {
 				background-color: #E67E22;
 			}
 
@@ -271,18 +271,18 @@ const mge = {
 			`
 		];
 
-		for (let i in mge.selectedElements) {
-			let selector = mge.selectedElements[i].selector;
+		for (let i in ncpt.selectedElements) {
+			let selector = ncpt.selectedElements[i].selector;
 			if (selector == 'body' || selector == 'html') {
 			} else {
 			}
 		}
 
-		let styleElm = document.querySelector('#mge_styles');
+		let styleElm = document.querySelector('#ncpt_styles');
 		if (!styleElm) {
 			styleElm = document.createElement('style');
 			styleElm.type = "text/css";
-			styleElm.id = "mge_styles";
+			styleElm.id = "ncpt_styles";
 			document.head.appendChild(styleElm);
 		}
 
@@ -293,16 +293,16 @@ const mge = {
 	},
 
 	updateElementList: function() {
-		if (!mge.helpWindow) return;
+		if (!ncpt.helpWindow) return;
 
-		let elmList_selected = document.querySelector('#mge_selected_elm');
-		let wind = document.querySelector('#mge_wnd');
+		let elmList_selected = document.querySelector('#ncpt_selected_elm');
+		let wind = document.querySelector('#ncpt_wnd');
 
 		let line = "";
 
-		if (mge.selectedElements.length) {
+		if (ncpt.selectedElements.length) {
 
-			line = mge.getPathHTML(mge.selectedElement);
+			line = ncpt.getPathHTML(ncpt.selectedElement);
 
 
 			elmList_selected.classList.add('hasContent');
@@ -314,35 +314,35 @@ const mge = {
 		}
 		
 		elmList_selected.innerHTML = line;
-		document.querySelector('#mge_clicked_elm').innerHTML = mge.getPathHTML(mge.clickedElement);
+		document.querySelector('#ncpt_clicked_elm').innerHTML = ncpt.getPathHTML(ncpt.clickedElement);
 		
-		document.getElementById('mge_selected_elm').scrollTop = 9999;
-		document.getElementById('mge_clicked_elm').scrollTop = 9999;
+		document.getElementById('ncpt_selected_elm').scrollTop = 9999;
+		document.getElementById('ncpt_clicked_elm').scrollTop = 9999;
 
 		let i = -1;
-		for (let tr of document.querySelectorAll('#mge_selected_elm table tr')) {
+		for (let tr of document.querySelectorAll('#ncpt_selected_elm table tr')) {
 			if (i < 0) { // skip heading
 				i++;
 				continue;
 			}
 
-			tr.selector = mge.selectedElements[i].selector;
+			tr.selector = ncpt.selectedElements[i].selector;
 
 			i++;
 		}
 	},
 	
 	activate: function() {
-		if (!mge.helpWindow) mge.updateCSS();
+		if (!ncpt.helpWindow) ncpt.updateCSS();
 
 		let div = document.createElement('div');
-		div.setAttribute("id", "mge_wnd");
+		div.setAttribute("id", "ncpt_wnd");
 		document.body.appendChild(div);
 
 		div.innerHTML = `
-			<span class="ct_logo">MANGA.garden tool.</span>
-			<div id="mge_clicked_elm"></div>
-			<div id="mge_selected_elm"></div>
+			<span class="ct_logo">No-Code Parsing tool</span>
+			<div id="ncpt_clicked_elm"></div>
+			<div id="ncpt_selected_elm"></div>
 
 			<div>
 				<button class="shorter">< Q</button>
@@ -358,89 +358,89 @@ const mge = {
 		`;
 
 		div.querySelector('.longer').addEventListener('click', function (e) {
-			if (mge.transpose > 0) mge.transpose--;
-			mge.highlightSelected();
+			if (ncpt.transpose > 0) ncpt.transpose--;
+			ncpt.highlightSelected();
 		});
 		div.querySelector('.shorter').addEventListener('click', function (e) {
-			mge.transpose++;
-			mge.highlightSelected();
+			ncpt.transpose++;
+			ncpt.highlightSelected();
 		});
 
 		div.querySelector('.send_selected').addEventListener('click', function (e) {
-			var element = encodeURIComponent(mge.getPathHTML(mge.clickedElement));
-			var block = encodeURIComponent(mge.getPathHTML(mge.selectedElement));
+			var element = encodeURIComponent(ncpt.getPathHTML(ncpt.clickedElement));
+			var block = encodeURIComponent(ncpt.getPathHTML(ncpt.selectedElement));
 			var url = encodeURIComponent(document.location.href);
 			var line = HOME_URL + url + "&element=" + element + "&block=" + block;
 			window.location = line;
 		});
 
 		div.querySelector('.ct_close').addEventListener('click', function (e) {
-			mge.deactivate();
+			ncpt.deactivate();
 		});
 
 		for (let elm of div.querySelectorAll('.ct_more a')) {
 			elm.addEventListener('click', function (e) {
 
-				mge.deactivate();
+				ncpt.deactivate();
 			});
 		}
 		
-		mge.helpWindow = div;
+		ncpt.helpWindow = div;
 
-		mge.updateElementList();
+		ncpt.updateElementList();
 		
 		chrome.extension.sendMessage({action: 'status', active: true});
 	},
 	
 	deactivate: function() {
 		
-		if (mge.markedElement) {
-			mge.removeHighlightStyle(mge.markedElement);
+		if (ncpt.markedElement) {
+			ncpt.removeHighlightStyle(ncpt.markedElement);
 		}
-		mge.markedElement = false;
+		ncpt.markedElement = false;
 
-		if (mge.selectedElement) {
-			mge.removeHighlightStyle(mge.selectedElement);
+		if (ncpt.selectedElement) {
+			ncpt.removeHighlightStyle(ncpt.selectedElement);
 		}
-		mge.selectedElement = false;
-		if (mge.clickedElement) {
-			mge.removeHighlightStyle(mge.clickedElement);
+		ncpt.selectedElement = false;
+		if (ncpt.clickedElement) {
+			ncpt.removeHighlightStyle(ncpt.clickedElement);
 		}
-		mge.clickedElement = false;
+		ncpt.clickedElement = false;
 
-		mge.helpWindow.parentNode.removeChild(mge.helpWindow);
+		ncpt.helpWindow.parentNode.removeChild(ncpt.helpWindow);
 		
 		chrome.extension.sendMessage({action: 'status', active: false});
 	},
 	
 	toggle: function() {
-		if (mge.clickedElement) mge.deactivate();
-		else mge.activate();
+		if (ncpt.clickedElement) ncpt.deactivate();
+		else ncpt.activate();
 	},
 	
 	init: function() {
-		document.addEventListener('keydown', mge.keyDown);
-		document.addEventListener('keyup', mge.keyUp);
+		document.addEventListener('keydown', ncpt.keyDown);
+		document.addEventListener('keyup', ncpt.keyUp);
 		
 		chrome.extension.onMessage.addListener(function(msg, sender, responseFun) {
 			if (msg.action == "toggle") {
-				mge.toggle();
+				ncpt.toggle();
 				responseFun(2.0);
 			}
 
 			if (msg.action == "rmb_event") {
-				if (mge.clickedElement) {
-					mge.deactivate();
-					mge.activate(); 
+				if (ncpt.clickedElement) {
+					ncpt.deactivate();
+					ncpt.activate(); 
 				} else {
-					mge.activate(); 
+					ncpt.activate(); 
 				}
 				responseFun(2.0);
-				mge.select_Target(RMB_TARGET)
+				ncpt.select_Target(RMB_TARGET)
 			}
 
 		});
 	}
 }
 
-mge.init();
+ncpt.init();

@@ -21,7 +21,7 @@
 
 	"content_scripts": [ {
 		"all_frames": false,
-		"js": [ "mge_content.js" ],
+		"js": [ "ncpt_content.js" ],
 		"matches": [ 
 			"http://*/*", 
 			"https://*/*" ],
