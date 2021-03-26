@@ -1,16 +1,16 @@
 {
 	"name": "__MSG_extensionName__",
-	"version": "0.0.0.5",
+	"version": "0.0.0.1",
 	"manifest_version": 2,
 	"default_locale":"ru", 
 	"description": "__MSG_extensionDescription__",
 	"icons": {
-		"128": "images/btn_128.png",
-		"48": "images/btn_48.png",
-		"16": "images/btn_16.png"
+		"128": "images/ncpt_logo_128.png",
+		"48": "images/ncpt_logo_48.png",
+		"16": "images/ncpt_logo_16.png"
 	},
 	"browser_action": {
-		"default_icon": "images/btn_48.png"
+		"default_icon": "images/ncpt_logo_48.png"
 		
 	},
 
