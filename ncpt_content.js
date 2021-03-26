@@ -256,7 +256,7 @@ const tool = {
 
 			#tool_wnd .ct_logo { 
 			  font-size: 18px;
-			  display:block;
+			  text-align: left;
 			}
 
 			#tool_clicked_elm,
