@@ -228,16 +228,14 @@ const tool = {
 
         display: none;
 			  position: fixed;
-			  bottom: 35%;
+        top: 15%;
 			  right: 10px;
 			  width: 200px;
 			  box-sizing: content-box;
 			  background: #fff;
-			  margin: 15px;
 			  box-shadow:
 			    0 7px 14px rgba(0,0,0,0.25), 
 			    0 5px 5px rgba(0,0,0,0.22);  
-			  margin-top: 15px;
 			  text-align: center;
 			  z-index: 2147483647;
 
@@ -249,14 +247,19 @@ const tool = {
 			  text-align: left;
         background-color: #ccc;
 			  position: absolute;
+        cursor: move;
 			  width: 90%;
         height: 31px;
         padding: 9px 0 0 10px;
 			}
       
-      #tool_wnd .tool_wind_btns {
+      #tool_wnd .tool_wind_body {
         margin-top: 50px;
       }
+      
+      .tool_column_elem {}
+      .tool_value_elem {}
+      .tool_cleare_selected {}      
       
 			#tool_clicked_elm,
 			#tool_selected_elm { 
@@ -322,26 +325,50 @@ const tool = {
 			}
 			</style>
 
-			<div class="tool_wnd_header">
+<div id="tool_wnd_header">
 			    <div class="ct_logo"><span>Parsing tool</span></div>
 			    <div class="ct_close"><button>✖️</button></div>
 			</div>
       
-      <div class="tool_wind_btns">
-        <div id="tool_clicked_elm"></div>
-        <div id="tool_selected_elm"></div>      
-      </div>
+      <div class="tool_wind_body">
+        <table>
+          <tr>
+            <td><button id="tool_area_elem">area</button></td>
+            <td><button id="tool_row_elem">row</button></td>
+            <td><button id="tool_clear_area_row" class="tool_cleare_selected">✖️</button></td>
+          </tr>
+          <tr>
+            <td><button class="tool_column_elem">column 1</button></td>
+            <td><button class="tool_value_elem">value 1</button></td>
+            <td><button class="tool_cleare_selected">✖️</button></td>
+          </tr>
+          <tr>
+            <td><button>column 1</button></td>
+            <td><button>value 1</button></td>
+            <td><button>✖️</button></td>
+          </tr>
+        </table>
+        <button>+</button>
 
-			<div>
-			  <button class="shorter">< Q</button>
-			  <button class="longer">W ></button>
-			</div>
+        <div>
+          <div id="tool_clicked_elm"></div>
+          <div id="tool_selected_elm"></div>      
+        </div>
+
+        <div>
+          <button class="shorter">< Q</button>
+          <button class="longer">W ></button>
+        </div>
+
 
 		    <div id="ct_btns">
 		      <div class="send_selected"><button>✔️</button></div>
 		    </div>
+      </div>
 
 		`;
+
+
 
 		div.querySelector('.longer').addEventListener('click', function (e) {
 			if (tool.transpose > 0) tool.transpose--;
@@ -381,6 +408,52 @@ const tool = {
 		tool.updateElementList();
 		
 		chrome.extension.sendMessage({action: 'status', active: true});
+
+		//Make the DIV element draggagle:
+		dragElement(document.getElementById("tool_wnd"));
+
+		function dragElement(elmnt) {
+		  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+		  if (document.getElementById(elmnt.id + "_header")) {
+		  	/* if present, the header is where you move the DIV from:*/
+		    document.getElementById(elmnt.id + "_header").onmousedown = dragMouseDown;
+		  } else {
+		    /* otherwise, move the DIV from anywhere inside the DIV:*/
+		    elmnt.onmousedown = dragMouseDown;
+		  }
+
+		  function dragMouseDown(e) {
+		    e = e || window.event;
+		    e.preventDefault();
+		    // get the mouse cursor position at startup:
+		    pos3 = e.clientX;
+		    pos4 = e.clientY;
+		    document.onmouseup = closeDragElement;
+		    // call a function whenever the cursor moves:
+		    document.onmousemove = elementDrag;
+		  }
+
+		  function elementDrag(e) {
+		    e = e || window.event;
+		    e.preventDefault();
+		    // calculate the new cursor position:
+		    pos1 = pos3 - e.clientX;
+		    pos2 = pos4 - e.clientY;
+		    pos3 = e.clientX;
+		    pos4 = e.clientY;
+		    // set the element's new position:
+		    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+		    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+		  }
+
+		  function closeDragElement() {
+		    /* stop moving when mouse button is released:*/
+		    document.onmouseup = null;
+		    document.onmousemove = null;
+		  }
+		}
+
+
 	},
 	
 	deactivate: function() {
