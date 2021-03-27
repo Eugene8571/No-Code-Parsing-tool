@@ -368,47 +368,6 @@ const tool = {
 
 		`;
 
-
-
-		div.querySelector('.longer').addEventListener('click', function (e) {
-			if (tool.transpose > 0) tool.transpose--;
-			tool.highlightSelected();
-		});
-		div.querySelector('.shorter').addEventListener('click', function (e) {
-			tool.transpose++;
-			tool.highlightSelected();
-		});
-
-		div.querySelector('.send_selected').addEventListener('click', function (e) {
-			// var element = encodeURIComponent(tool.getPathHTML(tool.clickedElement));
-			// var block = encodeURIComponent(tool.getPathHTML(tool.selectedElement));
-			// var url = encodeURIComponent(document.location.href);
-			// var line = HOME_URL + url + "&element=" + element + "&block=" + block;
-			// window.location = line;
-			var element = tool.getPathHTML(tool.clickedElement);
-			var block = tool.getPathHTML(tool.selectedElement);
-			var url = document.location.href;
-			var line = HOME_URL + url + "&element=" + element + "&block=" + block;
-			alert(line);
-		});
-
-		div.querySelector('.ct_close').addEventListener('click', function (e) {
-			tool.deactivate();
-		});
-
-		for (let elm of div.querySelectorAll('.ct_more a')) {
-			elm.addEventListener('click', function (e) {
-
-				tool.deactivate();
-			});
-		}
-		
-		tool.helpWindow = div;
-
-		tool.updateElementList();
-		
-		chrome.extension.sendMessage({action: 'status', active: true});
-
 		//Make the DIV element draggagle:
 		dragElement(document.getElementById("tool_wnd"));
 
@@ -452,6 +411,48 @@ const tool = {
 		    document.onmousemove = null;
 		  }
 		}
+
+
+		// Events
+
+		div.querySelector('.longer').addEventListener('click', function (e) {
+			if (tool.transpose > 0) tool.transpose--;
+			tool.highlightSelected();
+		});
+		div.querySelector('.shorter').addEventListener('click', function (e) {
+			tool.transpose++;
+			tool.highlightSelected();
+		});
+
+		div.querySelector('.send_selected').addEventListener('click', function (e) {
+			// var element = encodeURIComponent(tool.getPathHTML(tool.clickedElement));
+			// var block = encodeURIComponent(tool.getPathHTML(tool.selectedElement));
+			// var url = encodeURIComponent(document.location.href);
+			// var line = HOME_URL + url + "&element=" + element + "&block=" + block;
+			// window.location = line;
+			var element = tool.getPathHTML(tool.clickedElement);
+			var block = tool.getPathHTML(tool.selectedElement);
+			var url = document.location.href;
+			var line = HOME_URL + url + "&element=" + element + "&block=" + block;
+			alert(line);
+		});
+
+		div.querySelector('.ct_close').addEventListener('click', function (e) {
+			tool.deactivate();
+		});
+
+		for (let elm of div.querySelectorAll('.ct_more a')) {
+			elm.addEventListener('click', function (e) {
+
+				tool.deactivate();
+			});
+		}
+		
+		tool.helpWindow = div;
+
+		tool.updateElementList();
+		
+		chrome.extension.sendMessage({action: 'status', active: true});
 
 
 	},
