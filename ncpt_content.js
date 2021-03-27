@@ -214,7 +214,26 @@ const tool = {
 		}
 	},
 	
+
 	activate: function() {
+
+		function lockPage()
+		{
+		  lockElements(document.getElementsByTagName("a"));
+		  lockElements(document.getElementsByTagName("input"));
+		  lockElements(document.getElementsByTagName("button"));
+		};
+
+		function lockElements(el)
+		{
+		  for (var i=0; i<el.length; i++)
+		  {
+		    el[i].style.pointerEvents="none";
+		  }
+		};
+				
+		lockPage();
+
 		if (!tool.helpWindow) tool.updateCSS();
 
 		let div = document.createElement('div');
@@ -535,6 +554,22 @@ const tool = {
 		tool.clickedElement = false;
 
 		tool.helpWindow.parentNode.removeChild(tool.helpWindow);
+
+		function unlockPage() {
+		    unlockElements(document.getElementsByTagName("a"));
+		    unlockElements(document.getElementsByTagName("input"));
+		    unlockElements(document.getElementsByTagName("button"));
+		};
+
+		function unlockElements(el)
+		{
+		  for (var i=0; i<el.length; i++)
+		  {
+		    el[i].style.pointerEvents="auto";
+		  }
+		};
+
+		unlockPage();
 		
 		chrome.extension.sendMessage({action: 'status', active: false});
 	},
