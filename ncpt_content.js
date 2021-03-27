@@ -225,19 +225,18 @@ const tool = {
 
 			<style>
 			#tool_wnd {
-			  display: none;
+
+        display: none;
 			  position: fixed;
 			  bottom: 35%;
 			  right: 10px;
 			  width: 200px;
-			  padding: 10px 20px;
 			  box-sizing: content-box;
 			  background: #fff;
 			  margin: 15px;
 			  box-shadow:
 			    0 7px 14px rgba(0,0,0,0.25), 
 			    0 5px 5px rgba(0,0,0,0.22);  
-			  padding: 10px;
 			  margin-top: 15px;
 			  text-align: center;
 			  z-index: 2147483647;
@@ -248,8 +247,17 @@ const tool = {
 			#tool_wnd .ct_logo { 
 			  font-size: 18px;
 			  text-align: left;
+        background-color: #ccc;
+			  position: absolute;
+			  width: 90%;
+        height: 31px;
+        padding: 9px 0 0 10px;
 			}
-
+      
+      #tool_wnd .tool_wind_btns {
+        margin-top: 50px;
+      }
+      
 			#tool_clicked_elm,
 			#tool_selected_elm { 
 			  margin-top: 5px; 
@@ -290,7 +298,6 @@ const tool = {
 			}
 
 			#tool_wnd .ct_close > button {
-			  text-align: center;
 			  font-size: 21px;
 			  width: 40px;
 			  height: 40px;
@@ -311,22 +318,28 @@ const tool = {
 			}
 			#tool_wnd .ct_close > button {
 			  background-color: #E67E22;
+        line-height: 10px;
 			}
 			</style>
 
-			<span class="ct_logo">Parsing tool</span>
-			<div class="ct_close"><button>✖️</button></div>
-			<div id="tool_clicked_elm"></div>
-			<div id="tool_selected_elm"></div>
+			<div class="tool_wnd_header">
+			    <div class="ct_logo"><span>Parsing tool</span></div>
+			    <div class="ct_close"><button>✖️</button></div>
+			</div>
+      
+      <div class="tool_wind_btns">
+        <div id="tool_clicked_elm"></div>
+        <div id="tool_selected_elm"></div>      
+      </div>
 
 			<div>
-				<button class="shorter">< Q</button>
-				<button class="longer">W ></button>
+			  <button class="shorter">< Q</button>
+			  <button class="longer">W ></button>
 			</div>
 
-			<div id="ct_btns">
-				<div class="send_selected"><button>✔️</button></div>
-			</div>
+		    <div id="ct_btns">
+		      <div class="send_selected"><button>✔️</button></div>
+		    </div>
 
 		`;
 
