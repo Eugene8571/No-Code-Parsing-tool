@@ -8,7 +8,7 @@ document.addEventListener('contextmenu', function (event) {
 const tool = {
 	hoveredElement: false,
 	markedElement: false,
-	targetingMode: false,
+	targetingMode: false, //?
 	clickedElement: false,
 	selectedElement: false,
 	transpose: 0, // how far to travel up the line of ancestors
@@ -563,22 +563,34 @@ const tool = {
 		tool.helpWindow = div;
 
 		tool.updateElementList();
-	
-		tool.targetingMode = true;
-		document.addEventListener('mouseover', tool.mouseover, true);
-		document.addEventListener('mousemove', tool.mousemove);
-		document.addEventListener('mousedown', tool.hideTarget, true);
-		document.addEventListener('mouseup', tool.preventEvent, true);
-		document.addEventListener('click', tool.preventEvent, true);
+
+		tool.addEventListeners()
 		
 		chrome.extension.sendMessage({action: 'status', active: true});
 
 
 	},
 	
+	addEventListeners: function() {
+		tool.targetingMode = true;
+		document.addEventListener('mouseover', tool.mouseover, true);
+		document.addEventListener('mousemove', tool.mousemove);
+		document.addEventListener('mousedown', tool.hideTarget, true);// ?
+		document.addEventListener('mouseup', tool.preventEvent, true);// ?
+		document.addEventListener('click', tool.preventEvent, true);// ?
+	},
+
+	removeEventListeners: function() {
+		tool.targetingMode = false;
+		document.removeEventListener('mouseover', tool.mouseover, true);
+		document.removeEventListener('mousemove', tool.mousemove);
+		document.removeEventListener('mousedown', tool.hideTarget, true);// ?
+		document.removeEventListener('mouseup', tool.preventEvent, true);// ?
+		document.removeEventListener('click', tool.preventEvent, true);// ?
+	},
+
 	deactivate: function() {
 		
-		tool.targetingMode = false;
 
 		if (tool.markedElement) {
 			tool.removeHighlightStyle(tool.markedElement);
@@ -596,11 +608,7 @@ const tool = {
 
 		tool.helpWindow.parentNode.removeChild(tool.helpWindow);
 
-		document.removeEventListener('mouseover', tool.mouseover, true);
-		document.removeEventListener('mousemove', tool.mousemove);
-		document.removeEventListener('mousedown', tool.hideTarget, true);
-		document.removeEventListener('mouseup', tool.preventEvent, true);
-		document.removeEventListener('click', tool.preventEvent, true);
+		tool.removeEventListeners()
 
 		function unlockPage() {
 		    unlockElements(document.getElementsByTagName("a"));
@@ -621,7 +629,7 @@ const tool = {
 		chrome.extension.sendMessage({action: 'status', active: false});
 	},
 	
-	toggle: function() {
+	toggle: function() { // ?
 		if (tool.clickedElement) tool.deactivate();
 		else tool.activate();
 	},
