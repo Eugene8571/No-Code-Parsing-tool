@@ -381,17 +381,6 @@ const tool = {
 		document.getElementById('tool_selected_elm').scrollTop = 9999;
 		document.getElementById('tool_clicked_elm').scrollTop = 9999;
 
-		let i = -1;
-		for (let tr of document.querySelectorAll('#tool_selected_elm table tr')) {
-			if (i < 0) { // skip heading
-				i++;
-				continue;
-			}
-
-			tr.selector = tool.selectedElements[i].selector;
-
-			i++;
-		}
 	},
 	
 	lockPage: function() {
