@@ -135,21 +135,26 @@ const tool = {
 		return false;
 	},
 	
-	select_Target: function(e) {
-		if (RMB_TARGET) {
-			tool.clickedElement = RMB_TARGET;
-			tool.selectedElement = RMB_TARGET;
+	selectTarget: function(e) {
+		if (tool.isChildOftoolWindow(e.target)) return;
+		line = tool.getPathHTML(e.target);
+		// alert(line);
+
+		if (e.target) {
+			tool.clickedElement = e.target;
+			tool.selectedElement = e.target;
 
 			tool.addHighlightStyle(tool.markedElement);
 
-			tool.selectedElements.push({
-				RMB_TARGET,
-			});
+			tool.selectedElements = line.split(" > ")
+			// tool.selectedElements.push({
+			// 	e.target;
+			// });
 
 			tool.updateCSS();
 			tool.updateElementList();
 			tool.triggerResize();
-			return false;
+		// return false;
 
 		}
 	},
@@ -333,7 +338,7 @@ const tool = {
 			`
 		];
 
-		for (let i in tool.selectedElements) {
+		for (let i in tool.selectedElements) { //?
 			let selector = tool.selectedElements[i].selector;
 			if (selector == 'body' || selector == 'html') {
 			} else {
@@ -354,7 +359,7 @@ const tool = {
 		styleElm.appendChild(document.createTextNode(cssLines.join('\n')));
 	},
 
-	updateElementList: function() {
+	updateElementList: function() { //?
 		if (!tool.helpWindow) return;
 
 		let elmList_selected = document.querySelector('#tool_selected_elm');
@@ -362,13 +367,13 @@ const tool = {
 
 		let line = "";
 
-		if (tool.selectedElements.length) {
+		if (tool.selectedElements.length) { //?
 
 			line = tool.getPathHTML(tool.selectedElement);
 
 
-			elmList_selected.classList.add('hasContent');
-			wind.classList.add('hasContent');
+			elmList_selected.classList.add('hasContent'); //?
+			wind.classList.add('hasContent'); //?
 
 		} else {
 			elmList_selected.classList.remove('hasContent');
@@ -575,7 +580,7 @@ const tool = {
 		tool.targetingMode = true;
 		document.addEventListener('mouseover', tool.mouseover, true);
 		document.addEventListener('mousemove', tool.mousemove);
-		document.addEventListener('mousedown', tool.hideTarget, true);// ?
+		document.addEventListener('mousedown', tool.selectTarget, true);// ?
 		document.addEventListener('mouseup', tool.preventEvent, true);// ?
 		document.addEventListener('click', tool.preventEvent, true);// ?
 	},
@@ -584,7 +589,7 @@ const tool = {
 		tool.targetingMode = false;
 		document.removeEventListener('mouseover', tool.mouseover, true);
 		document.removeEventListener('mousemove', tool.mousemove);
-		document.removeEventListener('mousedown', tool.hideTarget, true);// ?
+		document.removeEventListener('mousedown', tool.selectTarget, true);// ?
 		document.removeEventListener('mouseup', tool.preventEvent, true);// ?
 		document.removeEventListener('click', tool.preventEvent, true);// ?
 	},
@@ -652,7 +657,7 @@ const tool = {
 					tool.activate(); 
 				}
 				responseFun(2.0);
-				// tool.select_Target(RMB_TARGET)
+				// tool.selectTarget(RMB_TARGET)
 			}
 
 		});
