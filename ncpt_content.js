@@ -47,8 +47,8 @@ const tool = {
 		tool.addHighlightStyle(tool.markedElement);
 
 		// display PathHTML
-		// document.querySelector('#tool_current_elm').innerHTML = tool.getPathHTML(tool.hoveredElement, tool.transpose);
-		// document.querySelector('#tool_current_elm').scrollTop = 9999;
+		document.querySelector('#tool_current_elm').innerHTML = tool.getPathHTML(tool.hoveredElement, tool.transpose);
+		document.querySelector('#tool_current_elm').scrollTop = 9999;
 	},
 
 
@@ -314,6 +314,7 @@ const tool = {
 			  margin: 15px;
 			}
 
+			#tool_current_elm,
 			#tool_clicked_elm,
 			#tool_selected_elm {
 				width: 170px;
@@ -468,6 +469,7 @@ const tool = {
 		    </table>
 
 		    <div>
+		      <div id="tool_current_elm"></div>
 		      <div id="tool_clicked_elm"></div>
 		      <div id="tool_selected_elm"></div>
 		    </div>
@@ -521,12 +523,11 @@ const tool = {
 		}
 	},
 
+
 	activate: function() {
 
 		tool.lockPage();
-
 		if (!tool.helpWindow) tool.updateCSS();
-
 		tool.helpWindowSpawn()
 
 		let div = document.getElementById("tool_wnd");
