@@ -30,9 +30,6 @@ const tool = {
 		}
 		
 		tool.markedElement = tool.hoveredElement;
-		if (tool.markedElement.className == "tool_overlay") { // this is just a proxy for an iframe
-			tool.markedElement = tool.markedElement.relatedElement;
-		}
 		
 		let i = 0;
 		for (i = 0; i < tool.transpose; i++) {
@@ -334,13 +331,6 @@ const tool = {
 			`
 		];
 
-		for (let i in tool.selectedElements) { //?
-			let selector = tool.selectedElements[i].selector;
-			if (selector == 'body' || selector == 'html') {
-			} else {
-			}
-		}
-
 		let styleElm = document.querySelector('#tool_styles');
 		if (!styleElm) {
 			styleElm = document.createElement('style');
@@ -386,8 +376,6 @@ const tool = {
 		    el[i].style.pointerEvents="none";
 		  }
 		};
-
-
 	},
 
 	helpWindowSpawn: function() {
@@ -396,7 +384,6 @@ const tool = {
 		document.body.appendChild(div);
 
 		div.innerHTML = `
-
 		  <div id="tool_wnd_header">
 		    <div class="ct_logo"><span>Parsing tool</span></div>
 		    <div class="ct_close"><button>✖️</button></div>
@@ -458,7 +445,6 @@ const tool = {
 		    <div class="send_selected"><button>✔️</button></div>
 
 		  </div>
-
 		`;
 	},
 
@@ -552,14 +538,9 @@ const tool = {
 		}
 		
 		tool.helpWindow = div;
-
 		tool.updateElementList();
-
 		tool.addEventListeners()
-		
 		chrome.extension.sendMessage({action: 'status', active: true});
-
-
 	},
 	
 	addEventListeners: function() {
@@ -581,8 +562,6 @@ const tool = {
 	},
 
 	deactivate: function() {
-		
-
 		if (tool.markedElement) {
 			tool.removeHighlightStyle(tool.markedElement);
 		}
@@ -616,7 +595,6 @@ const tool = {
 		};
 
 		unlockPage();
-		
 		chrome.extension.sendMessage({action: 'status', active: false});
 	},
 	
