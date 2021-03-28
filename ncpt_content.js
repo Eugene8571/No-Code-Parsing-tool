@@ -6,7 +6,9 @@ document.addEventListener('contextmenu', function (event) {
 });
 
 const tool = {
+	hoveredElement: false,
 	markedElement: false,
+	targetingMode: false,
 	clickedElement: false,
 	selectedElement: false,
 	transpose: 0, // how far to travel up the line of ancestors
@@ -19,6 +21,36 @@ const tool = {
 		evt.initUIEvent('resize', true, false,window,0);
 		window.dispatchEvent(evt);
 	},
+
+	highlightHovered: function() {
+		if (!tool.hoveredElement) return;
+
+		if (tool.markedElement) {
+			tool.removeHighlightStyle(tool.markedElement);
+		}
+		
+		tool.markedElement = tool.hoveredElement;
+		if (tool.markedElement.className == "tool_overlay") { // this is just a proxy for an iframe
+			tool.markedElement = tool.markedElement.relatedElement;
+		}
+		
+		let i = 0;
+		for (i = 0; i < tool.transpose; i++) {
+			if (tool.markedElement.parentNode != window.document) {
+				tool.markedElement = tool.markedElement.parentNode;
+			} else {
+				break;
+			}
+		}
+		
+		tool.transpose = i;
+		tool.addHighlightStyle(tool.markedElement);
+
+		// display PathHTML
+		// document.querySelector('#tool_current_elm').innerHTML = tool.getPathHTML(tool.hoveredElement, tool.transpose);
+		// document.querySelector('#tool_current_elm').scrollTop = 9999;
+	},
+
 
 	highlightSelected: function() {
 		if (!tool.clickedElement) return;
@@ -59,6 +91,25 @@ const tool = {
 	removeHighlightStyle: function (elm) {
 		elm.style.outline = '';
 		elm.style.outlineOffset = '';
+	},
+
+	mouseover: function(e) {
+		if (tool.isChildOftoolWindow(e.target)) return;
+		if (tool.hoveredElement != e.target) {
+			tool.transpose = 0;
+			tool.hoveredElement = e.target;
+			tool.highlightHovered();
+		}
+	},
+	
+	isChildOftoolWindow: function(elm) {
+		for (var i = 0; i < 8; i++) {
+			if (elm == tool.helpWindow) return true;
+			elm = elm.parentNode;
+			if (!elm) break;
+		}
+
+		return false;
 	},
 	
 	keyDown: function(e) {
@@ -370,66 +421,66 @@ const tool = {
 
 		div.innerHTML = `
 
-  <div id="tool_wnd_header">
-    <div class="ct_logo"><span>Parsing tool</span></div>
-    <div class="ct_close"><button>✖️</button></div>
-  </div>
+		  <div id="tool_wnd_header">
+		    <div class="ct_logo"><span>Parsing tool</span></div>
+		    <div class="ct_close"><button>✖️</button></div>
+		  </div>
 
-  <div class="tool_wind_body">
-    <table>
-      <tr>
-        <td colspan="2">
-          <div>
-            <button id="tool_area_btn"></button>
-            <button id="tool_row_btn">row</button>
-          </div>
-        </td>
-        <td>
-          <button id="tool_clear_area_row" class="tool_cleare_selected">✖️</button>
-        </td>
-      </tr>
-      <tr>
-        <td><button class="tool_column_elem"></button></td>
-        <td><button class="tool_value_elem"></button></td>
-        <td><button class="tool_cleare_selected">✖️</button></td>
-      </tr>
-      <tr>
-        <td><button class="tool_column_elem"></button></td>
-        <td><button class="tool_value_elem"></button></td>
-        <td><button class="tool_cleare_selected">✖️</button></td>
-      </tr>
-      <tr>
-        <td colspan="3"><button id="tool_plus_btn">+</button></td>
-      </tr>
-      <tr>
-        <td colspan="2">
-          <div>
-            <button id="tool_flip_page_area">...........</button>
-            <button id="tool_page_number_elem"></button>
-          </div>
-        </td>
-        <td><button class="tool_cleare_selected">✖️</button></td>
+		  <div class="tool_wind_body">
+		    <table>
+		      <tr>
+		        <td colspan="2">
+		          <div>
+		            <button id="tool_area_btn"></button>
+		            <button id="tool_row_btn">row</button>
+		          </div>
+		        </td>
+		        <td>
+		          <button id="tool_clear_area_row" class="tool_cleare_selected">✖️</button>
+		        </td>
+		      </tr>
+		      <tr>
+		        <td><button class="tool_column_elem"></button></td>
+		        <td><button class="tool_value_elem"></button></td>
+		        <td><button class="tool_cleare_selected">✖️</button></td>
+		      </tr>
+		      <tr>
+		        <td><button class="tool_column_elem"></button></td>
+		        <td><button class="tool_value_elem"></button></td>
+		        <td><button class="tool_cleare_selected">✖️</button></td>
+		      </tr>
+		      <tr>
+		        <td colspan="3"><button id="tool_plus_btn">+</button></td>
+		      </tr>
+		      <tr>
+		        <td colspan="2">
+		          <div>
+		            <button id="tool_flip_page_area">...........</button>
+		            <button id="tool_page_number_elem"></button>
+		          </div>
+		        </td>
+		        <td><button class="tool_cleare_selected">✖️</button></td>
 
-      </tr>
-      <tr>
-        <td colspan="3">
-          <div id="tool_Q_W">
-            <button class="shorter">&lt; Q</button>
-            <button class="longer">W &gt;</button>
-          </div>
-        </td>
-      </tr>
-    </table>
+		      </tr>
+		      <tr>
+		        <td colspan="3">
+		          <div id="tool_Q_W">
+		            <button class="shorter">&lt; Q</button>
+		            <button class="longer">W &gt;</button>
+		          </div>
+		        </td>
+		      </tr>
+		    </table>
 
-    <div>
-      <div id="tool_clicked_elm"></div>
-      <div id="tool_selected_elm"></div>
-    </div>
+		    <div>
+		      <div id="tool_clicked_elm"></div>
+		      <div id="tool_selected_elm"></div>
+		    </div>
 
 
-    <div class="send_selected"><button>✔️</button></div>
+		    <div class="send_selected"><button>✔️</button></div>
 
-  </div>
+		  </div>
 
 		`;
 
@@ -495,7 +546,10 @@ const tool = {
 			// var url = encodeURIComponent(document.location.href);
 			// var line = HOME_URL + url + "&element=" + element + "&block=" + block;
 			// window.location = line;
+
+
 			var element = tool.getPathHTML(tool.clickedElement);
+			// var element = tool.getPathHTML(tool.hoveredElement);
 			var block = tool.getPathHTML(tool.selectedElement);
 			var url = document.location.href;
 			var line = HOME_URL + url + "&element=" + element + "&block=" + block;
@@ -516,6 +570,13 @@ const tool = {
 		tool.helpWindow = div;
 
 		tool.updateElementList();
+	
+		tool.targetingMode = true;
+		document.addEventListener('mouseover', tool.mouseover, true);
+		document.addEventListener('mousemove', tool.mousemove);
+		document.addEventListener('mousedown', tool.hideTarget, true);
+		document.addEventListener('mouseup', tool.preventEvent, true);
+		document.addEventListener('click', tool.preventEvent, true);
 		
 		chrome.extension.sendMessage({action: 'status', active: true});
 
@@ -524,6 +585,8 @@ const tool = {
 	
 	deactivate: function() {
 		
+		tool.targetingMode = false;
+
 		if (tool.markedElement) {
 			tool.removeHighlightStyle(tool.markedElement);
 		}
@@ -539,6 +602,12 @@ const tool = {
 		tool.clickedElement = false;
 
 		tool.helpWindow.parentNode.removeChild(tool.helpWindow);
+
+		document.removeEventListener('mouseover', tool.mouseover, true);
+		document.removeEventListener('mousemove', tool.mousemove);
+		document.removeEventListener('mousedown', tool.hideTarget, true);
+		document.removeEventListener('mouseup', tool.preventEvent, true);
+		document.removeEventListener('click', tool.preventEvent, true);
 
 		function unlockPage() {
 		    unlockElements(document.getElementsByTagName("a"));
@@ -582,7 +651,7 @@ const tool = {
 					tool.activate(); 
 				}
 				responseFun(2.0);
-				tool.select_Target(RMB_TARGET)
+				// tool.select_Target(RMB_TARGET)
 			}
 
 		});
