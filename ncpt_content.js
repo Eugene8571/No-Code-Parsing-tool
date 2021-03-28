@@ -135,104 +135,6 @@ const tool = {
 	updateCSS: function() {
 		let cssLines = [
 			`
-
-
-
-
-
-			`
-		];
-
-		for (let i in tool.selectedElements) {
-			let selector = tool.selectedElements[i].selector;
-			if (selector == 'body' || selector == 'html') {
-			} else {
-			}
-		}
-
-		let styleElm = document.querySelector('#tool_styles');
-		if (!styleElm) {
-			styleElm = document.createElement('style');
-			styleElm.type = "text/css";
-			styleElm.id = "tool_styles";
-			document.head.appendChild(styleElm);
-		}
-
-		while (styleElm.firstChild) {
-		    styleElm.removeChild(styleElm.firstChild);
-		}
-		styleElm.appendChild(document.createTextNode(cssLines.join('\n')));
-	},
-
-	updateElementList: function() {
-		if (!tool.helpWindow) return;
-
-		let elmList_selected = document.querySelector('#tool_selected_elm');
-		let wind = document.querySelector('#tool_wnd');
-
-		let line = "";
-
-		if (tool.selectedElements.length) {
-
-			line = tool.getPathHTML(tool.selectedElement);
-
-
-			elmList_selected.classList.add('hasContent');
-			wind.classList.add('hasContent');
-
-		} else {
-			elmList_selected.classList.remove('hasContent');
-			wind.classList.remove('hasContent');
-		}
-		
-		elmList_selected.innerHTML = line;
-		document.querySelector('#tool_clicked_elm').innerHTML = tool.getPathHTML(tool.clickedElement);
-		
-		document.getElementById('tool_selected_elm').scrollTop = 9999;
-		document.getElementById('tool_clicked_elm').scrollTop = 9999;
-
-		let i = -1;
-		for (let tr of document.querySelectorAll('#tool_selected_elm table tr')) {
-			if (i < 0) { // skip heading
-				i++;
-				continue;
-			}
-
-			tr.selector = tool.selectedElements[i].selector;
-
-			i++;
-		}
-	},
-	
-
-	activate: function() {
-
-		function lockPage()
-		{
-		  lockElements(document.getElementsByTagName("a"));
-		  lockElements(document.getElementsByTagName("input"));
-		  lockElements(document.getElementsByTagName("button"));
-		};
-
-		function lockElements(el)
-		{
-		  for (var i=0; i<el.length; i++)
-		  {
-		    el[i].style.pointerEvents="none";
-		  }
-		};
-				
-		lockPage();
-
-		if (!tool.helpWindow) tool.updateCSS();
-
-		let div = document.createElement('div');
-		div.setAttribute("id", "tool_wnd");
-		document.body.appendChild(div);
-
-		div.innerHTML = `
-
-			<style>
 			#tool_wnd {
 
 			  display: none;
@@ -373,7 +275,100 @@ const tool = {
 			  color: black;
 			}
 
-			</style>
+
+
+
+			`
+		];
+
+		for (let i in tool.selectedElements) {
+			let selector = tool.selectedElements[i].selector;
+			if (selector == 'body' || selector == 'html') {
+			} else {
+			}
+		}
+
+		let styleElm = document.querySelector('#tool_styles');
+		if (!styleElm) {
+			styleElm = document.createElement('style');
+			styleElm.type = "text/css";
+			styleElm.id = "tool_styles";
+			document.head.appendChild(styleElm);
+		}
+
+		while (styleElm.firstChild) {
+		    styleElm.removeChild(styleElm.firstChild);
+		}
+		styleElm.appendChild(document.createTextNode(cssLines.join('\n')));
+	},
+
+	updateElementList: function() {
+		if (!tool.helpWindow) return;
+
+		let elmList_selected = document.querySelector('#tool_selected_elm');
+		let wind = document.querySelector('#tool_wnd');
+
+		let line = "";
+
+		if (tool.selectedElements.length) {
+
+			line = tool.getPathHTML(tool.selectedElement);
+
+
+			elmList_selected.classList.add('hasContent');
+			wind.classList.add('hasContent');
+
+		} else {
+			elmList_selected.classList.remove('hasContent');
+			wind.classList.remove('hasContent');
+		}
+		
+		elmList_selected.innerHTML = line;
+		document.querySelector('#tool_clicked_elm').innerHTML = tool.getPathHTML(tool.clickedElement);
+		
+		document.getElementById('tool_selected_elm').scrollTop = 9999;
+		document.getElementById('tool_clicked_elm').scrollTop = 9999;
+
+		let i = -1;
+		for (let tr of document.querySelectorAll('#tool_selected_elm table tr')) {
+			if (i < 0) { // skip heading
+				i++;
+				continue;
+			}
+
+			tr.selector = tool.selectedElements[i].selector;
+
+			i++;
+		}
+	},
+	
+
+	activate: function() {
+
+		function lockPage()
+		{
+		  lockElements(document.getElementsByTagName("a"));
+		  lockElements(document.getElementsByTagName("input"));
+		  lockElements(document.getElementsByTagName("button"));
+		};
+
+		function lockElements(el)
+		{
+		  for (var i=0; i<el.length; i++)
+		  {
+		    el[i].style.pointerEvents="none";
+		  }
+		};
+				
+		lockPage();
+
+		if (!tool.helpWindow) tool.updateCSS();
+
+		let div = document.createElement('div');
+		div.setAttribute("id", "tool_wnd");
+		document.body.appendChild(div);
+
+		div.innerHTML = `
 
   <div id="tool_wnd_header">
     <div class="ct_logo"><span>Parsing tool</span></div>
