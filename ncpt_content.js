@@ -284,10 +284,6 @@ const tool = {
 			  /* height: 25px; */
 			}
 
-			#tool_wnd.hasContent {
-			  display: inline-block;
-			}
-
 			.send_selected,
 			#tool_wnd {
 			  display: inline-block;
@@ -359,25 +355,15 @@ const tool = {
 		styleElm.appendChild(document.createTextNode(cssLines.join('\n')));
 	},
 
-	updateElementList: function() { //?
+	updateElementList: function() {
 		if (!tool.helpWindow) return;
 
 		let elmList_selected = document.querySelector('#tool_selected_elm');
-		let wind = document.querySelector('#tool_wnd');
 
 		let line = "";
 
-		if (tool.selectedElements.length) { //?
-
+		if (tool.selectedElements.length) {
 			line = tool.getPathHTML(tool.selectedElement);
-
-
-			elmList_selected.classList.add('hasContent'); //?
-			wind.classList.add('hasContent'); //?
-
-		} else {
-			elmList_selected.classList.remove('hasContent');
-			wind.classList.remove('hasContent');
 		}
 		
 		elmList_selected.innerHTML = line;
