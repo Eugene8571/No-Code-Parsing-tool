@@ -13,7 +13,7 @@ const tool = {
 	selectedElement: false,
 	transpose: 0, // how far to travel up the line of ancestors
 	selectedElements: [],
-	
+	apiArgs: {},
 	helpWindow: false,
 	
 	triggerResize: function() {
@@ -41,7 +41,8 @@ const tool = {
 		}
 		
 		tool.transpose = i;
-		tool.addHighlightStyle(tool.markedElement);
+		let outline = 'solid 5px rgba(3,124,213,0.5)';
+		tool.addHighlightStyle(tool.markedElement, outline);
 
 		// display PathHTML
 		document.querySelector('#tool_current_elm').innerHTML = tool.getPathHTML(tool.hoveredElement, tool.transpose);
@@ -69,19 +70,20 @@ const tool = {
 		
 		tool.transpose = i;
 		tool.selectedElement = tool.markedElement
-		tool.addHighlightStyle(tool.selectedElement);
+		let outline = 'solid 5px rgba(230,126,34,0.5)';
+		tool.addHighlightStyle(tool.selectedElement, outline);
 
 		document.querySelector('#tool_selected_elm').innerHTML = tool.getPathHTML(tool.markedElement, tool.transpose);
 		document.querySelector('#tool_selected_elm').scrollTop = 9999;
 	},
 
 
-	addHighlightStyle: function (elm) {
+	addHighlightStyle: function (elm, outline) {
 		if (tool.selectedElement) {
-			tool.selectedElement.style.outline = 'solid 5px rgba(230,126,34,0.5)';
+			tool.selectedElement.style.outline = outline;
 			tool.selectedElement.style.outlineOffset = '-5px';			
 			return;}
-		tool.markedElement.style.outline = 'solid 5px rgba(230,126,34,0.5)';
+		tool.markedElement.style.outline = outline;
 		tool.markedElement.style.outlineOffset = '-5px';
 	},
 
@@ -117,10 +119,10 @@ const tool = {
 			tool.deactivate();
 		}
 		
-		if (e.keyCode == 87) { // w
+		if (e.keyCode == 87) { // W
 			if (tool.transpose > 0) tool.transpose--;
 			tool.highlightSelected();
-		} else if (e.keyCode == 81) { // q
+		} else if (e.keyCode == 81) { // Q
 			tool.transpose++;
 			tool.highlightSelected();
 		}
@@ -135,24 +137,19 @@ const tool = {
 	selectTarget: function(e) {
 		if (tool.isChildOftoolWindow(e.target)) return;
 		line = tool.getPathHTML(e.target);
-		// alert(line);
 
 		if (e.target) {
 			tool.clickedElement = e.target;
 			tool.selectedElement = e.target;
 
-			tool.addHighlightStyle(tool.markedElement);
+			// tool.addHighlightStyle(tool.markedElement);
 
 			tool.selectedElements = line.split(" > ")
-			// tool.selectedElements.push({
-			// 	e.target;
-			// });
-
+			var n = Object.keys(tool.apiArgs).length;
+			tool.apiArgs['block' + n.toString()] = line;
 			tool.updateCSS();
 			tool.updateElementList();
 			tool.triggerResize();
-		// return false;
-
 		}
 	},
 
@@ -518,11 +515,18 @@ const tool = {
 			// window.location = line;
 
 
-			var element = tool.getPathHTML(tool.clickedElement);
-			// var element = tool.getPathHTML(tool.hoveredElement);
-			var block = tool.getPathHTML(tool.selectedElement);
+			// var element = tool.getPathHTML(tool.clickedElement);
+			// // var element = tool.getPathHTML(tool.hoveredElement);
+			// var block = tool.getPathHTML(tool.selectedElement);
 			var url = document.location.href;
-			var line = HOME_URL + url + "&element=" + element + "&block=" + block;
+			// var line = HOME_URL + url + "&element=" + element + "&block=" + block;
+
+			var line = '?'+url
+
+			for (key in tool.apiArgs) {
+				line += '&'+key+'='+tool.apiArgs[key];
+			}
+
 			alert(line);
 		});
 
@@ -547,21 +551,24 @@ const tool = {
 		tool.targetingMode = true;
 		document.addEventListener('mouseover', tool.mouseover, true);
 		document.addEventListener('mousemove', tool.mousemove);
-		document.addEventListener('mousedown', tool.selectTarget, true);// ?
-		document.addEventListener('mouseup', tool.preventEvent, true);// ?
-		document.addEventListener('click', tool.preventEvent, true);// ?
+		document.addEventListener('mousedown', tool.selectTarget, true);
+		document.addEventListener('mouseup', tool.preventEvent, true);
+		document.addEventListener('click', tool.preventEvent, true);
 	},
 
 	removeEventListeners: function() {
 		tool.targetingMode = false;
 		document.removeEventListener('mouseover', tool.mouseover, true);
 		document.removeEventListener('mousemove', tool.mousemove);
-		document.removeEventListener('mousedown', tool.selectTarget, true);// ?
-		document.removeEventListener('mouseup', tool.preventEvent, true);// ?
-		document.removeEventListener('click', tool.preventEvent, true);// ?
+		document.removeEventListener('mousedown', tool.selectTarget, true);
+		document.removeEventListener('mouseup', tool.preventEvent, true);
+		document.removeEventListener('click', tool.preventEvent, true);
 	},
 
 	deactivate: function() {
+
+		tool.apiArgs = {};
+
 		if (tool.markedElement) {
 			tool.removeHighlightStyle(tool.markedElement);
 		}
