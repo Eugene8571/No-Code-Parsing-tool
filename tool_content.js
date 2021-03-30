@@ -42,12 +42,9 @@ const tool = {
 
 	highlightSelected: function() {
 		if (!tool.selectedElement) return;
-		
-		if (tool.highlightedSelect && (tool.highlightedSelect != tool.selectedElement)) {
-			tool.removeHighlightStyle(tool.highlightedSelect, tool.outlineSelect);
-		}
+		tool.removeHighlightStyle(tool.selectedElement, tool.outlineSelect);
 
-		tool.highlightedSelect = tool.selectedElement;
+		tool.highlightedSelect = tool.clickedElement;
 
 		let i = 0;
 		for (i = 0; i < tool.transpose; i++) {
