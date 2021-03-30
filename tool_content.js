@@ -130,8 +130,8 @@ const tool = {
 			tool.clickedElement = e.target;
 			tool.selectedElement = e.target;
 
-			let outline = 'rgba(22, 198, 12, 0.5) solid 5px';
-			tool.addHighlightStyle(e.target, outline);
+			// let outline = 'rgba(22, 198, 12, 0.5) solid 5px';
+			tool.addHighlightStyle(e.target, tool.outlineSelect);
 
 			// let elm = tool.selectedElement;
 			// console.log(window.getComputedStyle(elm, null).outline == outline);
