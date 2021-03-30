@@ -124,6 +124,13 @@ const tool = {
 	
 	selectElement: function(e) {
 		if (tool.isChildOftoolWindow(e.target)) return;
+		
+		if (tool.selectedElems.includes(e.target)) {
+			tool.removeHighlightStyle(e.target, tool.outlineSelect);
+			return;
+		};
+
+
 		line = tool.getPathHTML(e.target);
 
 		if (e.target) {
@@ -131,13 +138,16 @@ const tool = {
 			tool.selectedElement = e.target;
 
 			// let outline = 'rgba(22, 198, 12, 0.5) solid 5px';
+			if (tool.highlightedHover) {
+				tool.removeHighlightStyle(tool.highlightedHover, tool.outlineHover);
+			};
 			tool.addHighlightStyle(e.target, tool.outlineSelect);
 
 			// let elm = tool.selectedElement;
 			// console.log(window.getComputedStyle(elm, null).outline == outline);
 			// console.log(window.getComputedStyle(elm, null).outline);
 
-			tool.selectedElems.push(line);
+			tool.selectedElems.push(e.target);
 			var n = Object.keys(tool.apiArgs).length;
 			tool.apiArgs['block' + n.toString()] = line;
 			tool.updateCSS();
