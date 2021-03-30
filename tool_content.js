@@ -28,7 +28,8 @@ const tool = {
 		if (tool.highlightedHover) {
 			tool.removeHighlightStyle(tool.highlightedHover, tool.outlineHover);
 		}
-		
+		if (tool.isChildOftoolWindow(tool.hoveredElement)) return;
+
 		tool.highlightedHover = tool.hoveredElement;
 
 		if (window.getComputedStyle(tool.hoveredElement, null).outline !== tool.outlineSelect) {
@@ -108,7 +109,6 @@ const tool = {
 	},
 
 	mouseover: function(e) {
-		if (tool.isChildOftoolWindow(e.target)) return;
 		if (tool.hoveredElement != e.target) {
 			tool.transpose = 0;
 			tool.hoveredElement = e.target;
@@ -620,7 +620,7 @@ const tool = {
 				responseFun(2.0);
 			}
 
-			if (msg.action == "rmb_event") {
+			if (msg.action == "rmb_event") { //?
 				if (tool.clickedElement) {
 					tool.deactivate();
 					tool.activate(); 
