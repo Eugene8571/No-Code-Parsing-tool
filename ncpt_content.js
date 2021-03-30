@@ -550,7 +550,7 @@ const tool = {
 	addEventListeners: function() {
 		tool.targetingMode = true;
 		document.addEventListener('mouseover', tool.mouseover, true);
-		document.addEventListener('mousemove', tool.mousemove);
+		// document.addEventListener('mousemove', tool.mousemove);
 		document.addEventListener('mousedown', tool.selectTarget, true);
 		document.addEventListener('mouseup', tool.preventEvent, true);
 		document.addEventListener('click', tool.preventEvent, true);
@@ -559,7 +559,7 @@ const tool = {
 	removeEventListeners: function() {
 		tool.targetingMode = false;
 		document.removeEventListener('mouseover', tool.mouseover, true);
-		document.removeEventListener('mousemove', tool.mousemove);
+		// document.removeEventListener('mousemove', tool.mousemove);
 		document.removeEventListener('mousedown', tool.selectTarget, true);
 		document.removeEventListener('mouseup', tool.preventEvent, true);
 		document.removeEventListener('click', tool.preventEvent, true);
