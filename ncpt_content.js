@@ -8,7 +8,7 @@ document.addEventListener('contextmenu', function (event) {
 const tool = {
 	hoveredElement: false,
 	markedElement: false,
-	targetingMode: false, //?
+	targetingMode: false,
 	clickedElement: false,
 	selectedElement: false,
 	transpose: 0, // how far to travel up the line of ancestors
@@ -28,16 +28,6 @@ const tool = {
 		
 		tool.markedElement = tool.hoveredElement;
 		
-		// let i = 0;
-		// for (i = 0; i < tool.transpose; i++) {
-		// 	if (tool.markedElement.parentNode != window.document) {
-		// 		tool.markedElement = tool.markedElement.parentNode;
-		// 	} else {
-		// 		break;
-		// 	}
-		// }
-		
-		// tool.transpose = i;
 		let outline = 'solid 5px rgba(3,124,213,0.5)';
 		tool.addHighlightStyle(tool.markedElement, outline);
 
@@ -76,10 +66,6 @@ const tool = {
 
 
 	addHighlightStyle: function (elm, outline) {
-		// if (tool.selectedElement) {
-		// 	tool.selectedElement.style.outline = outline;
-		// 	tool.selectedElement.style.outlineOffset = '-5px';			
-		// 	return;}
 		elm.style.outline = outline;
 		elm.style.outlineOffset = '-5px';
 	},
@@ -523,9 +509,8 @@ const tool = {
 			// // var element = tool.getPathHTML(tool.hoveredElement);
 			// var block = tool.getPathHTML(tool.selectedElement);
 			var url = document.location.href;
-			// var line = HOME_URL + url + "&element=" + element + "&block=" + block;
 
-			var line = '?'+url
+			var line = HOME_URL + '?'+url
 
 			for (key in tool.apiArgs) {
 				line += '&'+key+'='+tool.apiArgs[key];
@@ -554,7 +539,6 @@ const tool = {
 	addEventListeners: function() {
 		tool.targetingMode = true;
 		document.addEventListener('mouseover', tool.mouseover, true);
-		// document.addEventListener('mousemove', tool.mousemove);
 		document.addEventListener('mousedown', tool.selectTarget, true);
 		document.addEventListener('mouseup', tool.preventEvent, true);
 		document.addEventListener('click', tool.preventEvent, true);
@@ -563,7 +547,6 @@ const tool = {
 	removeEventListeners: function() {
 		tool.targetingMode = false;
 		document.removeEventListener('mouseover', tool.mouseover, true);
-		// document.removeEventListener('mousemove', tool.mousemove);
 		document.removeEventListener('mousedown', tool.selectTarget, true);
 		document.removeEventListener('mouseup', tool.preventEvent, true);
 		document.removeEventListener('click', tool.preventEvent, true);
@@ -610,8 +593,8 @@ const tool = {
 		chrome.extension.sendMessage({action: 'status', active: false});
 	},
 	
-	toggle: function() { // ?
-		if (tool.helpWindow) tool.deactivate();
+	toggle: function() {
+		if (tool.targetingMode) tool.deactivate();
 		else tool.activate();
 	},
 	
@@ -633,7 +616,6 @@ const tool = {
 					tool.activate(); 
 				}
 				responseFun(2.0);
-				// tool.selectTarget(RMB_TARGET)
 			}
 
 		});
