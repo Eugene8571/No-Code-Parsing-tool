@@ -191,8 +191,6 @@ const tool = {
 		let cssLines = [
 			`
 			#tool_wnd {
-
-			  display: none;
 			  position: fixed;
 			  top: 15%;
 			  right: 10px;
@@ -204,6 +202,12 @@ const tool = {
 			    0 5px 5px rgba(0, 0, 0, 0.22);
 			  text-align: center;
 			  z-index: 2147483647;
+			  margin: 0;
+			  padding: 0;
+			  box-sizing: border-box;
+			  font-family: sans-serif;
+      	cursor: default;
+        user-select: none;
 			}
 
 
@@ -213,9 +217,10 @@ const tool = {
 			  background-color: #ccc;
 			  position: absolute;
 			  cursor: move;
-			  width: 90%;
-			  height: 31px;
-			  padding: 9px 0 0 10px;
+			  width: 100%;
+			  height: 40px;
+			  padding: 9px;
+			  box-sizing: border-box;
 			}
 
 			#tool_wnd .tool_wind_body {
@@ -226,68 +231,111 @@ const tool = {
 			  width: 90px;
 			  height: 40px;
 			  position: relative;
+			  background-color: #F2F2F2;
+			  margin: auto;
 			}
 
 			#tool_row_btn {
 			  width: 45px;
 			  height: 30px;
 			  position: absolute;
-			  margin: 5px 5px 5px -50px;
+			  margin: 5px 5px 5px 30px;
+			  background-color: #F2F2F2;
+			  border: 1px solid black;
+			  line-height: 30px;
+
 			}
 
 			#tool_wnd>div.tool_wind_body>table {
 			  border-collapse: separate;
 			  border-spacing: 10px 1em;
+		      border: 0;
+		      padding: 0;
+		      margin: 0;
 			}
+
+			#tool_wnd > div.tool_wind_body > table > tbody > tr,
+			#tool_wnd > div.tool_wind_body > table > tbody > tr > td,
+			#tool_wnd > div.tool_wind_body > table > tbody > tr > th {
+		        padding: 0;
+		        text-align: center;
+		        border: 0;
+		    }
 
 			.tool_column_elem,
 			.tool_value_elem {
 			  width: 50px;
 			  height: 30px;
 			  overflow: hidden;
-			}
+			  background-color: #F2F2F2;
+			  border: 1px solid black;
+			  line-height: 30px;
+			  box-sizing: border-box;
 
-			/* plus btn */
-			#tool_plus_btn {
-			  border-radius: 40%;
-			  border: none;
-			  font-size: 150%;
-			  color: #4F4F4F;
-			  width: 40px;
 			}
 
 			#tool_flip_page_area {
 			  width: 90px;
 			  height: 40px;
-			  font-size: 150%;
+			  font-size: 21px;
 			  position: relative;
+			  background-color: #F2F2F2;
+			  line-height: 50px;
+			  box-sizing: border-box;
+        margin: auto;
+
+
 			}
 
 			#tool_page_number_elem {
+			  display: inline-block;
+			  background-color: #F2F2F2;
 			  width: 30px;
 			  height: 30px;
 			  position: absolute;
-			  margin: 5px 5px 5px -60px;
+			  margin: 5px 5px 5px -53px;
+			  border: 1px solid black;
+			  box-sizing: border-box;
+        /* margin: 0; */
+        font-size: 21px;
+ 			  line-height: 30px;
+        
+
+
+
 			}
 
 			.tool_cleare_selected {
 			  border: none;
 			  background: transparent;
-			  color: red;
+			  color: #E65A1A;
+			  font-weight: 500;
+
 			}
 
-			#tool_Q_W>button.shorter,
-			#tool_Q_W>button.longer {
+			#tool_Q_W>div.shorter,
+			#tool_Q_W>div.longer {
 			  margin: 5px;
 			  color: black;
-			  /* height: 25px; */
+			  height: 30px;
+			  width: 50px;
+        background-color: #F2F2F2;
+			  border: 1px solid black;
+			  line-height: 30px;
+			  box-sizing: border-box;
+ 			  display: inline-block;
+        /* margin: auto; */
+        margin-top: 10px;
 			}
 
-			.send_selected,
-			#tool_wnd {
-			  display: inline-block;
-			  vertical-align: middle;
+			.send_selected {
+ 			  line-height: 40px;
+			  width: 100px;
+        margin: auto;
+			  margin-top: 15px;
+
 			}
+
 
 			#tool_wnd .ct_close {
 			  position: absolute;
@@ -295,29 +343,31 @@ const tool = {
 			  right: 0px;
 			}
 
-			#tool_wnd .ct_close > button {
+			#tool_wnd .ct_close>div {
 			  font-size: 21px;
 			  width: 40px;
 			  height: 40px;
 			  border: 0;
 			  background-color: #E67E22;
-			  line-height: 10px;
+			  cursor: default;
+			  line-height: 40px;
+			  text-align: center;
 			}
 
-			.send_selected > button {
+			.send_selected>div {
 			  text-align: center;
 			  font-size: 21px;
-			  width: 100px;
-			  height: 41px;
+			  height: 40px;
 			  border: 0;
 			  background-color: #3498DB;
-			  margin: 15px;
+
+
 			}
 
 			#tool_current_elm,
 			#tool_clicked_elm,
 			#tool_selected_elm {
-				width: 170px;
+			  width: 160px;
 			  margin-top: 5px;
 			  background: #f7f7f7;
 			  border: solid 12px #f7f7f7;
@@ -325,9 +375,9 @@ const tool = {
 			  max-height: 84px;
 			  overflow: hidden;
 			  color: black;
+        user-select: text;
+
 			}
-
-
 
 
 			`
@@ -386,67 +436,83 @@ const tool = {
 		document.body.appendChild(div);
 
 		div.innerHTML = `
-		  <div id="tool_wnd_header">
-		    <div class="ct_logo"><span>Parsing tool</span></div>
-		    <div class="ct_close"><button>✖️</button></div>
-		  </div>
+  <div id="tool_wnd_header">
+    <div class="ct_logo">Parsing tool</div>
+    <div class="ct_close">
+      <div>✖️</div>
+    </div>
+  </div>
 
-		  <div class="tool_wind_body">
-		    <table>
-		      <tr>
-		        <td colspan="2">
-		          <div>
-		            <button id="tool_area_btn"></button>
-		            <button id="tool_row_btn">row</button>
-		          </div>
-		        </td>
-		        <td>
-		          <button id="tool_clear_area_row" class="tool_cleare_selected">✖️</button>
-		        </td>
-		      </tr>
-		      <tr>
-		        <td><button class="tool_column_elem"></button></td>
-		        <td><button class="tool_value_elem"></button></td>
-		        <td><button class="tool_cleare_selected">✖️</button></td>
-		      </tr>
-		      <tr>
-		        <td><button class="tool_column_elem"></button></td>
-		        <td><button class="tool_value_elem"></button></td>
-		        <td><button class="tool_cleare_selected">✖️</button></td>
-		      </tr>
-		      <tr>
-		        <td colspan="3"><button id="tool_plus_btn">+</button></td>
-		      </tr>
-		      <tr>
-		        <td colspan="2">
-		          <div>
-		            <button id="tool_flip_page_area">...........</button>
-		            <button id="tool_page_number_elem"></button>
-		          </div>
-		        </td>
-		        <td><button class="tool_cleare_selected">✖️</button></td>
+  <div class="tool_wind_body">
+    <table>
+      <tr>
+        <td colspan="2">
+          <div>
+            <div id="tool_area_btn"><div id="tool_row_btn">row</div></div>
+            
+          </div>
+        </td>
+        <td>
+          <div id="tool_clear_area_row" class="tool_cleare_selected">X</div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="tool_column_elem"></div>
+        </td>
+        <td>
+          <div class="tool_value_elem"></div>
+        </td>
+        <td>
+          <div class="tool_cleare_selected">X</div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="tool_column_elem"></div>
+        </td>
+        <td>
+          <div class="tool_value_elem"></div>
+        </td>
+        <td>
+          <div class="tool_cleare_selected">X</div>
+        </td>
+      </tr>
 
-		      </tr>
-		      <tr>
-		        <td colspan="3">
-		          <div id="tool_Q_W">
-		            <button class="shorter">&lt; Q</button>
-		            <button class="longer">W &gt;</button>
-		          </div>
-		        </td>
-		      </tr>
-		    </table>
+      <tr>
+        <td colspan="2">
+          <div>
+            <div id="tool_flip_page_area">. . . . . . .<div id="tool_page_number_elem">2</div></div>
+            
+          </div>
+        </td>
+        <td>
+          <div class="tool_cleare_selected">X</div>
+        </td>
 
-		    <div>
-		      <div id="tool_current_elm"></div>
-		      <div id="tool_clicked_elm"></div>
-		      <div id="tool_selected_elm"></div>
-		    </div>
+      </tr>
+      <tr>
+        <td colspan="3">
+          <div id="tool_Q_W">
+            <div class="shorter">&lt; Q</div>
+            <div class="longer">W &gt;</div>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <div>
+      <div id="tool_current_elm"></div>
+      <div id="tool_clicked_elm"></div>
+      <div id="tool_selected_elm"></div>
+    </div>
 
 
-		    <div class="send_selected"><button>✔️</button></div>
+    <div class="send_selected">
+      <div>✔️</div>
+    </div>
 
-		  </div>
+  </div>
 		`;
 	},
 
