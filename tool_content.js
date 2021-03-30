@@ -8,31 +8,32 @@ document.addEventListener('contextmenu', function (event) {
 const tool = {
 	hoveredElement: false,
 	markedElement: false,
+	highlightedHover: false,
+	highlightedSelect: false,
 	targetingMode: false,
 	clickedElement: false,
 	selectedElement: false,
 	transpose: 0, // how far to travel up the line of ancestors
 	selectedElems: [],
 	apiArgs: {},
-	allMarks: [],
+	// allMarks: [],
 	helpWindow: false,
 
 
 	highlightHovered: function() {
 		if (!tool.hoveredElement) return;
 
-		let is_marked = tool.allMarks.includes(tool.hoveredElement);
-		if (tool.markedElement && !is_marked) {
-			tool.removeHighlightStyle(tool.markedElement);
+		if (tool.highlightedHover) {
+			tool.removeHighlightStyle(tool.highlightedHover);
 		}
 		
-		tool.markedElement = tool.hoveredElement;
+		tool.highlightedHover = tool.hoveredElement;
 		
 		let outline = 'solid 5px rgba(3,124,213,0.5)';
-		tool.addHighlightStyle(tool.markedElement, outline);
+		tool.addHighlightStyle(tool.highlightedHover, outline);
 
 		// display PathHTML
-		document.querySelector('#tool_current_elm').innerHTML = tool.getPathHTML(tool.hoveredElement, tool.transpose);
+		document.querySelector('#tool_current_elm').innerHTML = tool.getPathHTML(tool.highlightedHover, tool.transpose);
 		document.querySelector('#tool_current_elm').scrollTop = 9999;
 	},
 
@@ -40,27 +41,27 @@ const tool = {
 	highlightSelected: function() {
 		if (!tool.clickedElement) return;
 		
-		if (tool.markedElement && (tool.markedElement != tool.clickedElement)) {
-			tool.removeHighlightStyle(tool.markedElement);
+		if (tool.highlightedSelect && (tool.highlightedSelect != tool.clickedElement)) {
+			tool.removeHighlightStyle(tool.highlightedSelect);
 		}
 
-		tool.markedElement = tool.clickedElement;
+		tool.highlightedSelect = tool.clickedElement;
 
 		let i = 0;
 		for (i = 0; i < tool.transpose; i++) {
-			if (tool.markedElement.parentNode != window.document) {
-				tool.markedElement = tool.markedElement.parentNode;
+			if (tool.highlightedSelect.parentNode != window.document) {
+				tool.highlightedSelect = tool.highlightedSelect.parentNode;
 			} else {
 				break;
 			}
 		}
 		
 		tool.transpose = i;
-		tool.selectedElement = tool.markedElement
+		tool.selectedElement = tool.highlightedSelect
 		let outline = 'solid 5px rgba(230,126,34,0.5)';
 		tool.addHighlightStyle(tool.selectedElement, outline);
 
-		document.querySelector('#tool_selected_elm').innerHTML = tool.getPathHTML(tool.markedElement, tool.transpose);
+		document.querySelector('#tool_selected_elm').innerHTML = tool.getPathHTML(tool.selectedElement, tool.transpose);
 		document.querySelector('#tool_selected_elm').scrollTop = 9999;
 	},
 
@@ -125,9 +126,10 @@ const tool = {
 			tool.clickedElement = e.target;
 			tool.selectedElement = e.target;
 
-			// tool.addHighlightStyle(tool.markedElement);
+			let outline = 'solid 5px rgba(22,198,12,0.5)';
+			tool.addHighlightStyle(e.target, outline);
 
-			tool.selectedElems = line.split(" > ")
+			tool.selectedElems.push(line);
 			var n = Object.keys(tool.apiArgs).length;
 			tool.apiArgs['block' + n.toString()] = line;
 			tool.updateCSS();
