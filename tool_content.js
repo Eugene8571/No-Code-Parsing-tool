@@ -41,13 +41,13 @@ const tool = {
 	},
 
 	highlightSelected: function() {
-		if (!tool.clickedElement) return;
+		if (!tool.selectedElement) return;
 		
-		if (tool.highlightedSelect && (tool.highlightedSelect != tool.clickedElement)) {
+		if (tool.highlightedSelect && (tool.highlightedSelect != tool.selectedElement)) {
 			tool.removeHighlightStyle(tool.highlightedSelect, tool.outlineSelect);
 		}
 
-		tool.highlightedSelect = tool.clickedElement;
+		tool.highlightedSelect = tool.selectedElement;
 
 		let i = 0;
 		for (i = 0; i < tool.transpose; i++) {
@@ -62,7 +62,8 @@ const tool = {
 		tool.selectedElement = tool.highlightedSelect
 		tool.addHighlightStyle(tool.selectedElement, tool.outlineSelect);
 
-		document.querySelector('#tool_selected_elm').innerHTML = tool.getPathHTML(tool.selectedElement, tool.transpose);
+		document.querySelector('#tool_selected_elm').innerHTML = tool.getPathHTML(
+			tool.selectedElement, tool.transpose);
 		document.querySelector('#tool_selected_elm').scrollTop = 9999;
 	},
 	
@@ -70,6 +71,7 @@ const tool = {
 		if (tool.isChildOftoolWindow(e.target)) return;
 		
 		if (tool.selectedElems.includes(e.target)) { // toggle select
+			tool.selectedElems.splice(tool.selectedElems.indexOf(e.target), 1);
 			tool.removeHighlightStyle(e.target, tool.outlineSelect);
 			return;
 		};
