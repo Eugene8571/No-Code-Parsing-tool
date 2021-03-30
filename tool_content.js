@@ -206,8 +206,8 @@ const tool = {
 			  padding: 0;
 			  box-sizing: border-box;
 			  font-family: sans-serif;
-      	cursor: default;
-        user-select: none;
+			  cursor: default;
+			  user-select: none;
 			}
 
 
@@ -239,7 +239,7 @@ const tool = {
 			  width: 45px;
 			  height: 30px;
 			  position: absolute;
-			  margin: 5px 5px 5px 30px;
+			  margin: -36px 5px 5px 50px;
 			  background-color: #F2F2F2;
 			  border: 1px solid black;
 			  line-height: 30px;
@@ -249,18 +249,18 @@ const tool = {
 			#tool_wnd>div.tool_wind_body>table {
 			  border-collapse: separate;
 			  border-spacing: 10px 1em;
-		      border: 0;
-		      padding: 0;
-		      margin: 0;
+			  border: 0;
+			  padding: 0;
+			  margin: 0;
 			}
 
-			#tool_wnd > div.tool_wind_body > table > tbody > tr,
-			#tool_wnd > div.tool_wind_body > table > tbody > tr > td,
-			#tool_wnd > div.tool_wind_body > table > tbody > tr > th {
-		        padding: 0;
-		        text-align: center;
-		        border: 0;
-		    }
+			#tool_wnd>div.tool_wind_body>table>tbody>tr,
+			#tool_wnd>div.tool_wind_body>table>tbody>tr>td,
+			#tool_wnd>div.tool_wind_body>table>tbody>tr>th {
+			  padding: 0;
+			  text-align: center;
+			  border: 0;
+			}
 
 			.tool_column_elem,
 			.tool_value_elem {
@@ -271,7 +271,6 @@ const tool = {
 			  border: 1px solid black;
 			  line-height: 30px;
 			  box-sizing: border-box;
-
 			}
 
 			#tool_flip_page_area {
@@ -282,9 +281,7 @@ const tool = {
 			  background-color: #F2F2F2;
 			  line-height: 50px;
 			  box-sizing: border-box;
-        margin: auto;
-
-
+			  margin: auto;
 			}
 
 			#tool_page_number_elem {
@@ -293,16 +290,11 @@ const tool = {
 			  width: 30px;
 			  height: 30px;
 			  position: absolute;
-			  margin: 5px 5px 5px -53px;
-			  border: 1px solid black;
+			  margin: -36px 5px 5px -15px;
+        border: 1px solid black;
 			  box-sizing: border-box;
-        /* margin: 0; */
-        font-size: 21px;
- 			  line-height: 30px;
-        
-
-
-
+			  font-size: 21px;
+			  line-height: 30px;
 			}
 
 			.tool_cleare_selected {
@@ -310,7 +302,6 @@ const tool = {
 			  background: transparent;
 			  color: #E65A1A;
 			  font-weight: 500;
-
 			}
 
 			#tool_Q_W>div.shorter,
@@ -319,19 +310,19 @@ const tool = {
 			  color: black;
 			  height: 30px;
 			  width: 50px;
-        background-color: #F2F2F2;
+			  background-color: #F2F2F2;
 			  border: 1px solid black;
 			  line-height: 30px;
 			  box-sizing: border-box;
- 			  display: inline-block;
-        /* margin: auto; */
-        margin-top: 10px;
+			  display: inline-block;
+			  /* margin: auto; */
+			  margin-top: 10px;
 			}
 
 			.send_selected {
- 			  line-height: 40px;
+			  line-height: 40px;
 			  width: 100px;
-        margin: auto;
+			  margin: auto;
 			  margin-top: 15px;
 
 			}
@@ -375,10 +366,9 @@ const tool = {
 			  max-height: 84px;
 			  overflow: hidden;
 			  color: black;
-        user-select: text;
+			  user-select: text;
 
 			}
-
 
 			`
 		];
@@ -448,8 +438,8 @@ const tool = {
       <tr>
         <td colspan="2">
           <div>
-            <div id="tool_area_btn"><div id="tool_row_btn">row</div></div>
-            
+            <div id="tool_area_btn"></div>
+            <div id="tool_row_btn">row</div>
           </div>
         </td>
         <td>
@@ -482,8 +472,8 @@ const tool = {
       <tr>
         <td colspan="2">
           <div>
-            <div id="tool_flip_page_area">. . . . . . .<div id="tool_page_number_elem">2</div></div>
-            
+            <div id="tool_flip_page_area">. . . . . . .</div>
+            <div id="tool_page_number_elem">2</div>
           </div>
         </td>
         <td>
