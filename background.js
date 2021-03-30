@@ -50,6 +50,22 @@ chrome.contextMenus.create({
   }
 });
 
+chrome.browserAction.onClicked.addListener(function() {
+	chrome.tabs.getSelected(null, function(tab) {
+		chrome.tabs.sendMessage(tab.id, { 'action': 'toggle' }, function(response) {
+			if (chrome.runtime.lastError) {
+				// lastError needs to be checked, otherwise Chrome may throw an error
+			}
+
+			if (!response) {
+				chrome.tabs.executeScript(tab.id, {
+					code: "location.reload();"
+				});
+			}
+		});
+	});
+});
+
 
 chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
 	if (msg.action == 'status' && msg.active == true) {

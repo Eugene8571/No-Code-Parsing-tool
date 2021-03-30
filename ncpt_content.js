@@ -588,6 +588,7 @@ const tool = {
 		tool.clickedElement = false;
 
 		tool.helpWindow.parentNode.removeChild(tool.helpWindow);
+		tool.helpWindow = false;
 
 		tool.removeEventListeners()
 
@@ -610,7 +611,7 @@ const tool = {
 	},
 	
 	toggle: function() { // ?
-		if (tool.clickedElement) tool.deactivate();
+		if (tool.helpWindow) tool.deactivate();
 		else tool.activate();
 	},
 	
