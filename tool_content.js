@@ -11,7 +11,7 @@ const tool = {
 	highlightedHover: false,
 	highlightedSelect: false,
 	targetingMode: false,
-	clickedElement: false,
+	activeElement: false,
 	selectedElement: false,
 	transpose: 0, // how far to travel up the line of ancestors
 	selectedElems: [],
@@ -45,7 +45,7 @@ const tool = {
 		if (!tool.selectedElement) return;
 		tool.removeHighlightStyle(tool.selectedElement, tool.outlineSelect);
 
-		tool.highlightedSelect = tool.clickedElement;
+		tool.highlightedSelect = tool.activeElement;
 
 		let i = 0;
 		for (i = 0; i < tool.transpose; i++) {
@@ -78,7 +78,7 @@ const tool = {
 		line = tool.getPathHTML(e.target);
 
 		if (e.target) {
-			tool.clickedElement = e.target;
+			tool.activeElement = e.target;
 			tool.selectedElement = e.target;
 
 			if (tool.highlightedHover) {
@@ -128,7 +128,7 @@ const tool = {
 	
 	keyDown: function(e) {
 
-		if (!tool.clickedElement) return;
+		if (!tool.activeElement) return;
 		
 		if (e.keyCode == 27) {
 			tool.deactivate();
@@ -145,7 +145,7 @@ const tool = {
 	},
 	
 	keyUp: function(e) {
-		if (!tool.clickedElement) return;
+		if (!tool.activeElement) return;
 		return false;
 	},
 	
@@ -356,7 +356,7 @@ const tool = {
 		}
 		
 		elmList_selected.innerHTML = line;
-		document.querySelector('#tool_clicked_elm').innerHTML = tool.getPathHTML(tool.clickedElement);
+		document.querySelector('#tool_clicked_elm').innerHTML = tool.getPathHTML(tool.activeElement);
 		
 		document.getElementById('tool_selected_elm').scrollTop = 9999;
 		document.getElementById('tool_clicked_elm').scrollTop = 9999;
@@ -510,14 +510,14 @@ const tool = {
 		});
 
 		div.querySelector('.send_selected').addEventListener('click', function (e) {
-			// var element = encodeURIComponent(tool.getPathHTML(tool.clickedElement));
+			// var element = encodeURIComponent(tool.getPathHTML(tool.activeElement));
 			// var block = encodeURIComponent(tool.getPathHTML(tool.selectedElement));
 			// var url = encodeURIComponent(document.location.href);
 			// var line = HOME_URL + url + "&element=" + element + "&block=" + block;
 			// window.location = line;
 
 
-			// var element = tool.getPathHTML(tool.clickedElement);
+			// var element = tool.getPathHTML(tool.activeElement);
 			// // var element = tool.getPathHTML(tool.hoveredElement);
 			// var block = tool.getPathHTML(tool.selectedElement);
 			var url = document.location.href;
@@ -577,10 +577,10 @@ const tool = {
 			tool.removeHighlightStyle(tool.selectedElement);
 		}
 		tool.selectedElement = false;
-		if (tool.clickedElement) {
-			tool.removeHighlightStyle(tool.clickedElement);
+		if (tool.activeElement) {
+			tool.removeHighlightStyle(tool.activeElement);
 		}
-		tool.clickedElement = false;
+		tool.activeElement = false;
 
 		tool.helpWindow.parentNode.removeChild(tool.helpWindow);
 		tool.helpWindow = false;
@@ -621,7 +621,7 @@ const tool = {
 			}
 
 			if (msg.action == "rmb_event") { //?
-				if (tool.clickedElement) {
+				if (tool.activeElement) {
 					tool.deactivate();
 					tool.activate(); 
 				} else {
