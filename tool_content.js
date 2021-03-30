@@ -41,14 +41,6 @@ const tool = {
 		document.querySelector('#tool_current_elm').scrollTop = 9999;
 	},
 
-	highlightClicked: function() { //?
-		if (!tool.hoveredElement) return;
-
-		if (tool.highlightedHover) {
-			tool.removeHighlightStyle(tool.highlightedHover, tool.outlineHover);
-		}		
-	},
-
 	highlightSelected: function() {
 		if (!tool.clickedElement) return;
 		
