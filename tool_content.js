@@ -16,7 +16,6 @@ const tool = {
 	transpose: 0, // how far to travel up the line of ancestors
 	selectedElems: [],
 	apiArgs: {},
-	// allMarks: [],
 	helpWindow: false,
 
 	outlineHover: 'rgba(52, 152, 219, 0.5) solid 5px',
@@ -65,6 +64,35 @@ const tool = {
 
 		document.querySelector('#tool_selected_elm').innerHTML = tool.getPathHTML(tool.selectedElement, tool.transpose);
 		document.querySelector('#tool_selected_elm').scrollTop = 9999;
+	},
+	
+	selectElement: function(e) {
+		if (tool.isChildOftoolWindow(e.target)) return;
+		
+		if (tool.selectedElems.includes(e.target)) { // toggle select
+			tool.removeHighlightStyle(e.target, tool.outlineSelect);
+			return;
+		};
+
+
+		line = tool.getPathHTML(e.target);
+
+		if (e.target) {
+			tool.clickedElement = e.target;
+			tool.selectedElement = e.target;
+
+			if (tool.highlightedHover) {
+				tool.removeHighlightStyle(tool.highlightedHover, tool.outlineHover);
+			};
+			tool.addHighlightStyle(e.target, tool.outlineSelect);
+
+			tool.selectedElems.push(e.target);
+			var n = Object.keys(tool.apiArgs).length;
+			tool.apiArgs['block' + n.toString()] = line;
+			tool.updateCSS();
+			tool.updateElementList();
+			tool.triggerResize();
+		}
 	},
 
 
@@ -121,41 +149,6 @@ const tool = {
 		if (!tool.clickedElement) return;
 		return false;
 	},
-	
-	selectElement: function(e) {
-		if (tool.isChildOftoolWindow(e.target)) return;
-		
-		if (tool.selectedElems.includes(e.target)) {
-			tool.removeHighlightStyle(e.target, tool.outlineSelect);
-			return;
-		};
-
-
-		line = tool.getPathHTML(e.target);
-
-		if (e.target) {
-			tool.clickedElement = e.target;
-			tool.selectedElement = e.target;
-
-			// let outline = 'rgba(22, 198, 12, 0.5) solid 5px';
-			if (tool.highlightedHover) {
-				tool.removeHighlightStyle(tool.highlightedHover, tool.outlineHover);
-			};
-			tool.addHighlightStyle(e.target, tool.outlineSelect);
-
-			// let elm = tool.selectedElement;
-			// console.log(window.getComputedStyle(elm, null).outline == outline);
-			// console.log(window.getComputedStyle(elm, null).outline);
-
-			tool.selectedElems.push(e.target);
-			var n = Object.keys(tool.apiArgs).length;
-			tool.apiArgs['block' + n.toString()] = line;
-			tool.updateCSS();
-			tool.updateElementList();
-			tool.triggerResize();
-		}
-	},
-
 	
 	triggerResize: function() {
 		let evt = document.createEvent('UIEvents');
