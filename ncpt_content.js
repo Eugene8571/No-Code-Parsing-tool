@@ -117,7 +117,7 @@ const tool = {
 		return false;
 	},
 	
-	selectTarget: function(e) {
+	selectElement: function(e) {
 		if (tool.isChildOftoolWindow(e.target)) return;
 		line = tool.getPathHTML(e.target);
 
@@ -539,7 +539,7 @@ const tool = {
 	addEventListeners: function() {
 		tool.targetingMode = true;
 		document.addEventListener('mouseover', tool.mouseover, true);
-		document.addEventListener('mousedown', tool.selectTarget, true);
+		document.addEventListener('mousedown', tool.selectElement, true);
 		document.addEventListener('mouseup', tool.preventEvent, true);
 		document.addEventListener('click', tool.preventEvent, true);
 	},
@@ -547,7 +547,7 @@ const tool = {
 	removeEventListeners: function() {
 		tool.targetingMode = false;
 		document.removeEventListener('mouseover', tool.mouseover, true);
-		document.removeEventListener('mousedown', tool.selectTarget, true);
+		document.removeEventListener('mousedown', tool.selectElement, true);
 		document.removeEventListener('mouseup', tool.preventEvent, true);
 		document.removeEventListener('click', tool.preventEvent, true);
 	},
