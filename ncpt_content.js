@@ -14,33 +14,30 @@ const tool = {
 	transpose: 0, // how far to travel up the line of ancestors
 	selectedElements: [],
 	apiArgs: {},
+	allMarks: [],
 	helpWindow: false,
-	
-	triggerResize: function() {
-		let evt = document.createEvent('UIEvents');
-		evt.initUIEvent('resize', true, false,window,0);
-		window.dispatchEvent(evt);
-	},
+
 
 	highlightHovered: function() {
 		if (!tool.hoveredElement) return;
 
-		if (tool.markedElement) {
+		let is_marked = tool.allMarks.includes(tool.hoveredElement);
+		if (tool.markedElement && !is_marked) {
 			tool.removeHighlightStyle(tool.markedElement);
 		}
 		
 		tool.markedElement = tool.hoveredElement;
 		
-		let i = 0;
-		for (i = 0; i < tool.transpose; i++) {
-			if (tool.markedElement.parentNode != window.document) {
-				tool.markedElement = tool.markedElement.parentNode;
-			} else {
-				break;
-			}
-		}
+		// let i = 0;
+		// for (i = 0; i < tool.transpose; i++) {
+		// 	if (tool.markedElement.parentNode != window.document) {
+		// 		tool.markedElement = tool.markedElement.parentNode;
+		// 	} else {
+		// 		break;
+		// 	}
+		// }
 		
-		tool.transpose = i;
+		// tool.transpose = i;
 		let outline = 'solid 5px rgba(3,124,213,0.5)';
 		tool.addHighlightStyle(tool.markedElement, outline);
 
@@ -79,12 +76,12 @@ const tool = {
 
 
 	addHighlightStyle: function (elm, outline) {
-		if (tool.selectedElement) {
-			tool.selectedElement.style.outline = outline;
-			tool.selectedElement.style.outlineOffset = '-5px';			
-			return;}
-		tool.markedElement.style.outline = outline;
-		tool.markedElement.style.outlineOffset = '-5px';
+		// if (tool.selectedElement) {
+		// 	tool.selectedElement.style.outline = outline;
+		// 	tool.selectedElement.style.outlineOffset = '-5px';			
+		// 	return;}
+		elm.style.outline = outline;
+		elm.style.outlineOffset = '-5px';
 	},
 
 	removeHighlightStyle: function (elm) {
@@ -151,6 +148,13 @@ const tool = {
 			tool.updateElementList();
 			tool.triggerResize();
 		}
+	},
+
+	
+	triggerResize: function() {
+		let evt = document.createEvent('UIEvents');
+		evt.initUIEvent('resize', true, false,window,0);
+		window.dispatchEvent(evt);
 	},
 
 	getPathHTML: function (element, transpose) {
