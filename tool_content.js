@@ -19,30 +19,41 @@ const tool = {
 	// allMarks: [],
 	helpWindow: false,
 
+	outlineHover: 'rgba(52, 152, 219, 0.5) solid 5px',
+	outlineSelect: 'rgba(230, 126, 34, 0.5) solid 5px', 
+
 
 	highlightHovered: function() {
 		if (!tool.hoveredElement) return;
 
 		if (tool.highlightedHover) {
-			tool.removeHighlightStyle(tool.highlightedHover);
+			tool.removeHighlightStyle(tool.highlightedHover, tool.outlineHover);
 		}
 		
 		tool.highlightedHover = tool.hoveredElement;
-		
-		let outline = 'solid 5px rgba(3,124,213,0.5)';
-		tool.addHighlightStyle(tool.highlightedHover, outline);
+
+		if (window.getComputedStyle(tool.hoveredElement, null).outline !== tool.outlineSelect) {
+			tool.addHighlightStyle(tool.highlightedHover, tool.outlineHover);
+		};
 
 		// display PathHTML
-		document.querySelector('#tool_current_elm').innerHTML = tool.getPathHTML(tool.highlightedHover, tool.transpose);
+		document.querySelector('#tool_current_elm').innerHTML = tool.getPathHTML(tool.hoveredElement, tool.transpose);
 		document.querySelector('#tool_current_elm').scrollTop = 9999;
 	},
 
+	highlightClicked: function() { //?
+		if (!tool.hoveredElement) return;
+
+		if (tool.highlightedHover) {
+			tool.removeHighlightStyle(tool.highlightedHover, tool.outlineHover);
+		}		
+	},
 
 	highlightSelected: function() {
 		if (!tool.clickedElement) return;
 		
 		if (tool.highlightedSelect && (tool.highlightedSelect != tool.clickedElement)) {
-			tool.removeHighlightStyle(tool.highlightedSelect);
+			tool.removeHighlightStyle(tool.highlightedSelect, tool.outlineSelect);
 		}
 
 		tool.highlightedSelect = tool.clickedElement;
@@ -58,8 +69,7 @@ const tool = {
 		
 		tool.transpose = i;
 		tool.selectedElement = tool.highlightedSelect
-		let outline = 'solid 5px rgba(230,126,34,0.5)';
-		tool.addHighlightStyle(tool.selectedElement, outline);
+		tool.addHighlightStyle(tool.selectedElement, tool.outlineSelect);
 
 		document.querySelector('#tool_selected_elm').innerHTML = tool.getPathHTML(tool.selectedElement, tool.transpose);
 		document.querySelector('#tool_selected_elm').scrollTop = 9999;
@@ -67,11 +77,13 @@ const tool = {
 
 
 	addHighlightStyle: function (elm, outline) {
+		if (window.getComputedStyle(elm, null).outline == tool.outlineHover) return;
 		elm.style.outline = outline;
 		elm.style.outlineOffset = '-5px';
 	},
 
-	removeHighlightStyle: function (elm) {
+	removeHighlightStyle: function (elm, outline) {
+		if (window.getComputedStyle(elm, null).outline !== outline) return;
 		elm.style.outline = '';
 		elm.style.outlineOffset = '';
 	},
@@ -126,8 +138,12 @@ const tool = {
 			tool.clickedElement = e.target;
 			tool.selectedElement = e.target;
 
-			let outline = 'solid 5px rgba(22,198,12,0.5)';
+			let outline = 'rgba(22, 198, 12, 0.5) solid 5px';
 			tool.addHighlightStyle(e.target, outline);
+
+			// let elm = tool.selectedElement;
+			// console.log(window.getComputedStyle(elm, null).outline == outline);
+			// console.log(window.getComputedStyle(elm, null).outline);
 
 			tool.selectedElems.push(line);
 			var n = Object.keys(tool.apiArgs).length;
