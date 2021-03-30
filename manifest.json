@@ -20,7 +20,7 @@
 
 	"content_scripts": [ {
 		"all_frames": false,
-		"js": [ "ncpt_content.js" ],
+		"js": [ "tool_content.js" ],
 		"matches": [ 
 			"http://*/*", 
 			"https://*/*" ],
