@@ -67,7 +67,7 @@ chrome.browserAction.onClicked.addListener(function() {
 							// lastError needs to be checked
 						}
 					});
-				}, 1500);
+				}, 1200);
 			}
 		});
 	});
