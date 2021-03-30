@@ -12,7 +12,7 @@ const tool = {
 	clickedElement: false,
 	selectedElement: false,
 	transpose: 0, // how far to travel up the line of ancestors
-	selectedElements: [],
+	selectedElems: [],
 	apiArgs: {},
 	allMarks: [],
 	helpWindow: false,
@@ -127,7 +127,7 @@ const tool = {
 
 			// tool.addHighlightStyle(tool.markedElement);
 
-			tool.selectedElements = line.split(" > ")
+			tool.selectedElems = line.split(" > ")
 			var n = Object.keys(tool.apiArgs).length;
 			tool.apiArgs['block' + n.toString()] = line;
 			tool.updateCSS();
@@ -339,7 +339,7 @@ const tool = {
 
 		let line = "";
 
-		if (tool.selectedElements.length) {
+		if (tool.selectedElems.length) {
 			line = tool.getPathHTML(tool.selectedElement);
 		}
 		
