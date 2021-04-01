@@ -19,9 +19,6 @@ const tool = {
 	apiArgs: {},
 	helpWindow: false,
 
-	outlineHover: 'rgba(52, 152, 219, 0.5) solid 5px',
-	outlineSelect: 'rgba(230, 126, 34, 0.5) solid 5px', 
-
 
 	highlightHovered: function() {
 		if (!tool.hoveredElement) return;
@@ -368,7 +365,7 @@ const tool = {
 			  box-shadow: inset 0px 0px 13px 1px rgba(30, 126, 134, 0.5);
 			}
 
-			.ncpt_border_highlight {
+			.ncpt_border_important {
 			  box-shadow: inset 0px 0px 13px 1px rgba(225,65,84, 0.5);
 			}
 
@@ -606,34 +603,23 @@ const tool = {
 		
 		tool.helpWindow = div;
 		tool.updateElementList();
-		tool.addEventListeners();
-
-		div.querySelector('#tool_row_btn').addEventListener('mouseover', function (e) {
-			tool.activeElement.classList.add("ncpt_border_highlight");
-		});
-		div.querySelector('#tool_row_btn').addEventListener('mouseout', function (e) {
-			tool.activeElement.classList.remove("ncpt_border_highlight");
-		});
-
-
-
-		chrome.extension.sendMessage({action: 'status', active: true});
-	},
-	
-	addEventListeners: function() {
 		tool.targetingMode = true;
 		document.addEventListener('mouseover', tool.mouseover, true);
 		document.addEventListener('mousedown', tool.selectElement, true);
 		document.addEventListener('mouseup', tool.preventEvent, true);
 		document.addEventListener('click', tool.preventEvent, true);
-	},
 
-	removeEventListeners: function() {
-		tool.targetingMode = false;
-		document.removeEventListener('mouseover', tool.mouseover, true);
-		document.removeEventListener('mousedown', tool.selectElement, true);
-		document.removeEventListener('mouseup', tool.preventEvent, true);
-		document.removeEventListener('click', tool.preventEvent, true);
+
+		div.querySelector('#tool_row_btn').addEventListener('mouseover', function (e) {
+			tool.activeElement.classList.add("ncpt_border_important");
+		});
+		div.querySelector('#tool_row_btn').addEventListener('mouseout', function (e) {
+			tool.activeElement.classList.remove("ncpt_border_important");
+		});
+
+
+
+		chrome.extension.sendMessage({action: 'status', active: true});
 	},
 
 	deactivate: function() {
@@ -657,7 +643,11 @@ const tool = {
 		tool.helpWindow.parentNode.removeChild(tool.helpWindow);
 		tool.helpWindow = false;
 
-		tool.removeEventListeners()
+		tool.targetingMode = false;
+		document.removeEventListener('mouseover', tool.mouseover, true);
+		document.removeEventListener('mousedown', tool.selectElement, true);
+		document.removeEventListener('mouseup', tool.preventEvent, true);
+		document.removeEventListener('click', tool.preventEvent, true);
 
 		function unlockPage() {
 		    unlockElements(document.getElementsByTagName("a"));
