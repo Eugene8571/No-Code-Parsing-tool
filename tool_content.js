@@ -74,7 +74,6 @@ const tool = {
 		if (tool.selectedElems.includes(e.target)) { // toggle select
 			tool.selectedElems.splice(tool.selectedElems.indexOf(e.target), 1);
 			e.target.classList.remove("border_selected");
-			// tool.removeHighlightStyle(e.target, tool.outlineSelect);
 			return;
 		};
 
@@ -84,10 +83,6 @@ const tool = {
 		if (e.target) {
 			tool.activeElement = e.target;
 			tool.selectedElement = e.target;
-			// if (tool.highlightedHover) {
-			// 	tool.removeHighlightStyle(tool.highlightedHover, tool.outlineHover);
-			// };
-			// tool.addHighlightStyle(e.target, tool.outlineSelect);
 			tool.selectedElement.classList.add("border_selected");
 
 			tool.selectedElems.push(e.target);
@@ -99,19 +94,6 @@ const tool = {
 			tool.triggerResize();
 		}
 	},
-
-
-	// addHighlightStyle: function (elm, outline) {
-	// 	if (window.getComputedStyle(elm, null).outline == tool.outlineHover) return;
-	// 	elm.style.outline = outline;
-	// 	elm.style.outlineOffset = '-5px';
-	// },
-
-	// removeHighlightStyle: function (elm, outline) {
-	// 	if (window.getComputedStyle(elm, null).outline !== outline) return;
-	// 	elm.style.outline = '';
-	// 	elm.style.outlineOffset = '';
-	// },
 
 	mouseover: function(e) {
 		if (tool.isChildOftoolWindow(e.target)) {
@@ -433,7 +415,7 @@ const tool = {
 		function lockElements(el) {
 			for (let i = 0; i < el.length; i++) {
 				el[i].onclick = "return false;";
-				el[i].href = "#"+el[i].href; //d
+				el[i].href = "#"+el[i].href;
 				el[i].target = "";
 			}
 		}
