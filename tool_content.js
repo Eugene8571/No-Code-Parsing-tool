@@ -44,7 +44,8 @@ const tool = {
 
 	highlightSelected: function() {
 		if (!tool.selectedElement) return;
-		tool.removeHighlightStyle(tool.selectedElement, tool.outlineSelect);
+		// tool.selectedElement.classList.remove("border_selected");
+		// tool.removeHighlightStyle(tool.selectedElement, tool.outlineSelect);
 
 		tool.highlightedSelect = tool.activeElement;
 
@@ -59,7 +60,8 @@ const tool = {
 		
 		tool.transpose = i;
 		tool.selectedElement = tool.highlightedSelect;
-		tool.addHighlightStyle(tool.selectedElement, tool.outlineSelect);
+		// tool.addHighlightStyle(tool.selectedElement, tool.outlineSelect);
+		tool.selectedElement.classList.add("border_selected");
 
 		document.querySelector('#tool_selected_elm').innerHTML = tool.getPathHTML(
 			tool.selectedElement, tool.transpose);
@@ -71,7 +73,8 @@ const tool = {
 		
 		if (tool.selectedElems.includes(e.target)) { // toggle select
 			tool.selectedElems.splice(tool.selectedElems.indexOf(e.target), 1);
-			tool.removeHighlightStyle(e.target, tool.outlineSelect);
+			e.target.classList.remove("border_selected");
+			// tool.removeHighlightStyle(e.target, tool.outlineSelect);
 			return;
 		};
 
@@ -81,15 +84,16 @@ const tool = {
 		if (e.target) {
 			tool.activeElement = e.target;
 			tool.selectedElement = e.target;
-			if (tool.highlightedHover) {
-				tool.removeHighlightStyle(tool.highlightedHover, tool.outlineHover);
-			};
-			tool.addHighlightStyle(e.target, tool.outlineSelect);
+			// if (tool.highlightedHover) {
+			// 	tool.removeHighlightStyle(tool.highlightedHover, tool.outlineHover);
+			// };
+			// tool.addHighlightStyle(e.target, tool.outlineSelect);
+			tool.selectedElement.classList.add("border_selected");
 
 			tool.selectedElems.push(e.target);
 			var n = Object.keys(tool.apiArgs).length;
 			tool.apiArgs['block' + n.toString()] = line;
-			tool.selectedElement.classList.add("border_active");
+			// tool.selectedElement.classList.add("border_active");
 			tool.updateCSS();
 			tool.updateElementList();
 			tool.triggerResize();
@@ -97,21 +101,21 @@ const tool = {
 	},
 
 
-	addHighlightStyle: function (elm, outline) {
-		if (window.getComputedStyle(elm, null).outline == tool.outlineHover) return;
-		elm.style.outline = outline;
-		elm.style.outlineOffset = '-5px';
-	},
+	// addHighlightStyle: function (elm, outline) {
+	// 	if (window.getComputedStyle(elm, null).outline == tool.outlineHover) return;
+	// 	elm.style.outline = outline;
+	// 	elm.style.outlineOffset = '-5px';
+	// },
 
-	removeHighlightStyle: function (elm, outline) {
-		if (window.getComputedStyle(elm, null).outline !== outline) return;
-		elm.style.outline = '';
-		elm.style.outlineOffset = '';
-	},
+	// removeHighlightStyle: function (elm, outline) {
+	// 	if (window.getComputedStyle(elm, null).outline !== outline) return;
+	// 	elm.style.outline = '';
+	// 	elm.style.outlineOffset = '';
+	// },
 
 	mouseover: function(e) {
 		if (tool.isChildOftoolWindow(e.target)) {
-			tool.removeHighlightStyle(tool.highlightedHover, tool.outlineHover); 
+			tool.highlightedHover.classList.remove("border_hover");
 			return;
 		}
 		if (tool.hoveredElement != e.target) {
@@ -373,17 +377,15 @@ const tool = {
 			}
 
 			.border_active {
-			  cursor: pointer;
 			  box-shadow: 0 0 11px rgba(65,167,225, 0.4);
 			}
 			
 			.border_hover {
-			  cursor: pointer;
 			  box-shadow: inset 0px 0px 13px 1px rgba(65,167,225, 0.5);
 			}
 			
 			.border_selected {
-				border: rgba(230, 126, 34, 0.5) solid 5px;
+			  box-shadow: inset 0px 0px 13px 1px rgba(30, 126, 134, 0.5);
 			}
 
 			`
@@ -650,16 +652,16 @@ const tool = {
 		tool.apiArgs = {};
 
 		if (tool.markedElement) {
-			tool.removeHighlightStyle(tool.markedElement);
+			// tool.removeHighlightStyle(tool.markedElement);
 		}
 		tool.markedElement = false;
 
 		if (tool.selectedElement) {
-			tool.removeHighlightStyle(tool.selectedElement);
+			// tool.removeHighlightStyle(tool.selectedElement);
 		}
 		tool.selectedElement = false;
 		if (tool.activeElement) {
-			tool.removeHighlightStyle(tool.activeElement);
+			// tool.removeHighlightStyle(tool.activeElement);
 		}
 		tool.activeElement = false;
 
