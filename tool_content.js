@@ -411,13 +411,13 @@ const tool = {
 		lockElements(document.getElementsByTagName("input"));
 		lockElements(document.getElementsByTagName("button"));
 
-		function lockElements(el)
-		{
-		  for (var i=0; i<el.length; i++)
-		  {
-		    el[i].style.pointerEvents="none";
-		  }
-		};
+
+		function lockElements(el) {
+			for (let i = 0; i < el.length; i++) {
+				el[i].onclick = "return false;";
+				el[i].href = "#"+el[i].href; //d
+			}
+		}
 	},
 
 	helpWindowSpawn: function() {
