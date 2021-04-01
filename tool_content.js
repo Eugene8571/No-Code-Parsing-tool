@@ -416,6 +416,7 @@ const tool = {
 			for (let i = 0; i < el.length; i++) {
 				el[i].onclick = "return false;";
 				el[i].href = "#"+el[i].href; //d
+				el[i].target = "";
 			}
 		}
 	},
