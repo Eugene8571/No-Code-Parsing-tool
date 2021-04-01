@@ -26,12 +26,12 @@ const tool = {
 		if (!tool.hoveredElement) return;
 
 		if (tool.highlightedHover) {
-			tool.highlightedHover.classList.remove("border_hover");
+			tool.highlightedHover.classList.remove("ncpt_border_hover");
 		}
 
 		tool.highlightedHover = tool.hoveredElement;
 
-		tool.highlightedHover.classList.add("border_hover");
+		tool.highlightedHover.classList.add("ncpt_border_hover");
 
 		// if (window.getComputedStyle(tool.hoveredElement, null).outline !== tool.outlineSelect) {
 		// 	tool.addHighlightStyle(tool.highlightedHover, tool.outlineHover);
@@ -44,7 +44,7 @@ const tool = {
 
 	highlightSelected: function() {
 		if (!tool.selectedElement) return;
-		// tool.selectedElement.classList.remove("border_selected");
+		// tool.selectedElement.classList.remove("ncpt_border_selected");
 		// tool.removeHighlightStyle(tool.selectedElement, tool.outlineSelect);
 
 		tool.highlightedSelect = tool.activeElement;
@@ -61,7 +61,7 @@ const tool = {
 		tool.transpose = i;
 		tool.selectedElement = tool.highlightedSelect;
 		// tool.addHighlightStyle(tool.selectedElement, tool.outlineSelect);
-		tool.selectedElement.classList.add("border_selected");
+		tool.selectedElement.classList.add("ncpt_border_selected");
 
 		document.querySelector('#tool_selected_elm').innerHTML = tool.getPathHTML(
 			tool.selectedElement, tool.transpose);
@@ -73,7 +73,7 @@ const tool = {
 		
 		if (tool.selectedElems.includes(e.target)) { // toggle select
 			tool.selectedElems.splice(tool.selectedElems.indexOf(e.target), 1);
-			e.target.classList.remove("border_selected");
+			e.target.classList.remove("ncpt_border_selected");
 			return;
 		};
 
@@ -83,12 +83,12 @@ const tool = {
 		if (e.target) {
 			tool.activeElement = e.target;
 			tool.selectedElement = e.target;
-			tool.selectedElement.classList.add("border_selected");
+			tool.selectedElement.classList.add("ncpt_border_selected");
 
 			tool.selectedElems.push(e.target);
 			var n = Object.keys(tool.apiArgs).length;
 			tool.apiArgs['block' + n.toString()] = line;
-			// tool.selectedElement.classList.add("border_active");
+			// tool.selectedElement.classList.add("ncpt_border_active");
 			tool.updateCSS();
 			tool.updateElementList();
 			tool.triggerResize();
@@ -97,7 +97,7 @@ const tool = {
 
 	mouseover: function(e) {
 		if (tool.isChildOftoolWindow(e.target)) {
-			tool.highlightedHover.classList.remove("border_hover");
+			tool.highlightedHover.classList.remove("ncpt_border_hover");
 			return;
 		}
 		if (tool.hoveredElement != e.target) {
@@ -151,11 +151,19 @@ const tool = {
 			if (elm.id) {
 				return "#" + elm.id;
 			} else if (typeof elm.className == "string" && elm.className.trim().length) {
-				return elm.tagName.toLowerCase() + "." + elm.className.trim().split(" ").join(".");
+				let a = elm.tagName.toLowerCase();
+				let b = "." + elm.className.trim().split(" ").filter(c => !c.includes('ncpt_border_')).join(".");
+				if (b !== ".") {a += b};
+				return a;
 			} else {
 				return elm.tagName.toLowerCase();
 			}
 		}
+
+
+			// if ((elm.tagName.toLowerCase() == 'ncpt_border_hover')
+			// 	|| (elm.tagName.toLowerCase() == 'ncpt_border_selected')) {
+			// 	return;
 
 		let path = [];
 		let currentElm = element;
@@ -358,15 +366,15 @@ const tool = {
 
 			}
 
-			.border_active {
+			.ncpt_border_active {
 			  box-shadow: 0 0 11px rgba(65,167,225, 0.4);
 			}
 			
-			.border_hover {
+			.ncpt_border_hover {
 			  box-shadow: inset 0px 0px 13px 1px rgba(65,167,225, 0.5);
 			}
 			
-			.border_selected {
+			.ncpt_border_selected {
 			  box-shadow: inset 0px 0px 13px 1px rgba(30, 126, 134, 0.5);
 			}
 
