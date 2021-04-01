@@ -33,10 +33,6 @@ const tool = {
 
 		tool.highlightedHover.classList.add("ncpt_border_hover");
 
-		// if (window.getComputedStyle(tool.hoveredElement, null).outline !== tool.outlineSelect) {
-		// 	tool.addHighlightStyle(tool.highlightedHover, tool.outlineHover);
-		// };
-
 		// display PathHTML
 		document.querySelector('#tool_current_elm').innerHTML = tool.getPathHTML(tool.hoveredElement, tool.transpose);
 		document.querySelector('#tool_current_elm').scrollTop = 9999;
@@ -44,8 +40,7 @@ const tool = {
 
 	highlightSelected: function() {
 		if (!tool.selectedElement) return;
-		// tool.selectedElement.classList.remove("ncpt_border_selected");
-		// tool.removeHighlightStyle(tool.selectedElement, tool.outlineSelect);
+		tool.selectedElement.classList.remove("ncpt_border_selected");
 
 		tool.highlightedSelect = tool.activeElement;
 
@@ -60,7 +55,6 @@ const tool = {
 		
 		tool.transpose = i;
 		tool.selectedElement = tool.highlightedSelect;
-		// tool.addHighlightStyle(tool.selectedElement, tool.outlineSelect);
 		tool.selectedElement.classList.add("ncpt_border_selected");
 
 		document.querySelector('#tool_selected_elm').innerHTML = tool.getPathHTML(
@@ -159,11 +153,6 @@ const tool = {
 				return elm.tagName.toLowerCase();
 			}
 		}
-
-
-			// if ((elm.tagName.toLowerCase() == 'ncpt_border_hover')
-			// 	|| (elm.tagName.toLowerCase() == 'ncpt_border_selected')) {
-			// 	return;
 
 		let path = [];
 		let currentElm = element;
