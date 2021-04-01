@@ -12,9 +12,8 @@ const tool = {
 	highlightedSelect: false,
 	targetingMode: false,
 	activeElement: false,
-
 	selectedElement: false,
-	transpose: 0, // how far to travel up the line of ancestors
+	transpose: 0,
 	selectedElems: [],
 	apiArgs: {},
 	helpWindow: false,
