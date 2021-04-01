@@ -368,6 +368,18 @@ const tool = {
 			  box-shadow: inset 0px 0px 13px 1px rgba(225,65,84, 0.5);
 			}
 
+		    #tool_overlay {
+				position: absolute;
+		        left: 0;
+		        top: 0;
+		        width: 110px;
+		        height: 110px;
+		        background: rgba(255,128,128,1);
+		        z-index: 2147483645;
+			}
+
+
+
 			`
 		];
 
@@ -616,7 +628,9 @@ const tool = {
 			tool.activeElement.classList.remove("ncpt_border_important");
 		});
 
-
+		let overlay = document.createElement('div');
+		overlay.setAttribute("id", "tool_overlay");
+		document.body.appendChild(overlay);
 
 		chrome.extension.sendMessage({action: 'status', active: true});
 	},
