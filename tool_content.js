@@ -26,14 +26,16 @@ const tool = {
 		if (!tool.hoveredElement) return;
 
 		if (tool.highlightedHover) {
-			tool.removeHighlightStyle(tool.highlightedHover, tool.outlineHover);
+			tool.highlightedHover.classList.remove("border_hover");
 		}
 
 		tool.highlightedHover = tool.hoveredElement;
 
-		if (window.getComputedStyle(tool.hoveredElement, null).outline !== tool.outlineSelect) {
-			tool.addHighlightStyle(tool.highlightedHover, tool.outlineHover);
-		};
+		tool.highlightedHover.classList.add("border_hover");
+
+		// if (window.getComputedStyle(tool.hoveredElement, null).outline !== tool.outlineSelect) {
+		// 	tool.addHighlightStyle(tool.highlightedHover, tool.outlineHover);
+		// };
 
 		// display PathHTML
 		document.querySelector('#tool_current_elm').innerHTML = tool.getPathHTML(tool.hoveredElement, tool.transpose);
@@ -56,7 +58,7 @@ const tool = {
 		}
 		
 		tool.transpose = i;
-		tool.selectedElement = tool.highlightedSelect
+		tool.selectedElement = tool.highlightedSelect;
 		tool.addHighlightStyle(tool.selectedElement, tool.outlineSelect);
 
 		document.querySelector('#tool_selected_elm').innerHTML = tool.getPathHTML(
@@ -79,7 +81,6 @@ const tool = {
 		if (e.target) {
 			tool.activeElement = e.target;
 			tool.selectedElement = e.target;
-
 			if (tool.highlightedHover) {
 				tool.removeHighlightStyle(tool.highlightedHover, tool.outlineHover);
 			};
@@ -88,6 +89,7 @@ const tool = {
 			tool.selectedElems.push(e.target);
 			var n = Object.keys(tool.apiArgs).length;
 			tool.apiArgs['block' + n.toString()] = line;
+			tool.selectedElement.classList.add("border_active");
 			tool.updateCSS();
 			tool.updateElementList();
 			tool.triggerResize();
@@ -370,6 +372,20 @@ const tool = {
 
 			}
 
+			.border_active {
+			  cursor: pointer;
+			  box-shadow: 0 0 11px rgba(65,167,225, 0.4);
+			}
+			
+			.border_hover {
+			  cursor: pointer;
+			  box-shadow: inset 0px 0px 13px 1px rgba(65,167,225, 0.5);
+			}
+			
+			.border_selected {
+				border: rgba(230, 126, 34, 0.5) solid 5px;
+			}
+
 			`
 		];
 
@@ -604,7 +620,12 @@ const tool = {
 		
 		tool.helpWindow = div;
 		tool.updateElementList();
-		tool.addEventListeners()
+		tool.addEventListeners();
+
+		div.querySelector('#tool_row_btn').addEventListener('click', function (e) {
+			alert('row');
+		});
+
 		chrome.extension.sendMessage({action: 'status', active: true});
 	},
 	
