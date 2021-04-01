@@ -12,6 +12,7 @@ const tool = {
 	highlightedSelect: false,
 	targetingMode: false,
 	activeElement: false,
+
 	selectedElement: false,
 	transpose: 0, // how far to travel up the line of ancestors
 	selectedElems: [],
@@ -367,6 +368,10 @@ const tool = {
 			  box-shadow: inset 0px 0px 13px 1px rgba(30, 126, 134, 0.5);
 			}
 
+			.ncpt_border_highlight {
+			  box-shadow: inset 0px 0px 13px 1px rgba(225,65,84, 0.5);
+			}
+
 			`
 		];
 
@@ -603,9 +608,14 @@ const tool = {
 		tool.updateElementList();
 		tool.addEventListeners();
 
-		div.querySelector('#tool_row_btn').addEventListener('click', function (e) {
-			alert('row');
+		div.querySelector('#tool_row_btn').addEventListener('mouseover', function (e) {
+			tool.activeElement.classList.add("ncpt_border_highlight");
 		});
+		div.querySelector('#tool_row_btn').addEventListener('mouseout', function (e) {
+			tool.activeElement.classList.remove("ncpt_border_highlight");
+		});
+
+
 
 		chrome.extension.sendMessage({action: 'status', active: true});
 	},
