@@ -1,0 +1,11 @@
+{
+  "extensionName": {
+    "message": "No-Code Parsing tool",
+    "description": "Name of the extension."
+  },
+
+  "extensionDescription": {
+    "message": "Выбор элементов для парсинга.",
+    "description": "Description of the extension."
+  }
+}
