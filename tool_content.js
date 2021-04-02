@@ -47,8 +47,10 @@ const tool = {
 		tool.overlay.style.top = rect.top + window.scrollY + "px";
 		tool.overlay.style.width = rect.width + "px";
 		tool.overlay.style.height = rect.height + "px";
-		tool.overlay.style.background = "rgba(65,167,225,0.2)";
+		// tool.overlay.style.background = "rgba(65,167,225,0.2)";
 		tool.overlay.style.border = "1px solid rgba(65,167,225,1)"
+		tool.overlay.style.boxShadow = "inset 0px 0px 13px 1px rgba(65,167,225, 0.5)"
+
 		tool.overlay.style.zIndex = tool.maxZIndex - 2;
 		tool.overlay.relatedElement = tool.hoveredElement;
 
@@ -398,7 +400,6 @@ const tool = {
 		        top: 0;
 		        width: 110px;
 		        height: 110px;
-		        background: rgba(255,128,128,1);
 		        z-index: 2147483645;
 			}
 
