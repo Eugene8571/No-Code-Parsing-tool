@@ -17,15 +17,21 @@ const tool = {
 	selectedElems: [],
 	apiArgs: {},
 	helpWindow: false,
+	overlay: false,
 
 
 	highlightHovered: function() {
 		if (!tool.hoveredElement) return;
 
+
+
 		if (tool.highlightedHover) {
 			tool.highlightedHover.classList.remove("ncpt_border_hover");
 		}
 
+		if (tool.highlightedHover.id == "tool_overlay") {
+			tool.highlightedHover = tool.highlightedHover.relatedElement;
+		}
 		tool.highlightedHover = tool.hoveredElement;
 
 		tool.highlightedHover.classList.add("ncpt_border_hover");
@@ -33,6 +39,18 @@ const tool = {
 		// display PathHTML
 		document.querySelector('#tool_current_elm').innerHTML = tool.getPathHTML(tool.hoveredElement, tool.transpose);
 		document.querySelector('#tool_current_elm').scrollTop = 9999;
+
+
+		let rect = tool.hoveredElement.getBoundingClientRect();
+		tool.overlay.style.position = "absolute";
+		tool.overlay.style.left = rect.left +  window.scrollX + "px";
+		tool.overlay.style.top = rect.top + window.scrollY + "px";
+		tool.overlay.style.width = rect.width + "px";
+		tool.overlay.style.height = rect.height + "px";
+		tool.overlay.style.background = "rgba(255,128,128,0.2)";
+		tool.overlay.style.zIndex = tool.maxZIndex - 2;
+		tool.overlay.relatedElement = tool.hoveredElement;
+
 	},
 
 	highlightSelected: function() {
@@ -153,6 +171,11 @@ const tool = {
 
 		let path = [];
 		let currentElm = element;
+
+		if (currentElm.id == "tool_overlay") { // this is just a proxy for an iframe
+			currentElm = currentElm.relatedElement;
+		}
+
 
 		while (currentElm) {
 			path.push(currentElm);
@@ -431,6 +454,16 @@ const tool = {
 		}
 	},
 
+
+	spawnOverlay: function() {
+		let overlay = document.createElement('div');
+		overlay.setAttribute("id", "tool_overlay");
+		overlay.style.pointerEvents = "none";
+		document.body.appendChild(overlay);
+		tool.overlay = overlay;
+	},
+
+
 	helpWindowSpawn: function() {
 		let div = document.createElement('div');
 		div.setAttribute("id", "tool_wnd");
@@ -628,9 +661,7 @@ const tool = {
 			tool.activeElement.classList.remove("ncpt_border_important");
 		});
 
-		let overlay = document.createElement('div');
-		overlay.setAttribute("id", "tool_overlay");
-		document.body.appendChild(overlay);
+		tool.spawnOverlay()
 
 		chrome.extension.sendMessage({action: 'status', active: true});
 	},
