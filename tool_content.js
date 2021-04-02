@@ -34,7 +34,7 @@ const tool = {
 		}
 		tool.highlightedHover = tool.hoveredElement;
 
-		tool.highlightedHover.classList.add("ncpt_border_hover");
+		// tool.highlightedHover.classList.add("ncpt_border_hover");
 
 		// display PathHTML
 		document.querySelector('#tool_current_elm').innerHTML = tool.getPathHTML(tool.hoveredElement, tool.transpose);
@@ -47,7 +47,8 @@ const tool = {
 		tool.overlay.style.top = rect.top + window.scrollY + "px";
 		tool.overlay.style.width = rect.width + "px";
 		tool.overlay.style.height = rect.height + "px";
-		tool.overlay.style.background = "rgba(255,128,128,0.2)";
+		tool.overlay.style.background = "rgba(65,167,225,0.2)";
+		tool.overlay.style.border = "1px solid rgba(65,167,225,1)"
 		tool.overlay.style.zIndex = tool.maxZIndex - 2;
 		tool.overlay.relatedElement = tool.hoveredElement;
 
@@ -70,7 +71,7 @@ const tool = {
 		
 		tool.transpose = i;
 		tool.selectedElement = tool.highlightedSelect;
-		tool.selectedElement.classList.add("ncpt_border_selected");
+		// tool.selectedElement.classList.add("ncpt_border_selected");
 
 		document.querySelector('#tool_selected_elm').innerHTML = tool.getPathHTML(
 			tool.selectedElement, tool.transpose);
@@ -92,7 +93,7 @@ const tool = {
 		if (e.target) {
 			tool.activeElement = e.target;
 			tool.selectedElement = e.target;
-			tool.selectedElement.classList.add("ncpt_border_selected");
+			// tool.selectedElement.classList.add("ncpt_border_selected");
 
 			tool.selectedElems.push(e.target);
 			var n = Object.keys(tool.apiArgs).length;
@@ -655,7 +656,7 @@ const tool = {
 
 
 		div.querySelector('#tool_row_btn').addEventListener('mouseover', function (e) {
-			tool.activeElement.classList.add("ncpt_border_important");
+			// tool.activeElement.classList.add("ncpt_border_important");
 		});
 		div.querySelector('#tool_row_btn').addEventListener('mouseout', function (e) {
 			tool.activeElement.classList.remove("ncpt_border_important");
@@ -699,7 +700,7 @@ const tool = {
 		    unlockElements(document.getElementsByTagName("button"));
 		};
 
-		function unlockElements(el)
+		function unlockElements(el) //?
 		{
 		  for (var i=0; i<el.length; i++)
 		  {
