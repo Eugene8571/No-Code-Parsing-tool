@@ -23,18 +23,10 @@ const tool = {
 	highlightHovered: function() {
 		if (!tool.hoveredElement) return;
 
-
-
-		if (tool.highlightedHover) {
-			tool.highlightedHover.classList.remove("ncpt_border_hover");
-		}
-
 		if (tool.highlightedHover.id == "tool_overlay") {
 			tool.highlightedHover = tool.highlightedHover.relatedElement;
 		}
 		tool.highlightedHover = tool.hoveredElement;
-
-		// tool.highlightedHover.classList.add("ncpt_border_hover");
 
 		// display PathHTML
 		document.querySelector('#tool_current_elm').innerHTML = tool.getPathHTML(tool.hoveredElement, tool.transpose);
@@ -58,7 +50,6 @@ const tool = {
 
 	highlightSelected: function() {
 		if (!tool.selectedElement) return;
-		tool.selectedElement.classList.remove("ncpt_border_selected");
 
 		tool.highlightedSelect = tool.activeElement;
 
@@ -73,7 +64,6 @@ const tool = {
 		
 		tool.transpose = i;
 		tool.selectedElement = tool.highlightedSelect;
-		// tool.selectedElement.classList.add("ncpt_border_selected");
 
 		document.querySelector('#tool_selected_elm').innerHTML = tool.getPathHTML(
 			tool.selectedElement, tool.transpose);
@@ -108,7 +98,6 @@ const tool = {
 		
 		if (tool.selectedElems.includes(e.target)) { // toggle select
 			tool.selectedElems.splice(tool.selectedElems.indexOf(e.target), 1);
-			e.target.classList.remove("ncpt_border_selected");
 			return;
 		};
 
@@ -118,23 +107,16 @@ const tool = {
 		if (e.target) {
 			tool.activeElement = e.target;
 			tool.selectedElement = e.target;
-			// tool.selectedElement.classList.add("ncpt_border_selected");
 
 			tool.selectedElems.push(e.target);
 			var n = Object.keys(tool.apiArgs).length;
 			tool.apiArgs['block' + n.toString()] = line;
-			// tool.selectedElement.classList.add("ncpt_border_active");
-			tool.updateCSS();
 			tool.updateElementList();
 			tool.triggerResize();
 		}
 	},
 
 	mouseover: function(e) {
-		if (tool.isChildOftoolWindow(e.target)) {
-			tool.highlightedHover.classList.remove("ncpt_border_hover");
-			return;
-		}
 		if (tool.hoveredElement != e.target) {
 			tool.transpose = 0;
 			tool.hoveredElement = e.target;
@@ -187,7 +169,7 @@ const tool = {
 				return "#" + elm.id;
 			} else if (typeof elm.className == "string" && elm.className.trim().length) {
 				let a = elm.tagName.toLowerCase();
-				let b = "." + elm.className.trim().split(" ").filter(c => !c.includes('ncpt_border_')).join(".");
+				let b = "." + elm.className.trim().split(" ").join(".");
 				if (b !== ".") {a += b};
 				return a;
 			} else {
@@ -218,245 +200,6 @@ const tool = {
 		return html.join(" > ");
 	},
 	
-	updateCSS: function() {
-		// let cssLines = [
-		// 	`
-		// 	#tool_wnd {
-		// 	  position: fixed;
-		// 	  top: 15%;
-		// 	  right: 10px;
-		// 	  width: 180px;
-		// 	  box-sizing: content-box;
-		// 	  background: #fff;
-		// 	  box-shadow:
-		// 	    0 7px 14px rgba(0, 0, 0, 0.25),
-		// 	    0 5px 5px rgba(0, 0, 0, 0.22);
-		// 	  text-align: center;
-		// 	  z-index: 2147483647;
-		// 	  margin: 0;
-		// 	  padding: 0;
-		// 	  box-sizing: border-box;
-		// 	  font-family: sans-serif;
-		// 	  cursor: default;
-		// 	  user-select: none;
-		// 	}
-
-
-		// 	#tool_wnd .ct_logo {
-		// 	  font-size: 18px;
-		// 	  text-align: left;
-		// 	  background-color: #ccc;
-		// 	  position: absolute;
-		// 	  cursor: move;
-		// 	  width: 100%;
-		// 	  height: 40px;
-		// 	  padding: 9px;
-		// 	  box-sizing: border-box;
-		// 	}
-
-		// 	#tool_wnd .tool_wind_body {
-		// 	  margin: 50px 7px 7px 7px;
-		// 	}
-
-		// 	#tool_area_btn {
-		// 	  width: 90px;
-		// 	  height: 40px;
-		// 	  position: relative;
-		// 	  background-color: #F2F2F2;
-		// 	  margin: auto;
-		// 	}
-
-		// 	#tool_row_btn {
-		// 	  width: 45px;
-		// 	  height: 30px;
-		// 	  position: absolute;
-		// 	  margin: -36px 5px 5px 50px;
-		// 	  background-color: #F2F2F2;
-		// 	  border: 1px solid black;
-		// 	  line-height: 30px;
-
-		// 	}
-
-		// 	#tool_wnd>div.tool_wind_body>table {
-		// 	  border-collapse: separate;
-		// 	  border-spacing: 10px 1em;
-		// 	  border: 0;
-		// 	  padding: 0;
-		// 	  margin: 0;
-		// 	}
-
-		// 	#tool_wnd>div.tool_wind_body>table>tbody>tr,
-		// 	#tool_wnd>div.tool_wind_body>table>tbody>tr>td,
-		// 	#tool_wnd>div.tool_wind_body>table>tbody>tr>th {
-		// 	  padding: 0;
-		// 	  text-align: center;
-		// 	  border: 0;
-		// 	}
-
-		// 	.tool_column_elem,
-		// 	.tool_value_elem {
-		// 	  width: 50px;
-		// 	  height: 30px;
-		// 	  overflow: hidden;
-		// 	  background-color: #F2F2F2;
-		// 	  border: 1px solid black;
-		// 	  line-height: 30px;
-		// 	  box-sizing: border-box;
-		// 	}
-
-		// 	#tool_flip_page_area {
-		// 	  width: 90px;
-		// 	  height: 40px;
-		// 	  font-size: 21px;
-		// 	  position: relative;
-		// 	  background-color: #F2F2F2;
-		// 	  line-height: 50px;
-		// 	  box-sizing: border-box;
-		// 	  margin: auto;
-		// 	}
-
-		// 	#tool_page_number_elem {
-		// 	  display: inline-block;
-		// 	  background-color: #F2F2F2;
-		// 	  width: 30px;
-		// 	  height: 30px;
-		// 	  position: absolute;
-		// 	  margin: -36px 5px 5px -15px;
-  //       border: 1px solid black;
-		// 	  box-sizing: border-box;
-		// 	  font-size: 21px;
-		// 	  line-height: 30px;
-		// 	}
-
-		// 	.tool_cleare_selected {
-		// 	  border: none;
-		// 	  background: transparent;
-		// 	  color: #E65A1A;
-		// 	  font-weight: 500;
-		// 	}
-
-		// 	#tool_Q_W>div.shorter,
-		// 	#tool_Q_W>div.longer {
-		// 	  margin: 5px;
-		// 	  color: black;
-		// 	  height: 30px;
-		// 	  width: 50px;
-		// 	  background-color: #F2F2F2;
-		// 	  border: 1px solid black;
-		// 	  line-height: 30px;
-		// 	  box-sizing: border-box;
-		// 	  display: inline-block;
-		// 	  /* margin: auto; */
-		// 	  margin-top: 10px;
-		// 	}
-
-		// 	.send_selected {
-		// 	  line-height: 40px;
-		// 	  width: 100px;
-		// 	  margin: auto;
-		// 	  margin-top: 15px;
-
-		// 	}
-
-
-		// 	#tool_wnd .ct_close {
-		// 	  position: absolute;
-		// 	  top: 0px;
-		// 	  right: 0px;
-		// 	}
-
-		// 	#tool_wnd .ct_close>div {
-		// 	  font-size: 21px;
-		// 	  width: 40px;
-		// 	  height: 40px;
-		// 	  border: 0;
-		// 	  background-color: #E67E22;
-		// 	  cursor: default;
-		// 	  line-height: 40px;
-		// 	  text-align: center;
-		// 	}
-
-		// 	.send_selected>div {
-		// 	  text-align: center;
-		// 	  font-size: 21px;
-		// 	  height: 40px;
-		// 	  border: 0;
-		// 	  background-color: #3498DB;
-
-
-		// 	}
-
-		// 	#tool_current_elm,
-		// 	#tool_clicked_elm,
-		// 	#tool_selected_elm {
-		// 	  width: 160px;
-		// 	  margin-top: 5px;
-		// 	  background: #f7f7f7;
-		// 	  border: solid 12px #f7f7f7;
-		// 	  border-width: 12px 0 12px 0;
-		// 	  max-height: 84px;
-		// 	  overflow: hidden;
-		// 	  color: black;
-		// 	  user-select: text;
-
-		// 	}
-
-		// 	.ncpt_border_active {
-		// 	  box-shadow: 0 0 11px rgba(65,167,225, 0.4);
-		// 	}
-			
-		// 	.ncpt_border_hover {
-		// 	  box-shadow: inset 0px 0px 13px 1px rgba(65,167,225, 0.5);
-		// 	}
-			
-		// 	.ncpt_border_selected {
-		// 	  box-shadow: inset 0px 0px 13px 1px rgba(30, 126, 134, 0.5);
-		// 	}
-
-		// 	.ncpt_border_important {
-		// 	  box-shadow: inset 0px 0px 13px 1px rgba(225,65,84, 0.5);
-		// 	}
-
-		//     #tool_overlay {
-		// 		position: absolute;
-		//         left: 0;
-		//         top: 0;
-		//         width: 110px;
-		//         height: 110px;
-		//         z-index: 2147483645;
-		// 	}
-
-
-
-		// 	`
-		// ];
-		// var cssId = 'tool_myCss';  // you could encode the css path itself to generate id..
-		// if (!document.getElementById(cssId))
-		// {
-		//     var head  = document.getElementsByTagName('head')[0];
-		//     var link  = document.createElement('link');
-		//     link.id   = cssId;
-		//     link.rel  = 'stylesheet';
-		//     link.type = 'text/css';
-		//     link.href = '/tool.css';
-		//     link.media = 'all';
-		//     head.appendChild(link);
-		// }
-
-
-		// let styleElm = document.querySelector('#tool_styles');
-		// if (!styleElm) {
-		// 	styleElm = document.createElement('style');
-		// 	styleElm.type = "text/css";
-		// 	styleElm.id = "tool_styles";
-		// 	document.head.appendChild(styleElm);
-		// }
-
-		// while (styleElm.firstChild) {
-		//     styleElm.removeChild(styleElm.firstChild);
-		// }
-		// styleElm.appendChild(document.createTextNode(cssLines.join('\n')));
-	},
 
 	updateElementList: function() {
 		if (!tool.helpWindow) return;
@@ -634,7 +377,6 @@ const tool = {
 	activate: function() {
 
 		tool.lockPage();
-		if (!tool.helpWindow) tool.updateCSS();
 		tool.helpWindowSpawn()
 
 		let div = document.getElementById("tool_wnd");
@@ -694,10 +436,10 @@ const tool = {
 
 
 		div.querySelector('#tool_row_btn').addEventListener('mouseover', function (e) {
-			// tool.activeElement.classList.add("ncpt_border_important");
+			//?
 		});
 		div.querySelector('#tool_row_btn').addEventListener('mouseout', function (e) {
-			tool.activeElement.classList.remove("ncpt_border_important");
+			//?
 		});
 
 		tool.spawnOverlay("tool_overlay", "tool_hover")
