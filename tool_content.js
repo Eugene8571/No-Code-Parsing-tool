@@ -17,34 +17,22 @@ const tool = {
 	selectedElems: [],
 	apiArgs: {},
 	helpWindow: false,
-	overlay: false,
+	overlayHover: false,
 
 
 	highlightHovered: function() {
 		if (!tool.hoveredElement) return;
 
-		if (tool.highlightedHover.id == "tool_overlay") {
-			tool.highlightedHover = tool.highlightedHover.relatedElement;
-		}
-		tool.highlightedHover = tool.hoveredElement;
+		// if (tool.highlightedHover.id == "tool_overlay") {
+		// 	tool.highlightedHover = tool.highlightedHover.relatedElement;
+		// }
+		// tool.highlightedHover = tool.hoveredElement;
 
 		// display PathHTML
 		document.querySelector('#tool_current_elm').innerHTML = tool.getPathHTML(tool.hoveredElement, tool.transpose);
 		document.querySelector('#tool_current_elm').scrollTop = 9999;
 
-
-		let rect = tool.hoveredElement.getBoundingClientRect();
-		tool.overlay.style.position = "absolute";
-		tool.overlay.style.left = rect.left +  window.scrollX + "px";
-		tool.overlay.style.top = rect.top + window.scrollY + "px";
-		tool.overlay.style.width = rect.width + "px";
-		tool.overlay.style.height = rect.height + "px";
-		// tool.overlay.style.background = "rgba(65,167,225,0.2)";
-		tool.overlay.style.border = "1px solid rgba(65,167,225,1)"
-		tool.overlay.style.boxShadow = "inset 0px 0px 13px 1px rgba(65,167,225, 0.5)"
-
-		tool.overlay.style.zIndex = tool.maxZIndex - 2;
-		tool.overlay.relatedElement = tool.hoveredElement;
+		tool.resizeOverlay(tool.overlayHover, tool.hoveredElement);
 
 	},
 
@@ -79,24 +67,6 @@ const tool = {
 		if (tool.isChildOftoolWindow(e.target)) return;
 
 		let overlay = tool.spawnOverlay(e.target, 'id1123', 'overlay_selected');
-
-		let rect = e.target.getBoundingClientRect();
-
-
-
-		// overlay.style.position = "absolute";
-		overlay.style.left = rect.left +  window.scrollX + "px";
-		overlay.style.top = rect.top + window.scrollY + "px";
-		overlay.style.width = rect.width + "px";
-		overlay.style.height = rect.height + "px";
-		// // overlay.style.background = "rgba(65,167,225,0.2)";
-		// overlay.style.border = "1px solid rgba(65,167,225,1)"
-		// overlay.style.boxShadow = "inset 0px 0px 13px 1px rgba(65,167,225, 0.5)"
-
-		// overlay.style.zIndex = tool.maxZIndex - 2;
-		overlay.relatedElement = tool.hoveredElement;
-
-
 		
 		if (tool.selectedElems.includes(e.target)) { // toggle select
 			tool.selectedElems.splice(tool.selectedElems.indexOf(e.target), 1);
@@ -238,6 +208,20 @@ const tool = {
 	},
 
 
+	resizeOverlay: function(overlay, new_target) {
+		let rect = new_target.getBoundingClientRect();
+		overlay.style.position = "absolute";
+		overlay.style.left = rect.left +  window.scrollX + "px";
+		overlay.style.top = rect.top + window.scrollY + "px";
+		overlay.style.width = rect.width + "px";
+		overlay.style.height = rect.height + "px";
+		overlay.style.border = "1px solid rgba(65,167,225,1)"
+		overlay.style.boxShadow = "inset 0px 0px 13px 1px rgba(65,167,225, 0.5)"
+
+		overlay.style.zIndex = tool.maxZIndex - 2;
+		overlay.relatedElement = new_target;
+	},
+
 	spawnOverlay: function(target, id, _class) {
 
 		if (target.relatedOverlay) {
@@ -252,7 +236,7 @@ const tool = {
 		overlay.style.pointerEvents = "none";
 
 		let rect = target.getBoundingClientRect();
-		
+
 		overlay.style.position = "absolute";
 		overlay.style.left = rect.left +  window.scrollX + "px";
 		overlay.style.top = rect.top + window.scrollY + "px";
@@ -461,7 +445,7 @@ const tool = {
 			//?
 		});
 
-		tool.overlay = tool.spawnOverlay(div, "tool_overlay", "tool_hover");
+		tool.overlayHover = tool.spawnOverlay(div, "tool_overlay", "tool_hover");
 
 		chrome.extension.sendMessage({action: 'status', active: true});
 	},
