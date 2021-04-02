@@ -18,7 +18,11 @@ const tool = {
 	apiArgs: {},
 	helpWindow: false,
 	overlayHover: false,
-
+	area: '',
+	row: '',
+	columns: [],
+	flip_area: '',
+	page_index: '',
 
 	highlightHovered: function() {
 		if (!tool.hoveredElement) return;
@@ -38,13 +42,15 @@ const tool = {
 
 	resizeActive: function(delta) {
 		if (!tool.activeElement) return;
-		let overlay = tool.activeElement.relatedOverlay;
 
-		let elem = overlay.clickedElement;
+		let overlay = tool.activeElement.relatedOverlay;
 		overlay.transpose += delta;
 		if (overlay.transpose < 0) {
 			overlay.transpose = 0;
+			return;
 		};
+
+		let elem = overlay.clickedElement;
 		// console.log(overlay);
 		let i = 0;
 		for (i = 0; i < overlay.transpose; i++) {
@@ -451,11 +457,22 @@ const tool = {
 			// var block = tool.getPathHTML(tool.selectedElement);
 			var url = document.location.href;
 
-			var line = HOME_URL + '?'+url
+			var line = ""
 
-			for (key in tool.apiArgs) {
-				line += '&'+key+'='+tool.apiArgs[key];
+			line += HOME_URL + '?'+ url
+			line += "&area=" + tool.area
+			line += "&row=" + tool.row
+
+
+			// tool.columns.push({column:'col_12212', value:'val_123'})
+			var i = 0;
+			for (i = 0; i < tool.columns.length; i++) {
+				line += "&column_" + i.toString() + "=" + tool.columns[i].column;
+				line += "&value_" + i.toString() + "=" + tool.columns[i].value;
 			}
+
+			line += "&flip_area=" + tool.flip_area
+			line += "&page_index=" + tool.page_index
 
 			alert(line);
 		});
