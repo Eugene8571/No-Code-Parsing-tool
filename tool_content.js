@@ -705,6 +705,14 @@ const tool = {
 		chrome.extension.sendMessage({action: 'status', active: true});
 	},
 
+	preventEvent: function(e) {
+		if (tool.isChildOftoolWindow(e.target)) return;
+
+		e.preventDefault();
+		e.stopPropagation();
+		return false;
+	},
+
 	deactivate: function() {
 
 		tool.apiArgs = {};
