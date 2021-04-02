@@ -36,8 +36,42 @@ const tool = {
 
 	},
 
+	resizeActive: function(delta) {
+		if (!tool.activeElement) return;
+		let overlay = tool.activeElement.relatedOverlay;
+
+		let elem = overlay.clickedElement;
+		overlay.transpose += delta;
+		if (overlay.transpose < 0) {
+			overlay.transpose = 0;
+		};
+		// console.log(overlay);
+		let i = 0;
+		for (i = 0; i < overlay.transpose; i++) {
+			if (elem.parentNode != window.document) {
+				elem = elem.parentNode;
+			} else {
+				break;
+			}
+		};
+
+		tool.activeElement = elem;
+		tool.activeElement.relatedOverlay = overlay;
+		// console.log(overlay.transpose)
+
+		let new_target = tool.activeElement;
+		tool.resizeOverlay(overlay, new_target);
+
+		document.querySelector('#tool_selected_elm').innerHTML = tool.getPathHTML(
+			tool.activeElement, overlay.transpose);
+		document.querySelector('#tool_selected_elm').scrollTop = 9999;
+
+
+	},
+
 	highlightSelected: function() {
 		if (!tool.selectedElement) return;
+		let overlay = tool.selectedElement.relatedOverlay;
 
 		tool.highlightedSelect = tool.activeElement;
 
@@ -52,6 +86,9 @@ const tool = {
 		
 		tool.transpose = i;
 		tool.selectedElement = tool.highlightedSelect;
+
+		let new_target = tool.selectedElement;
+		tool.resizeOverlay(overlay, new_target);
 
 		document.querySelector('#tool_selected_elm').innerHTML = tool.getPathHTML(
 			tool.selectedElement, tool.transpose);
@@ -243,6 +280,8 @@ const tool = {
 		overlay.style.width = rect.width + "px";
 		overlay.style.height = rect.height + "px";
 		overlay.relatedElement = target;
+		overlay.clickedElement = target;
+		overlay.transpose = 0;
 		target.relatedOverlay = overlay;
 		document.body.appendChild(overlay);
 		return overlay;
@@ -388,12 +427,15 @@ const tool = {
 		// Events
 
 		div.querySelector('.longer').addEventListener('click', function (e) {
-			if (tool.transpose > 0) tool.transpose--;
-			tool.highlightSelected();
+			tool.resizeActive(-1);
+			// if (tool.transpose > 0) tool.transpose--;
+			// tool.highlightSelected();
 		});
 		div.querySelector('.shorter').addEventListener('click', function (e) {
-			tool.transpose++;
-			tool.highlightSelected();
+			// console.log('.shorter click');
+			// tool.transpose++;
+			// tool.highlightSelected();
+			tool.resizeActive(1);
 		});
 
 		div.querySelector('.send_selected').addEventListener('click', function (e) {
