@@ -78,20 +78,20 @@ const tool = {
 
 		if (tool.isChildOftoolWindow(e.target)) return;
 
-		let overlay = tool.spawnOverlay('id1123', 'overlay_selected');
+		let overlay = tool.spawnOverlay(e.target, 'id1123', 'overlay_selected');
 
 		let rect = e.target.getBoundingClientRect();
 
 
 
-		overlay.style.position = "absolute";
+		// overlay.style.position = "absolute";
 		overlay.style.left = rect.left +  window.scrollX + "px";
 		overlay.style.top = rect.top + window.scrollY + "px";
 		overlay.style.width = rect.width + "px";
 		overlay.style.height = rect.height + "px";
-		// overlay.style.background = "rgba(65,167,225,0.2)";
-		overlay.style.border = "1px solid rgba(65,167,225,1)"
-		overlay.style.boxShadow = "inset 0px 0px 13px 1px rgba(65,167,225, 0.5)"
+		// // overlay.style.background = "rgba(65,167,225,0.2)";
+		// overlay.style.border = "1px solid rgba(65,167,225,1)"
+		// overlay.style.boxShadow = "inset 0px 0px 13px 1px rgba(65,167,225, 0.5)"
 
 		// overlay.style.zIndex = tool.maxZIndex - 2;
 		overlay.relatedElement = tool.hoveredElement;
@@ -238,11 +238,28 @@ const tool = {
 	},
 
 
-	spawnOverlay: function(id, _class) {
+	spawnOverlay: function(target, id, _class) {
+
+		if (target.relatedOverlay) {
+			target.relatedOverlay.remove();
+			target.relatedOverlay = false;
+			return;
+		};
+
 		let overlay = document.createElement('div');
 		overlay.setAttribute("id", id);
 		overlay.setAttribute("class", _class);
 		overlay.style.pointerEvents = "none";
+
+		let rect = target.getBoundingClientRect();
+		
+		overlay.style.position = "absolute";
+		overlay.style.left = rect.left +  window.scrollX + "px";
+		overlay.style.top = rect.top + window.scrollY + "px";
+		overlay.style.width = rect.width + "px";
+		overlay.style.height = rect.height + "px";
+		overlay.relatedElement = target;
+		target.relatedOverlay = overlay;
 		document.body.appendChild(overlay);
 		return overlay;
 	},
@@ -444,7 +461,7 @@ const tool = {
 			//?
 		});
 
-		tool.overlay = tool.spawnOverlay("tool_overlay", "tool_hover");
+		tool.overlay = tool.spawnOverlay(div, "tool_overlay", "tool_hover");
 
 		chrome.extension.sendMessage({action: 'status', active: true});
 	},
