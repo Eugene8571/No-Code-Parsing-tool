@@ -22,3 +22,6 @@ line.columns = {}
 line.columns.id1 = 'val1'
 
 console.log(line)
+
+console.log(require.main === module);
+
