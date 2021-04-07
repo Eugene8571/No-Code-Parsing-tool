@@ -18,11 +18,11 @@ const tool = {
 	apiArgs: {},
 	helpWindow: false,
 	overlayHover: false,
-	area: '',
-	row: '',
+	area: false,
+	row: false,
 	columns: [],
-	flip_area: '',
-	page_index: '',
+	flip_area: false,
+	page_index: false,
 
 	highlightHovered: function() {
 		if (!tool.hoveredElement) return;
@@ -107,7 +107,7 @@ const tool = {
 			e.target = e.target.relatedElement;
 		}
 
-		if (tool.isChildOftoolWindow(e.target)) return;
+		if (tool.isChildOfToolWindow(e.target)) return;
 
 		let overlay = tool.spawnOverlay(e.target, 'id1123', 'overlay_selected');
 		
@@ -139,7 +139,7 @@ const tool = {
 		}
 	},
 	
-	isChildOftoolWindow: function(elm) {
+	isChildOfToolWindow: function(elm) {
 		for (var i = 0; i < 8; i++) {
 			if (elm == tool.helpWindow) return true;
 			elm = elm.parentNode;
@@ -195,7 +195,7 @@ const tool = {
 		let path = [];
 		let currentElm = element;
 
-		if (currentElm.id == "tool_overlay") { // this is just a proxy for an iframe
+		if (currentElm.id == "tool_overlay") {
 			currentElm = currentElm.relatedElement;
 		}
 
@@ -308,75 +308,131 @@ const tool = {
   </div>
 
   <div class="tool_wind_body">
-    <table>
-      <tr>
-        <td colspan="2">
-          <div>
-            <div id="tool_area_btn"></div>
-            <div id="tool_row_btn">row</div>
-          </div>
-        </td>
-        <td>
-          <div id="tool_clear_area_row" class="tool_cleare_selected">X</div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div class="tool_column_elem"></div>
-        </td>
-        <td>
-          <div class="tool_value_elem"></div>
-        </td>
-        <td>
-          <div class="tool_cleare_selected">X</div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <div class="tool_column_elem"></div>
-        </td>
-        <td>
-          <div class="tool_value_elem"></div>
-        </td>
-        <td>
-          <div class="tool_cleare_selected">X</div>
-        </td>
-      </tr>
+
+    <table class="table">
+
+<!--       <tr class="tool_table_decor_top">
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      
+      </tr> -->
+
 
       <tr>
-        <td colspan="2">
-          <div>
-            <div id="tool_flip_page_area">. . . . . . .</div>
-            <div id="tool_page_number_elem">2</div>
-          </div>
-        </td>
         <td>
-          <div class="tool_cleare_selected">X</div>
+          <div id="tool_area_btn">area</div>
+        </td>
+        <td class='tool_cell_resize'>
+          <div></div>
+        </td>
+        <td class='tool_cell_resize'>
+          <div></div>
+        </td>
+        <td class='tool_cell_resize'>
+          <div></div>
+        </td>
+        <td class='tool_cell_resize'>
+          <div></div>
         </td>
 
       </tr>
       <tr>
-        <td colspan="3">
-          <div id="tool_Q_W">
-            <div class="shorter">&lt; Q</div>
-            <div class="longer">W &gt;</div>
-          </div>
+        <td>
+          <div id="tool_row_btn">row</div>
+        </td>
+        <td class='tool_cell_resize'>
+          <div></div>
+        </td>
+        <td class='tool_cell_resize'>
+          <div></div>
+        </td>
+        <td class='tool_cell_resize'>
+          <div></div>
+        </td>
+        <td class='tool_cell_resize'>
+          <div></div>
+        </td>
+
+      </tr>
+
+      <tr class="tool_table_decor_bot">
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+
+      </tr>
+
+
+    </table>
+    <table class="controls">
+      <tr>
+        <td>
+          <div class="shorter">&lt; Q</div>
+
+        </td>
+        <td>
+          <div class="longer">W &gt;</div>
+        </td>
+        <td style="width:27%;"></td>
+        <td><div>🕮</div></td>
+        <td><div id="path_show_btn">&#9660;</div></td>
+        <td style="width:27%;"></td>
+        <td>
+          <div class="send_selected">✔️</div>
+
         </td>
       </tr>
     </table>
 
-    <div>
-      <div id="tool_current_elm"></div>
-      <div id="tool_clicked_elm"></div>
-      <div id="tool_selected_elm"></div>
-    </div>
 
 
-    <div class="send_selected">
-      <div>✔️</div>
+    <div id="tool_flip_page_expend">
+
     </div>
+    <!--     <div id="tool_flip_page_area">
+    . . . . . . .
+    <div id="tool_page_number_elem">2</div>
+    </div> -->
+
+
+
+    <table id="path_show">
+
+      <tr>
+        <td>hover</td>
+        <td>
+          <div id="tool_current_elm"></div>
+        </td>
+        <td>🗐</td>
+      </tr>
+      <tr>
+        <td>click</td>
+        <td>
+          <div id="tool_clicked_elm"></div>
+        </td>
+        <td>🗐</td>
+
+      </tr>
+      <tr>
+        <td>select</td>
+
+        <td>
+          <div id="tool_selected_elm"></div>
+        </td>
+        <td>🗐</td>
+
+      </tr>
+    </table>
+
+
 
   </div>
+
 		`;
 	},
 
@@ -497,20 +553,46 @@ const tool = {
 		document.addEventListener('click', tool.preventEvent, true);
 
 
-		div.querySelector('#tool_row_btn').addEventListener('mouseover', function (e) {
-			// tool.highlightReleted('#tool_row_btn');
-		});
-		div.querySelector('#tool_row_btn').addEventListener('mouseout', function (e) {
-			//?
-		});
+		// div.querySelector('#tool_row_btn').addEventListener('mouseover', function (e) {
+		// 	if (tool.row) {
+		// 		tool.row.relatedOverlay.classList.add("overlay_highlight");
+		// 	}
+		// });
+		// div.querySelector('#tool_row_btn').addEventListener('mouseout', function (e) {
+		// 	if (tool.row) {
+		// 		tool.row.relatedOverlay.classList.remove("overlay_highlight");
+		// 	}
+		// });
+		// div.querySelector('#tool_row_btn').addEventListener('mousedown', function (e) {
+		// 	if (tool.activeElement) {
+		// 		if (tool.row) {
+		// 			tool.row.relatedOverlay.classList.remove("overlay_highlight");
+		// 			tool.row.relatedOverlay.innerHTML = '';
+		// 		}
+		// 		tool.row = tool.activeElement;
+		// 		tool.row.relatedOverlay.classList.add("overlay_highlight");
+		// 		tool.row.relatedOverlay.innerHTML = '#tool_row_btn';
+
+
+		// 		// div.querySelector('#tool_row_btn').classList.add("tool_have_value");
+
+		// 	}
+		// });
 
 		tool.overlayHover = tool.spawnOverlay(div, "tool_overlay", "tool_hover");
 
 		chrome.extension.sendMessage({action: 'status', active: true});
 	},
 
+    // styleOverlay: function(elem, _class) {
+    // 	overlay = elem.relatedOverlay;
+    // 	overlay.setAttribute("class", _class);
+
+    // },
+
+
 	preventEvent: function(e) {
-		if (tool.isChildOftoolWindow(e.target)) return;
+		if (tool.isChildOfToolWindow(e.target)) return;
 
 		e.preventDefault();
 		e.stopPropagation();
