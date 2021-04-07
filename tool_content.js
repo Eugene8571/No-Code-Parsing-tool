@@ -12,6 +12,7 @@ const tool = {
 	highlightedSelect: false,
 	targetingMode: false,
 	activeElement: false,
+	activeOverlay: false,
 	selectedElement: false,
 	transpose: 0,
 	selectedElems: [],
@@ -109,8 +110,14 @@ const tool = {
 
 		if (tool.isChildOfToolWindow(e.target)) return;
 
-		let overlay = tool.spawnOverlay(e.target, 'id1123', 'overlay_selected');
-		
+		if (!tool.activeOverlay || tool.activeOverlay.assignedBtn) {
+			let overlay = tool.spawnOverlay(e.target, 'id1123', 'overlay_selected');
+			tool.activeOverlay = overlay;
+		} else {
+			let overlay = tool.activeOverlay;
+			tool.resizeOverlay(overlay, e.target);
+		}
+
 		if (tool.selectedElems.includes(e.target)) { // toggle select
 			tool.selectedElems.splice(tool.selectedElems.indexOf(e.target), 1);
 			return;
@@ -323,7 +330,7 @@ const tool = {
 
       <tr>
         <td>
-          <div id="tool_area_btn">area</div>
+          <div id="tool_area_btn" class="arg_btn">area</div>
         </td>
         <td class='tool_cell_resize'>
           <div></div>
@@ -375,6 +382,7 @@ const tool = {
           <div class="shorter">&lt; Q</div>
 
         </td>
+        <td><div style="width:10px;"></div></td>
         <td>
           <div class="longer">W &gt;</div>
         </td>
@@ -551,6 +559,14 @@ const tool = {
 		document.addEventListener('mousedown', tool.selectElement, true);
 		document.addEventListener('mouseup', tool.preventEvent, true);
 		document.addEventListener('click', tool.preventEvent, true);
+
+		
+
+		div.querySelector('.arg_btn').addEventListener('mousedown', function (e) {
+			if (tool.activeOverlay) {
+				tool.activeOverlay.assignedBtn = e.target.id
+			}
+		});
 
 
 		// div.querySelector('#tool_row_btn').addEventListener('mouseover', function (e) {
