@@ -68,12 +68,12 @@
 }
 
 #tool_wnd table.controls div#path {
-  background:green;
+  /*background:green;*/
   /* width: 50%; */
     
 }
 #tool_wnd table.controls a#path {
-  background:yellow;
+  /*background:yellow;*/
   /* width: 50%; */
     
 }
