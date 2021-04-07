@@ -24,6 +24,7 @@ const tool = {
 	columns: [],
 	flip_area: false,
 	page_index: false,
+    tableLenth: 5, // число колонок в таблице выбранного + 1
 
 	highlightHovered: function() {
 		if (!tool.hoveredElement) return;
@@ -330,20 +331,20 @@ const tool = {
 
       <tr>
         <td>
-          <div id="tool_area_btn" class="arg_btn">area</div>
+          <div id="tool_area_btn">area</div>
         </td>
         <td class='tool_cell_resize'>
-          <div></div>
+          <div id="tool_col_1"></div>
         </td>
         <td class='tool_cell_resize'>
-          <div></div>
+            <div id="tool_col_2"></div>
         </td>
         <td class='tool_cell_resize'>
-          <div></div>
+          <div id="tool_col_3"></div>
         </td>
         <td class='tool_cell_resize'>
-          <div></div>
-        </td>
+            <div id="tool_col_4"></div>
+        </td>        
 
       </tr>
       <tr>
@@ -351,18 +352,17 @@ const tool = {
           <div id="tool_row_btn">row</div>
         </td>
         <td class='tool_cell_resize'>
-          <div></div>
+            <div id="tool_val_1"></div>
         </td>
         <td class='tool_cell_resize'>
-          <div></div>
+            <div id="tool_val_2"></div>
         </td>
         <td class='tool_cell_resize'>
-          <div></div>
+            <div id="tool_val_3"></div>
         </td>
         <td class='tool_cell_resize'>
-          <div></div>
+            <div id="tool_val_4"></div>
         </td>
-
       </tr>
 
       <tr class="tool_table_decor_bot">
@@ -562,11 +562,40 @@ const tool = {
 
 		
 
-		div.querySelector('.arg_btn').addEventListener('mousedown', function (e) {
+		div.querySelector('#tool_area_btn').addEventListener('mousedown', function (e) {
 			if (tool.activeOverlay) {
 				tool.activeOverlay.assignedBtn = e.target.id
+                e.target.innerHTML = tool.activeOverlay.relatedElement.innerHTML
+                tool.activeOverlay = false
 			}
 		});
+
+        div.querySelector('#tool_row_btn').addEventListener('mousedown', function (e) {
+            if (tool.activeOverlay) {
+                tool.activeOverlay.assignedBtn = e.target.id
+                e.target.innerHTML = tool.activeOverlay.relatedElement.innerHTML
+                tool.activeOverlay = false
+            }
+        });
+
+        for (var i=1; i<tool.tableLenth; i++) {
+            var col = '#tool_col_' + i.toString()
+            div.querySelector(col).addEventListener('mousedown', function (e) {
+                if (tool.activeOverlay) {
+                    tool.activeOverlay.assignedBtn = e.target.id
+                    e.target.textContent = tool.activeOverlay.relatedElement.textContent
+                    tool.activeOverlay = false
+                }
+            });
+            var val = '#tool_val_' + i.toString()
+            div.querySelector(val).addEventListener('mousedown', function (e) {
+                if (tool.activeOverlay) {
+                    tool.activeOverlay.assignedBtn = e.target.id
+                    e.target.textContent = tool.activeOverlay.relatedElement.textContent
+                    tool.activeOverlay = false
+                }
+            });
+        }
 
 
 		// div.querySelector('#tool_row_btn').addEventListener('mouseover', function (e) {
