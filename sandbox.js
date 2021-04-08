@@ -25,3 +25,8 @@ console.log(line)
 
 console.log(require.main === module);
 
+let N = '12';
+console.log(parseInt(N));
+
+let l = "tool_col_1";
+console.log(l.substr(5, 3));

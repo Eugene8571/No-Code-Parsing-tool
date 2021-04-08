@@ -212,7 +212,7 @@
 
 #tool_wnd table#path_show {
   width:100%;
-  display:none;
+  /*display:none;*/
 }
 
 #tool_current_elm,

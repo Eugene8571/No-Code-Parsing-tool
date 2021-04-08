@@ -43,7 +43,10 @@ const tool = {
 	},
 
 	resizeActive: function(delta) {
-		if (!tool.activeElement) return;
+        if (!tool.activeElement) return;
+        // if (!tool.activeElement.relatedOverlay) {
+        //     tool.activeElement.relatedOverlay = tool.overlayHover;
+        // };
 
 		let overlay = tool.activeElement.relatedOverlay;
 		overlay.transpose += delta;
@@ -112,10 +115,10 @@ const tool = {
 		if (tool.isChildOfToolWindow(e.target)) return;
 
 		if (!tool.activeOverlay || tool.activeOverlay.assignedBtn) {
-			let overlay = tool.spawnOverlay(e.target, 'id1123', 'overlay_selected');
+			var overlay = tool.spawnOverlay(e.target, '', 'overlay_selected');
 			tool.activeOverlay = overlay;
 		} else {
-			let overlay = tool.activeOverlay;
+			var overlay = tool.activeOverlay;
 			tool.resizeOverlay(overlay, e.target);
 		}
 
@@ -128,6 +131,8 @@ const tool = {
 		line = tool.getPathHTML(e.target);
 
 		if (e.target) {
+
+            e.target.relatedOverlay = overlay;
 			tool.activeElement = e.target;
 			tool.selectedElement = e.target;
 
@@ -271,6 +276,8 @@ const tool = {
 
 		overlay.style.zIndex = tool.maxZIndex - 2;
 		overlay.relatedElement = new_target;
+        // new_target.relatedOverlay = overlay;
+
 	},
 
 	spawnOverlay: function(target, id, _class) {
@@ -298,6 +305,11 @@ const tool = {
 		overlay.transpose = 0;
 		target.relatedOverlay = overlay;
 		document.body.appendChild(overlay);
+        // if (tool.activeArg) {
+        //     overlay.innerText = tool.activeArg
+        //     overlay.arg = tool.activeArg
+        //     tool.activeArg = tool.nextActiveArg(tool.activeArg)
+        // }
 		return overlay;
 	},
 
@@ -585,6 +597,7 @@ const tool = {
                     tool.activeOverlay.assignedBtn = e.target.id
                     e.target.textContent = tool.activeOverlay.relatedElement.textContent
                     tool.activeOverlay = false
+                    tool.nextActiveArg(e.target.id)
                 }
             });
             var val = '#tool_val_' + i.toString()
@@ -593,6 +606,8 @@ const tool = {
                     tool.activeOverlay.assignedBtn = e.target.id
                     e.target.textContent = tool.activeOverlay.relatedElement.textContent
                     tool.activeOverlay = false
+                    tool.nextActiveArg(e.target.id)
+
                 }
             });
         }
@@ -628,6 +643,43 @@ const tool = {
 
 		chrome.extension.sendMessage({action: 'status', active: true});
 	},
+
+    nextActiveArg: function(arg) {
+        let btn = document.querySelector("#"+arg)
+        btn.style.border = "0"
+
+        let next_arg = false
+
+        if (arg == "tool_area_btn") {
+            next_arg = "tool_row_btn"
+        } else if (arg == "tool_row_btn") {
+            next_arg = "tool_col_1"
+        }
+        let i = arg.match(/\d+/);
+        i = parseInt(i);
+        if (!i) {next_arg = false}
+        if (arg == ("tool_val_" + (tool.tableLenth - 1).toString())) {
+            next_arg = false
+        }
+
+        if (arg.substr(5, 3) == "col") {
+            next_arg = "tool_val_" + i.toString()
+        } else {
+            next_arg = "tool_col_" + (i + 1).toString()
+        }
+
+
+        // overlay.style.border = "1px solid rgba(65,167,225,1)"
+        // overlay.style.boxShadow = "inset 0px 0px 13px 1px rgba(65,167,225, 0.5)"
+
+        let next_btn = document.querySelector("#"+next_arg)
+        next_btn.style.border = "1px solid green"
+
+        tool.activeArg = next_arg
+
+
+      
+    },
 
     // styleOverlay: function(elem, _class) {
     // 	overlay = elem.relatedOverlay;
