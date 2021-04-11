@@ -21,7 +21,7 @@
 	"content_scripts": [ {
 		"all_frames": false,
 		"js": [ "tool_content.js" ],
-		"css": [ "tool_wind/tool.css" ],
+		"css": [ "tool_wnd/tool.css" ],
 		"matches": [ 
 			"http://*/*", 
 			"https://*/*" ],
@@ -33,7 +33,6 @@
 		"https://*/*"
 	],
 	"web_accessible_resources": [ 
-		"tool_wind/tool.html",
-		"tool.html"
+		"tool_wnd/tool.html"
 	]
 }

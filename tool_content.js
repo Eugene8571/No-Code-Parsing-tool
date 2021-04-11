@@ -331,7 +331,7 @@ const tool = {
 
 	activate: function() {
 
-        fetch(chrome.runtime.getURL('/tool.html')).then(r => r.text()).then(html => {
+        fetch(chrome.runtime.getURL('/tool_wnd/tool.html')).then(r => r.text()).then(html => {
           document.body.insertAdjacentHTML('afterend', html);
           // not using innerHTML as it would break js event listeners of the page
 
