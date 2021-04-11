@@ -1,16 +1,10 @@
-var RMB_TARGET = null;
 var	HOME_URL = "http://127.0.0.1:8000/";
-
-document.addEventListener('contextmenu', function (event) {
-  RMB_TARGET = event.target;
-});
 
 const tool = {
 	hoveredElement: false,
 	markedElement: false,
 	highlightedHover: false,
 	highlightedSelect: false,
-	targetingMode: false,
 	activeElement: false,
 	activeOverlay: false,
 	selectedElement: false,
@@ -28,11 +22,6 @@ const tool = {
 
 	highlightHovered: function() {
 		if (!tool.hoveredElement) return;
-
-		// if (tool.highlightedHover.id == "tool_overlay") {
-		// 	tool.highlightedHover = tool.highlightedHover.relatedElement;
-		// }
-		// tool.highlightedHover = tool.hoveredElement;
 
 		// display PathHTML
 		document.querySelector('#tool_current_elm').innerHTML = tool.getPathHTML(tool.hoveredElement, tool.transpose);
@@ -115,7 +104,7 @@ const tool = {
 		if (tool.isChildOfToolWindow(e.target)) return;
 
 		if (!tool.activeOverlay || tool.activeOverlay.assignedBtn) {
-			var overlay = tool.spawnOverlay(e.target, '', 'overlay_selected');
+			var overlay = tool.spawnOverlay(e.target, '', 'tool_selected');
 			tool.activeOverlay = overlay;
 		} else {
 			var overlay = tool.activeOverlay;
@@ -247,22 +236,6 @@ const tool = {
 		document.getElementById('tool_clicked_elm').scrollTop = 9999;
 
 	},
-	
-	lockPage: function() {
-		lockElements(document.getElementsByTagName("a"));
-		lockElements(document.getElementsByTagName("input"));
-		lockElements(document.getElementsByTagName("button"));
-
-
-		function lockElements(el) {
-			for (let i = 0; i < el.length; i++) {
-				el[i].onclick = "return false;";
-				el[i].href = "#"+el[i].href;
-				el[i].target = "";
-			}
-		}
-	},
-
 
 	resizeOverlay: function(overlay, new_target) {
 		let rect = new_target.getBoundingClientRect();
@@ -314,148 +287,6 @@ const tool = {
 	},
 
 
-	helpWindowSpawn: function() {
-		let div = document.createElement('div');
-		div.setAttribute("id", "tool_wnd");
-		document.body.appendChild(div);
-
-		div.innerHTML = `
-  <div id="tool_wnd_header">
-    <div class="ct_logo">Parsing tool</div>
-    <div class="ct_close">
-      <div>✖️</div>
-    </div>
-  </div>
-
-  <div class="tool_wind_body">
-
-    <table class="table">
-
-<!--       <tr class="tool_table_decor_top">
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      
-      </tr> -->
-
-
-      <tr>
-        <td>
-          <div id="tool_area_btn">area</div>
-        </td>
-        <td class='tool_cell_resize'>
-          <div id="tool_col_1"></div>
-        </td>
-        <td class='tool_cell_resize'>
-            <div id="tool_col_2"></div>
-        </td>
-        <td class='tool_cell_resize'>
-          <div id="tool_col_3"></div>
-        </td>
-        <td class='tool_cell_resize'>
-            <div id="tool_col_4"></div>
-        </td>        
-
-      </tr>
-      <tr>
-        <td>
-          <div id="tool_row_btn">row</div>
-        </td>
-        <td class='tool_cell_resize'>
-            <div id="tool_val_1"></div>
-        </td>
-        <td class='tool_cell_resize'>
-            <div id="tool_val_2"></div>
-        </td>
-        <td class='tool_cell_resize'>
-            <div id="tool_val_3"></div>
-        </td>
-        <td class='tool_cell_resize'>
-            <div id="tool_val_4"></div>
-        </td>
-      </tr>
-
-      <tr class="tool_table_decor_bot">
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-
-      </tr>
-
-
-    </table>
-    <table class="controls">
-      <tr>
-        <td>
-          <div class="shorter">&lt; Q</div>
-
-        </td>
-        <td><div style="width:10px;"></div></td>
-        <td>
-          <div class="longer">W &gt;</div>
-        </td>
-        <td style="width:27%;"></td>
-        <td><div>🕮</div></td>
-        <td><div id="path_show_btn">&#9660;</div></td>
-        <td style="width:27%;"></td>
-        <td>
-          <div class="send_selected">✔️</div>
-
-        </td>
-      </tr>
-    </table>
-
-
-
-    <div id="tool_flip_page_expend">
-
-    </div>
-    <!--     <div id="tool_flip_page_area">
-    . . . . . . .
-    <div id="tool_page_number_elem">2</div>
-    </div> -->
-
-
-
-    <table id="path_show">
-
-      <tr>
-        <td>hover</td>
-        <td>
-          <div id="tool_current_elm"></div>
-        </td>
-        <td>🗐</td>
-      </tr>
-      <tr>
-        <td>click</td>
-        <td>
-          <div id="tool_clicked_elm"></div>
-        </td>
-        <td>🗐</td>
-
-      </tr>
-      <tr>
-        <td>select</td>
-
-        <td>
-          <div id="tool_selected_elm"></div>
-        </td>
-        <td>🗐</td>
-
-      </tr>
-    </table>
-
-
-
-  </div>
-
-		`;
-	},
-
 	makeDraggable: function(elmnt) {
 		var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 		if (document.getElementById(elmnt.id + "_header")) {
@@ -500,73 +331,47 @@ const tool = {
 
 	activate: function() {
 
-		tool.lockPage();
-		tool.helpWindowSpawn()
-
-		let div = document.getElementById("tool_wnd");
-		tool.makeDraggable(div);
+        fetch(chrome.runtime.getURL('/tool.html')).then(r => r.text()).then(html => {
+          document.body.insertAdjacentHTML('afterend', html);
+          // not using innerHTML as it would break js event listeners of the page
 
 		// Events
 
-		div.querySelector('.longer').addEventListener('click', function (e) {
+        let div = document.getElementById("tool_wnd");
+    
+        tool.makeDraggable(div);
+        tool.overlayHover = tool.spawnOverlay(div, "tool_overlay", "tool_hover");
+	
+    	div.querySelector('.longer').addEventListener('click', function (e) {
 			tool.resizeActive(-1);
-			// if (tool.transpose > 0) tool.transpose--;
-			// tool.highlightSelected();
 		});
 		div.querySelector('.shorter').addEventListener('click', function (e) {
-			// console.log('.shorter click');
-			// tool.transpose++;
-			// tool.highlightSelected();
 			tool.resizeActive(1);
 		});
 
 		div.querySelector('.send_selected').addEventListener('click', function (e) {
-			// var element = encodeURIComponent(tool.getPathHTML(tool.activeElement));
-			// var block = encodeURIComponent(tool.getPathHTML(tool.selectedElement));
-			// var url = encodeURIComponent(document.location.href);
-			// var line = HOME_URL + url + "&element=" + element + "&block=" + block;
-			// window.location = line;
+            var elements = document.getElementsByClassName("tool_selected");
 
-
-			// var element = tool.getPathHTML(tool.activeElement);
-			// // var element = tool.getPathHTML(tool.hoveredElement);
-			// var block = tool.getPathHTML(tool.selectedElement);
 			var url = document.location.href;
 
 			var line = ""
 
-			line += HOME_URL + '?'+ url
-			line += "&area=" + tool.area
-			line += "&row=" + tool.row
+            // line += encodeURIComponent(HOME_URL) + '?'+ url
+			line += HOME_URL + '\n\n?'+ url 
 
+            for(let i = 0, length1 = elements.length; i < length1; i++){
+                line += "\n\n" + "&" + elements[i].arg + "=" + tool.getPathHTML(elements[i])
+            }
 
-			// tool.columns.push({column:'col_12212', value:'val_123'})
-			var i = 0;
-			for (i = 0; i < tool.columns.length; i++) {
-				line += "&column_" + i.toString() + "=" + tool.columns[i].column;
-				line += "&value_" + i.toString() + "=" + tool.columns[i].value;
-			}
-
-			line += "&flip_area=" + tool.flip_area
-			line += "&page_index=" + tool.page_index
-
+            // window.location = line;
 			alert(line);
 		});
 
 		div.querySelector('.ct_close').addEventListener('click', function (e) {
 			tool.deactivate();
 		});
-
-		for (let elm of div.querySelectorAll('.ct_more a')) {
-			elm.addEventListener('click', function (e) {
-
-				tool.deactivate();
-			});
-		}
 		
 		tool.helpWindow = div;
-		tool.updateElementList();
-		tool.targetingMode = true;
 		document.addEventListener('mouseover', tool.mouseover, true);
 		document.addEventListener('mousedown', tool.selectElement, true);
 		document.addEventListener('mouseup', tool.preventEvent, true);
@@ -613,35 +418,8 @@ const tool = {
         }
 
 
-		// div.querySelector('#tool_row_btn').addEventListener('mouseover', function (e) {
-		// 	if (tool.row) {
-		// 		tool.row.relatedOverlay.classList.add("overlay_highlight");
-		// 	}
-		// });
-		// div.querySelector('#tool_row_btn').addEventListener('mouseout', function (e) {
-		// 	if (tool.row) {
-		// 		tool.row.relatedOverlay.classList.remove("overlay_highlight");
-		// 	}
-		// });
-		// div.querySelector('#tool_row_btn').addEventListener('mousedown', function (e) {
-		// 	if (tool.activeElement) {
-		// 		if (tool.row) {
-		// 			tool.row.relatedOverlay.classList.remove("overlay_highlight");
-		// 			tool.row.relatedOverlay.innerHTML = '';
-		// 		}
-		// 		tool.row = tool.activeElement;
-		// 		tool.row.relatedOverlay.classList.add("overlay_highlight");
-		// 		tool.row.relatedOverlay.innerHTML = '#tool_row_btn';
 
-
-		// 		// div.querySelector('#tool_row_btn').classList.add("tool_have_value");
-
-		// 	}
-		// });
-
-		tool.overlayHover = tool.spawnOverlay(div, "tool_overlay", "tool_hover");
-
-		chrome.extension.sendMessage({action: 'status', active: true});
+        });
 	},
 
     nextActiveArg: function(arg) {
@@ -668,10 +446,6 @@ const tool = {
             next_arg = "tool_col_" + (i + 1).toString()
         }
 
-
-        // overlay.style.border = "1px solid rgba(65,167,225,1)"
-        // overlay.style.boxShadow = "inset 0px 0px 13px 1px rgba(65,167,225, 0.5)"
-
         let next_btn = document.querySelector("#"+next_arg)
         next_btn.style.border = "1px solid green"
 
@@ -681,88 +455,38 @@ const tool = {
       
     },
 
-    // styleOverlay: function(elem, _class) {
-    // 	overlay = elem.relatedOverlay;
-    // 	overlay.setAttribute("class", _class);
-
-    // },
-
-
-	preventEvent: function(e) {
+	preventEvent: function(e) { //
 		if (tool.isChildOfToolWindow(e.target)) return;
-
 		e.preventDefault();
 		e.stopPropagation();
 		return false;
 	},
 
-	deactivate: function() {
+	deactivate: function() { //
 
 		tool.apiArgs = {};
-
-		if (tool.markedElement) {
-			// tool.removeHighlightStyle(tool.markedElement);
-		}
 		tool.markedElement = false;
-
-		if (tool.selectedElement) {
-			// tool.removeHighlightStyle(tool.selectedElement);
-		}
 		tool.selectedElement = false;
-		if (tool.activeElement) {
-			// tool.removeHighlightStyle(tool.activeElement);
-		}
 		tool.activeElement = false;
-
 		tool.helpWindow.parentNode.removeChild(tool.helpWindow);
 		tool.helpWindow = false;
 
-		tool.targetingMode = false;
 		document.removeEventListener('mouseover', tool.mouseover, true);
 		document.removeEventListener('mousedown', tool.selectElement, true);
 		document.removeEventListener('mouseup', tool.preventEvent, true);
 		document.removeEventListener('click', tool.preventEvent, true);
 
-		function unlockPage() {
-		    unlockElements(document.getElementsByTagName("a"));
-		    unlockElements(document.getElementsByTagName("input"));
-		    unlockElements(document.getElementsByTagName("button"));
-		};
-
-		function unlockElements(el) //?
-		{
-		  for (var i=0; i<el.length; i++)
-		  {
-		    el[i].style.pointerEvents="auto";
-		  }
-		};
-
-		unlockPage();
-		chrome.extension.sendMessage({action: 'status', active: false});
 	},
 	
 	toggle: function() {
-		if (tool.targetingMode) tool.deactivate();
+		if (document.getElementById("tool_wnd")) tool.deactivate(); //
 		else tool.activate();
 	},
 	
 	init: function() {
-		document.addEventListener('keydown', tool.keyDown);
-		document.addEventListener('keyup', tool.keyUp);
-		
 		chrome.extension.onMessage.addListener(function(msg, sender, responseFun) {
 			if (msg.action == "toggle") {
 				tool.toggle();
-				responseFun(2.0);
-			}
-
-			if (msg.action == "rmb_event") {
-				if (tool.activeElement) {
-					tool.deactivate();
-					tool.activate(); 
-				} else {
-					tool.activate(); 
-				}
 				responseFun(2.0);
 			}
 

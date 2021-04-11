@@ -31,5 +31,9 @@
 	    "contextMenus",
 	    "http://*/*", 
 		"https://*/*"
+	],
+	"web_accessible_resources": [ 
+		"tool_wind/tool.html",
+		"tool.html"
 	]
 }
