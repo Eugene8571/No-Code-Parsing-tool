@@ -331,6 +331,87 @@ const tool = {
         }
     },
 
+    addEventListeners: function() {
+        let div = document.getElementById("tool_wnd");
+
+        tool.makeDraggable(div);
+        tool.overlayHover = tool.spawnOverlay(div, "tool_overlay", "tool_hover");
+
+        div.querySelector('.longer').addEventListener('click', function(e) {
+            tool.resizeActive(-1);
+        });
+        div.querySelector('.shorter').addEventListener('click', function(e) {
+            tool.resizeActive(1);
+        });
+
+        div.querySelector('.send_selected').addEventListener('click', function(e) {
+            var elements = document.getElementsByClassName("tool_selected");
+
+            var url = document.location.href;
+
+            var line = ""
+
+            // line += encodeURIComponent(HOME_URL) + '?'+ url
+            line += HOME_URL + '\n\n?' + url
+
+            for (let i = 0, length1 = elements.length; i < length1; i++) {
+                line += "\n\n" + "&" + elements[i].arg + "=" + tool.getPathHTML(elements[i])
+            }
+
+            // window.location = line;
+            alert(line);
+        });
+
+        div.querySelector('.ct_close').addEventListener('click', function(e) {
+            tool.deactivate();
+        });
+
+        tool.helpWindow = div;
+        document.addEventListener('mouseover', tool.mouseover, true);
+        document.addEventListener('mousedown', tool.selectElement, true);
+        document.addEventListener('mouseup', tool.preventEvent, true);
+        document.addEventListener('click', tool.preventEvent, true);
+
+
+
+        div.querySelector('#tool_area_btn').addEventListener('mousedown', function(e) {
+            if (tool.activeOverlay) {
+                tool.activeOverlay.assignedBtn = e.target.id
+                e.target.innerHTML = tool.activeOverlay.relatedElement.innerHTML
+                tool.activeOverlay = false
+            }
+        });
+
+        div.querySelector('#tool_row_btn').addEventListener('mousedown', function(e) {
+            if (tool.activeOverlay) {
+                tool.activeOverlay.assignedBtn = e.target.id
+                e.target.innerHTML = tool.activeOverlay.relatedElement.innerHTML
+                tool.activeOverlay = false
+            }
+        });
+
+        for (var i = 1; i < tool.tableLenth; i++) {
+            var col = '#tool_col_' + i.toString()
+            div.querySelector(col).addEventListener('mousedown', function(e) {
+                if (tool.activeOverlay) {
+                    tool.activeOverlay.assignedBtn = e.target.id
+                    e.target.textContent = tool.activeOverlay.relatedElement.textContent
+                    tool.activeOverlay = false
+                    tool.nextActiveArg(e.target.id)
+                }
+            });
+            var val = '#tool_val_' + i.toString()
+            div.querySelector(val).addEventListener('mousedown', function(e) {
+                if (tool.activeOverlay) {
+                    tool.activeOverlay.assignedBtn = e.target.id
+                    e.target.textContent = tool.activeOverlay.relatedElement.textContent
+                    tool.activeOverlay = false
+                    tool.nextActiveArg(e.target.id)
+
+                }
+            });
+        }
+    },
 
     activate: function() {
 
@@ -338,90 +419,7 @@ const tool = {
             document.body.insertAdjacentHTML('afterend', html);
             // not using innerHTML as it would break js event listeners of the page
 
-            // Events
-
-            let div = document.getElementById("tool_wnd");
-
-            tool.makeDraggable(div);
-            tool.overlayHover = tool.spawnOverlay(div, "tool_overlay", "tool_hover");
-
-            div.querySelector('.longer').addEventListener('click', function(e) {
-                tool.resizeActive(-1);
-            });
-            div.querySelector('.shorter').addEventListener('click', function(e) {
-                tool.resizeActive(1);
-            });
-
-            div.querySelector('.send_selected').addEventListener('click', function(e) {
-                var elements = document.getElementsByClassName("tool_selected");
-
-                var url = document.location.href;
-
-                var line = ""
-
-                // line += encodeURIComponent(HOME_URL) + '?'+ url
-                line += HOME_URL + '\n\n?' + url
-
-                for (let i = 0, length1 = elements.length; i < length1; i++) {
-                    line += "\n\n" + "&" + elements[i].arg + "=" + tool.getPathHTML(elements[i])
-                }
-
-                // window.location = line;
-                alert(line);
-            });
-
-            div.querySelector('.ct_close').addEventListener('click', function(e) {
-                tool.deactivate();
-            });
-
-            tool.helpWindow = div;
-            document.addEventListener('mouseover', tool.mouseover, true);
-            document.addEventListener('mousedown', tool.selectElement, true);
-            document.addEventListener('mouseup', tool.preventEvent, true);
-            document.addEventListener('click', tool.preventEvent, true);
-
-
-
-            div.querySelector('#tool_area_btn').addEventListener('mousedown', function(e) {
-                if (tool.activeOverlay) {
-                    tool.activeOverlay.assignedBtn = e.target.id
-                    e.target.innerHTML = tool.activeOverlay.relatedElement.innerHTML
-                    tool.activeOverlay = false
-                }
-            });
-
-            div.querySelector('#tool_row_btn').addEventListener('mousedown', function(e) {
-                if (tool.activeOverlay) {
-                    tool.activeOverlay.assignedBtn = e.target.id
-                    e.target.innerHTML = tool.activeOverlay.relatedElement.innerHTML
-                    tool.activeOverlay = false
-                }
-            });
-
-            for (var i = 1; i < tool.tableLenth; i++) {
-                var col = '#tool_col_' + i.toString()
-                div.querySelector(col).addEventListener('mousedown', function(e) {
-                    if (tool.activeOverlay) {
-                        tool.activeOverlay.assignedBtn = e.target.id
-                        e.target.textContent = tool.activeOverlay.relatedElement.textContent
-                        tool.activeOverlay = false
-                        tool.nextActiveArg(e.target.id)
-                    }
-                });
-                var val = '#tool_val_' + i.toString()
-                div.querySelector(val).addEventListener('mousedown', function(e) {
-                    if (tool.activeOverlay) {
-                        tool.activeOverlay.assignedBtn = e.target.id
-                        e.target.textContent = tool.activeOverlay.relatedElement.textContent
-                        tool.activeOverlay = false
-                        tool.nextActiveArg(e.target.id)
-
-                    }
-                });
-            }
-
-
-
+            tool.addEventListeners()
         });
     },
 
