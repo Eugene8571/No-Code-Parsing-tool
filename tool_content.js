@@ -126,7 +126,9 @@ const tool = {
         //     var overlay = tool.activeOverlay;
         //     tool.resizeOverlay(overlay, e.target);
         // }
-        tool.targetingMod = false;// ---
+        tool.targetingMod = false;
+        let div = document.getElementById("tool_wnd")
+        tool.resizeOverlay(tool.overlayHover, div);// ---
 
         if (tool.selectedElems.includes(e.target)) { // toggle select
             tool.selectedElems.splice(tool.selectedElems.indexOf(e.target), 1);
@@ -394,7 +396,8 @@ const tool = {
 
         div.querySelector('#tool_area_btn').addEventListener('mousedown', function(e) {
             tool.activeArg = "area"
-            tool.targetingMod = true // ---
+            tool.targetingMod = true 
+            tool.overlayHover = tool.spawnOverlay(div, "tool_overlay", "tool_hover"); // ---
             // if (tool.activeOverlay) {
             //     tool.activeOverlay.assignedBtn = e.target.id
             //     e.target.innerHTML = tool.activeOverlay.relatedElement.innerHTML
@@ -440,7 +443,7 @@ const tool = {
             // not using innerHTML as it would break js event listeners of the page
             let div = document.getElementById("tool_wnd");
             tool.makeDraggable(div);
-            tool.overlayHover = tool.spawnOverlay(div, "tool_overlay", "tool_hover");
+            // tool.overlayHover = tool.spawnOverlay(div, "tool_overlay", "tool_hover");
 
             tool.addEventListeners()
         });
