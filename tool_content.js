@@ -20,6 +20,9 @@ const tool = {
     page_index: false,
     tableLenth: 5, // число колонок в таблице выбранного + 1
 
+    activeArg: false,
+
+
     coverHovered: function() {
         if (!tool.hoveredElement) return;
 
@@ -101,7 +104,9 @@ const tool = {
             e.target = e.target.relatedElement;
         }
 
-        if (tool.isChildOfToolWindow(e.target)) return;
+        if (!tool.activeArg) return;
+
+        if (tool.isChildOfToolWindow(e.target)) return; // ---
 
         if (!tool.activeOverlay || tool.activeOverlay.assignedBtn) {
             var overlay = tool.spawnOverlay(e.target, '', 'tool_selected');
@@ -134,6 +139,7 @@ const tool = {
     },
 
     mouseover: function(e) {
+        if (tool.isChildOfToolWindow(e.target)) return;
         if (tool.hoveredElement != e.target) {
             tool.transpose = 0;
             tool.hoveredElement = e.target;
@@ -364,19 +370,20 @@ const tool = {
         });
 
         tool.helpWindow = div;
-        document.addEventListener('mouseover', tool.mouseover, true); //
-        document.addEventListener('mousedown', tool.selectElement, true);
+        document.addEventListener('mouseover', tool.mouseover, true);
+        document.addEventListener('mousedown', tool.selectElement, true); // ---
         document.addEventListener('mouseup', tool.preventEvent, true);
         document.addEventListener('click', tool.preventEvent, true);
 
 
 
         div.querySelector('#tool_area_btn').addEventListener('mousedown', function(e) {
-            if (tool.activeOverlay) {
-                tool.activeOverlay.assignedBtn = e.target.id
-                e.target.innerHTML = tool.activeOverlay.relatedElement.innerHTML
-                tool.activeOverlay = false
-            }
+            tool.activeArg = "area" // ---
+            // if (tool.activeOverlay) {
+            //     tool.activeOverlay.assignedBtn = e.target.id
+            //     e.target.innerHTML = tool.activeOverlay.relatedElement.innerHTML
+            //     tool.activeOverlay = false
+            // }
         });
 
         div.querySelector('#tool_row_btn').addEventListener('mousedown', function(e) {
