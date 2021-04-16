@@ -108,13 +108,23 @@ const tool = {
 
         if (tool.isChildOfToolWindow(e.target)) return; // ---
 
-        if (!tool.activeOverlay || tool.activeOverlay.assignedBtn) {
+        if (!tool.activeOverlay) {
             var overlay = tool.spawnOverlay(e.target, '', 'tool_selected');
             tool.activeOverlay = overlay;
-        } else {
-            var overlay = tool.activeOverlay;
-            tool.resizeOverlay(overlay, e.target);
         }
+
+        tool.activeOverlay.arg = tool.activeArg;
+
+        tool.resizeOverlay(overlay, e.target);
+
+
+        // if (!tool.activeOverlay || tool.activeOverlay.assignedBtn) {
+        //     var overlay = tool.spawnOverlay(e.target, '', 'tool_selected');
+        //     tool.activeOverlay = overlay;
+        // } else {
+        //     var overlay = tool.activeOverlay;
+        //     tool.resizeOverlay(overlay, e.target);
+        // }
 
         if (tool.selectedElems.includes(e.target)) { // toggle select
             tool.selectedElems.splice(tool.selectedElems.indexOf(e.target), 1);
