@@ -20,7 +20,7 @@ const tool = {
     page_index: false,
     tableLenth: 5, // число колонок в таблице выбранного + 1
 
-    highlightHovered: function() {
+    coverHovered: function() {
         if (!tool.hoveredElement) return;
 
         // display PathHTML
@@ -137,7 +137,7 @@ const tool = {
         if (tool.hoveredElement != e.target) {
             tool.transpose = 0;
             tool.hoveredElement = e.target;
-            tool.highlightHovered();
+            tool.coverHovered();
         }
     },
 
@@ -334,9 +334,6 @@ const tool = {
     addEventListeners: function() {
         let div = document.getElementById("tool_wnd");
 
-        tool.makeDraggable(div);
-        tool.overlayHover = tool.spawnOverlay(div, "tool_overlay", "tool_hover");
-
         div.querySelector('.longer').addEventListener('click', function(e) {
             tool.resizeActive(-1);
         });
@@ -367,7 +364,7 @@ const tool = {
         });
 
         tool.helpWindow = div;
-        document.addEventListener('mouseover', tool.mouseover, true);
+        document.addEventListener('mouseover', tool.mouseover, true); //
         document.addEventListener('mousedown', tool.selectElement, true);
         document.addEventListener('mouseup', tool.preventEvent, true);
         document.addEventListener('click', tool.preventEvent, true);
@@ -418,6 +415,9 @@ const tool = {
         fetch(chrome.runtime.getURL('/tool_wnd/tool.html')).then(r => r.text()).then(html => {
             document.body.insertAdjacentHTML('afterend', html);
             // not using innerHTML as it would break js event listeners of the page
+            let div = document.getElementById("tool_wnd");
+            tool.makeDraggable(div);
+            tool.overlayHover = tool.spawnOverlay(div, "tool_overlay", "tool_hover");
 
             tool.addEventListeners()
         });
