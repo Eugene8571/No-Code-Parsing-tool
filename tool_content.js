@@ -21,7 +21,7 @@ const tool = {
     tableLenth: 5, // число колонок в таблице выбранного + 1
 
     activeArg: false,
-
+    targetingMod: false,
 
     coverHovered: function() {
         if (!tool.hoveredElement) return;
@@ -73,6 +73,7 @@ const tool = {
     },
 
     highlightSelected: function() {
+        // if (!tool.targetingMod) return;
         if (!tool.selectedElement) return;
         let overlay = tool.selectedElement.relatedOverlay;
 
@@ -106,7 +107,7 @@ const tool = {
 
         if (!tool.activeArg) return;
 
-        if (tool.isChildOfToolWindow(e.target)) return; // ---
+        if (tool.isChildOfToolWindow(e.target)) return; 
 
         if (!tool.activeOverlay) {
             var overlay = tool.spawnOverlay(e.target, '', 'tool_selected');
@@ -125,6 +126,7 @@ const tool = {
         //     var overlay = tool.activeOverlay;
         //     tool.resizeOverlay(overlay, e.target);
         // }
+        tool.targetingMod = false;// ---
 
         if (tool.selectedElems.includes(e.target)) { // toggle select
             tool.selectedElems.splice(tool.selectedElems.indexOf(e.target), 1);
@@ -146,9 +148,12 @@ const tool = {
             tool.updateElementList();
             tool.triggerResize();
         }
+
+
     },
 
     mouseover: function(e) {
+        if (!tool.targetingMod) return;
         if (tool.isChildOfToolWindow(e.target)) return;
         if (tool.hoveredElement != e.target) {
             tool.transpose = 0;
@@ -388,7 +393,8 @@ const tool = {
 
 
         div.querySelector('#tool_area_btn').addEventListener('mousedown', function(e) {
-            tool.activeArg = "area" // ---
+            tool.activeArg = "area"
+            tool.targetingMod = true // ---
             // if (tool.activeOverlay) {
             //     tool.activeOverlay.assignedBtn = e.target.id
             //     e.target.innerHTML = tool.activeOverlay.relatedElement.innerHTML
