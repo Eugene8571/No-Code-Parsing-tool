@@ -127,8 +127,9 @@ const tool = {
         //     tool.resizeOverlay(overlay, e.target);
         // }
         tool.targetingMod = false;
-        let div = document.getElementById("tool_wnd")
-        tool.resizeOverlay(tool.overlayHover, div);// ---
+        tool.overlayHover.remove();
+        // let div = document.getElementById("tool_wnd")
+        // tool.resizeOverlay(tool.overlayHover, div);// ---
 
         if (tool.selectedElems.includes(e.target)) { // toggle select
             tool.selectedElems.splice(tool.selectedElems.indexOf(e.target), 1);
