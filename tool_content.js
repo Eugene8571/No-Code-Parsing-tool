@@ -274,7 +274,7 @@ const tool = {
         overlay.style.zIndex = tool.maxZIndex - 2;
         overlay.relatedElement = new_target;
         // new_target.relatedOverlay = overlay;
-
+        overlay.innerText = "tool.activeArg: " + tool.activeArg
     },
 
     spawnOverlay: function(target, id, _class) {
@@ -392,7 +392,7 @@ const tool = {
 
         tool.helpWindow = div;
         document.addEventListener('mouseover', tool.mouseover, true);
-        document.addEventListener('mousedown', tool.selectElement, true); // ---
+        document.addEventListener('mousedown', tool.selectElement, true);
         document.addEventListener('mouseup', tool.preventEvent, true);
         document.addEventListener('click', tool.preventEvent, true);
 
@@ -400,41 +400,33 @@ const tool = {
 
         div.querySelector('#tool_area_btn').addEventListener('mousedown', function(e) {
             tool.activeArg = "area"
-            // tool.targetingMod = true // ---
-
         });
 
-        div.querySelector('#tool_row_btn').addEventListener('mousedown', function(e) {
+        div.querySelector('#tool_row_btn').addEventListener('mousedown', function(e) { // ---
             tool.activeArg = "row"
-            // if (tool.overlayHover) {
-            //     tool.resizeOverlay(tool.overlayHover, div)
-            // } else {
-            // tool.overlayHover = tool.spawnOverlay(div, "tool_overlay", "tool_hover"); // ---
-            // }
-            // tool.targetingMod = true 
         });
 
-        for (var i = 1; i < tool.tableLenth; i++) {
-            var col = '#tool_col_' + i.toString()
-            div.querySelector(col).addEventListener('mousedown', function(e) {
-                if (tool.activeOverlay) {
-                    tool.activeOverlay.assignedBtn = e.target.id
-                    e.target.textContent = tool.activeOverlay.relatedElement.textContent
-                    tool.activeOverlay = false
-                    tool.nextActiveArg(e.target.id)
-                }
-            });
-            var val = '#tool_val_' + i.toString()
-            div.querySelector(val).addEventListener('mousedown', function(e) {
-                if (tool.activeOverlay) {
-                    tool.activeOverlay.assignedBtn = e.target.id
-                    e.target.textContent = tool.activeOverlay.relatedElement.textContent
-                    tool.activeOverlay = false
-                    tool.nextActiveArg(e.target.id)
+        // for (var i = 1; i < tool.tableLenth; i++) {
+        //     var col = '#tool_col_' + i.toString()
+        //     div.querySelector(col).addEventListener('mousedown', function(e) {
+        //         if (tool.activeOverlay) {
+        //             tool.activeOverlay.assignedBtn = e.target.id
+        //             e.target.textContent = tool.activeOverlay.relatedElement.textContent
+        //             tool.activeOverlay = false
+        //             tool.nextActiveArg(e.target.id)
+        //         }
+        //     });
+        //     var val = '#tool_val_' + i.toString()
+        //     div.querySelector(val).addEventListener('mousedown', function(e) {
+        //         if (tool.activeOverlay) {
+        //             tool.activeOverlay.assignedBtn = e.target.id
+        //             e.target.textContent = tool.activeOverlay.relatedElement.textContent
+        //             tool.activeOverlay = false
+        //             tool.nextActiveArg(e.target.id)
 
-                }
-            });
-        }
+        //         }
+        //     });
+        // }
     },
 
     activate: function() {
