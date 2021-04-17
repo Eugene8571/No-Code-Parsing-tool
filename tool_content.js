@@ -2,22 +2,10 @@ var HOME_URL = "http://127.0.0.1:8000/";
 
 const tool = {
     hoveredElement: false,
-    // markedElement: false,
-    // highlightedHover: false,
-    // highlightedSelect: false,
-    // activeElement: false,
     activeOverlay: false,
-    // selectedElement: false,
     transpose: 0,
-    selectedElems: [],
-    apiArgs: {},
     helpWindow: false,
     overlayHover: false,
-    area: false,
-    row: false,
-    columns: [],
-    flip_area: false,
-    page_index: false,
     tableLenth: 5, // число колонок в таблице выбранного + 1
 
     activeArg: false,
@@ -96,22 +84,12 @@ const tool = {
         tool.overlayHover.remove();
         tool.overlayHover = false;
 
-        if (tool.selectedElems.includes(e.target)) { // toggle select   //
-            tool.selectedElems.splice(tool.selectedElems.indexOf(e.target), 1);
-            return;
-        };
-
         line = tool.getPathHTML(e.target);
 
         if (e.target) {
 
             e.target.relatedOverlay = tool.activeOverlay;
             tool.activeElement = e.target;
-            // tool.selectedElement = e.target;
-
-            tool.selectedElems.push(e.target);
-            var n = Object.keys(tool.apiArgs).length;
-            tool.apiArgs['block' + n.toString()] = line;
             tool.updateDisplay();
         }
 
@@ -205,11 +183,7 @@ const tool = {
         let elmList_selected = document.querySelector('#tool_selected_elm');
 
         let line = "";
-
-        if (tool.selectedElems.length) {
-            // line = tool.getPathHTML(tool.selectedElement);
-            line = tool.getPathHTML(tool.activeOverlay.relatedElement);
-        }
+        line = tool.getPathHTML(tool.activeOverlay.relatedElement);
 
         elmList_selected.innerHTML = line;
         document.querySelector('#tool_clicked_elm').innerHTML = tool.getPathHTML(tool.activeElement);
@@ -231,7 +205,6 @@ const tool = {
 
         overlay.style.zIndex = tool.maxZIndex - 2;
         overlay.relatedElement = new_target;
-        // new_target.relatedOverlay = overlay;
     },
 
     spawnOverlay: function(target, id, _class) {
@@ -409,18 +382,14 @@ const tool = {
 
     },
 
-    preventEvent: function(e) { //
+    preventEvent: function(e) {
         if (tool.isChildOfToolWindow(e.target)) return;
         e.preventDefault();
         e.stopPropagation();
         return false;
     },
 
-    deactivate: function() { //
-
-        tool.apiArgs = {};
-        // tool.markedElement = false;
-        // tool.selectedElement = false;
+    deactivate: function() {
         tool.activeElement = false;
         tool.helpWindow.parentNode.removeChild(tool.helpWindow);
         tool.helpWindow = false;
@@ -433,7 +402,7 @@ const tool = {
     },
 
     toggle: function() {
-        if (document.getElementById("tool_wnd")) tool.deactivate(); //
+        if (document.getElementById("tool_wnd")) tool.deactivate();
         else tool.activate();
     },
 
