@@ -5,7 +5,7 @@ const tool = {
     markedElement: false,
     highlightedHover: false,
     highlightedSelect: false,
-    activeElement: false,
+    // activeElement: false,
     activeOverlay: false,
     selectedElement: false,
     transpose: 0,
@@ -38,7 +38,7 @@ const tool = {
     },
 
     resizeActive: function(delta) {
-        if (!tool.activeElement) return;
+        if (!tool.activeOverlay) return;
         // if (!tool.activeElement.relatedOverlay) {
         //     tool.activeElement.relatedOverlay = tool.overlayHover;
         // };
@@ -51,7 +51,7 @@ const tool = {
         };
 
         let elem = tool.activeOverlay.clickedElement;
-        // console.log(overlay);
+        console.log(elem);
         for (i = 0; i < overlay.transpose; i++) {
             let i = 0;
             if (elem.parentNode != window.document) {
@@ -75,34 +75,6 @@ const tool = {
 
     },
 
-    highlightSelected: function() {
-        // if (!tool.targetingMod) return;
-        if (!tool.activeOverlay) return;
-        let overlay = tool.activeOverlay;
-
-        tool.highlightedSelect = tool.activeOverlay.relatedElement;
-
-        let i = 0;
-        for (i = 0; i < tool.transpose; i++) {
-            if (tool.highlightedSelect.parentNode != window.document) {
-                tool.highlightedSelect = tool.highlightedSelect.parentNode;
-            } else {
-                break;
-            }
-        }
-
-        tool.transpose = i;
-        // tool.selectedElement = tool.highlightedSelect;
-
-        let new_target = tool.highlightedSelect;
-        tool.resizeOverlay(overlay, new_target);
-
-        document.querySelector('#tool_selected_elm').innerHTML = tool.getPathHTML(
-            tool.activeOverlay.relatedElement, tool.transpose);
-        document.querySelector('#tool_selected_elm').scrollTop = 9999;
-    },
-
-
     selectElement: function(e) {
         if (e.target.id == "tool_overlay") {
             e.target = e.target.relatedElement;
@@ -112,30 +84,17 @@ const tool = {
 
         if (tool.isChildOfToolWindow(e.target)) return; 
 
-        if (tool.activeOverlay.arg !== tool.activeArg) {
-            tool.activeOverlay = false
-        }
-
-        if (!tool.activeOverlay) {
+        if (!tool.activeOverlay || (tool.activeOverlay.arg !== tool.activeArg)) {
             var overlay = tool.spawnOverlay(e.target, '', 'tool_selected');
             overlay.innerText = "tool.activeArg: " + tool.activeArg // --- show
             tool.activeOverlay = overlay;
             tool.activeOverlay.arg = tool.activeArg;
-            tool.activeOverlay.clickedElement = e.target
-            tool.activeElement = e.target
         }
 
+        tool.activeOverlay.clickedElement = e.target
 
         tool.resizeOverlay(tool.activeOverlay, e.target);
 
-
-        // if (!tool.activeOverlay || tool.activeOverlay.assignedBtn) {
-        //     var overlay = tool.spawnOverlay(e.target, '', 'tool_selected');
-        //     tool.activeOverlay = overlay;
-        // } else {
-        //     var overlay = tool.activeOverlay;
-        //     tool.resizeOverlay(overlay, e.target);
-        // }
         tool.activeArg = false;
         tool.overlayHover.remove();
         tool.overlayHover = false;
@@ -144,7 +103,6 @@ const tool = {
             tool.selectedElems.splice(tool.selectedElems.indexOf(e.target), 1);
             return;
         };
-
 
         line = tool.getPathHTML(e.target);
 
@@ -158,7 +116,6 @@ const tool = {
             var n = Object.keys(tool.apiArgs).length;
             tool.apiArgs['block' + n.toString()] = line;
             tool.updateElementList();
-            // tool.triggerResize();
         }
 
 
@@ -192,13 +149,13 @@ const tool = {
             tool.deactivate();
         }
 
-        if (e.keyCode == 87) { // W
-            if (tool.transpose > 0) tool.transpose--;
-            tool.highlightSelected();
-        } else if (e.keyCode == 81) { // Q
-            tool.transpose++;
-            tool.highlightSelected();
-        }
+        // if (e.keyCode == 87) { // W
+        //     if (tool.transpose > 0) tool.transpose--;
+        //     tool.highlightSelected();
+        // } else if (e.keyCode == 81) { // Q
+        //     tool.transpose++;
+        //     tool.highlightSelected();
+        // }
         return false;
     },
 
