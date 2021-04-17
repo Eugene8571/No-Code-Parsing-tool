@@ -21,10 +21,11 @@ const tool = {
     tableLenth: 5, // число колонок в таблице выбранного + 1
 
     activeArg: false,
-    // targetingMod: false,
 
     coverHovered: function() {
         if (!tool.hoveredElement) return;
+        if (!tool.activeArg) return;
+
         if (!tool.overlayHover) {
             tool.overlayHover = tool.spawnOverlay(false, "tool_overlay", "tool_hover")
         }
@@ -111,12 +112,13 @@ const tool = {
 
         if (tool.isChildOfToolWindow(e.target)) return; 
 
-        if (!tool.activeOverlay) {
+        if (!tool.activeOverlay || (tool.activeOverlay.arg !== tool.activeArg)) {
             var overlay = tool.spawnOverlay(e.target, '', 'tool_selected');
+            overlay.innerText = "tool.activeArg: " + tool.activeArg // --- show
             tool.activeOverlay = overlay;
+            tool.activeOverlay.arg = tool.activeArg;
         }
 
-        tool.activeOverlay.arg = tool.activeArg;
 
         tool.resizeOverlay(overlay, e.target);
 
@@ -130,6 +132,7 @@ const tool = {
         // }
         tool.activeArg = false;
         tool.overlayHover.remove();
+        tool.overlayHover = false;
 
         if (tool.selectedElems.includes(e.target)) { // toggle select   //
             tool.selectedElems.splice(tool.selectedElems.indexOf(e.target), 1);
@@ -274,7 +277,6 @@ const tool = {
         overlay.style.zIndex = tool.maxZIndex - 2;
         overlay.relatedElement = new_target;
         // new_target.relatedOverlay = overlay;
-        overlay.innerText = "tool.activeArg: " + tool.activeArg
     },
 
     spawnOverlay: function(target, id, _class) {
