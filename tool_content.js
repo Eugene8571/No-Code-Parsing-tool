@@ -43,17 +43,17 @@ const tool = {
         //     tool.activeElement.relatedOverlay = tool.overlayHover;
         // };
 
-        let overlay = tool.activeElement.relatedOverlay;
+        let overlay = tool.activeOverlay;
         overlay.transpose += delta;
         if (overlay.transpose < 0) {
             overlay.transpose = 0;
             return;
         };
 
-        let elem = overlay.clickedElement;
+        let elem = tool.activeOverlay.clickedElement;
         // console.log(overlay);
-        let i = 0;
         for (i = 0; i < overlay.transpose; i++) {
+            let i = 0;
             if (elem.parentNode != window.document) {
                 elem = elem.parentNode;
             } else {
@@ -77,10 +77,10 @@ const tool = {
 
     highlightSelected: function() {
         // if (!tool.targetingMod) return;
-        if (!tool.selectedElement) return;
-        let overlay = tool.selectedElement.relatedOverlay;
+        if (!tool.activeOverlay) return;
+        let overlay = tool.activeOverlay;
 
-        tool.highlightedSelect = tool.activeElement;
+        tool.highlightedSelect = tool.activeOverlay.relatedElement;
 
         let i = 0;
         for (i = 0; i < tool.transpose; i++) {
@@ -92,13 +92,13 @@ const tool = {
         }
 
         tool.transpose = i;
-        tool.selectedElement = tool.highlightedSelect;
+        // tool.selectedElement = tool.highlightedSelect;
 
-        let new_target = tool.selectedElement;
+        let new_target = tool.highlightedSelect;
         tool.resizeOverlay(overlay, new_target);
 
         document.querySelector('#tool_selected_elm').innerHTML = tool.getPathHTML(
-            tool.selectedElement, tool.transpose);
+            tool.activeOverlay.relatedElement, tool.transpose);
         document.querySelector('#tool_selected_elm').scrollTop = 9999;
     },
 
@@ -112,15 +112,21 @@ const tool = {
 
         if (tool.isChildOfToolWindow(e.target)) return; 
 
-        if (!tool.activeOverlay || (tool.activeOverlay.arg !== tool.activeArg)) {
+        if (tool.activeOverlay.arg !== tool.activeArg) {
+            tool.activeOverlay = false
+        }
+
+        if (!tool.activeOverlay) {
             var overlay = tool.spawnOverlay(e.target, '', 'tool_selected');
             overlay.innerText = "tool.activeArg: " + tool.activeArg // --- show
             tool.activeOverlay = overlay;
             tool.activeOverlay.arg = tool.activeArg;
+            tool.activeOverlay.clickedElement = e.target
+            tool.activeElement = e.target
         }
 
 
-        tool.resizeOverlay(overlay, e.target);
+        tool.resizeOverlay(tool.activeOverlay, e.target);
 
 
         // if (!tool.activeOverlay || tool.activeOverlay.assignedBtn) {
@@ -402,33 +408,26 @@ const tool = {
 
         div.querySelector('#tool_area_btn').addEventListener('mousedown', function(e) {
             tool.activeArg = "area"
+            var overlays = document.getElementsByClassName("tool_selected");
+            for (let i = 0; i < overlays.length; i++) {
+                if (overlays[i].arg === tool.activeArg) {
+                    tool.activeOverlay = overlays[i]
+                }
+            }
+
         });
 
         div.querySelector('#tool_row_btn').addEventListener('mousedown', function(e) { // ---
             tool.activeArg = "row"
+            var overlays = document.getElementsByClassName("tool_selected");
+            for (let i = 0; i < overlays.length; i++) {
+                if (overlays[i].arg === tool.activeArg) {
+                    tool.activeOverlay = overlays[i]
+                }
+            }
+
         });
 
-        // for (var i = 1; i < tool.tableLenth; i++) {
-        //     var col = '#tool_col_' + i.toString()
-        //     div.querySelector(col).addEventListener('mousedown', function(e) {
-        //         if (tool.activeOverlay) {
-        //             tool.activeOverlay.assignedBtn = e.target.id
-        //             e.target.textContent = tool.activeOverlay.relatedElement.textContent
-        //             tool.activeOverlay = false
-        //             tool.nextActiveArg(e.target.id)
-        //         }
-        //     });
-        //     var val = '#tool_val_' + i.toString()
-        //     div.querySelector(val).addEventListener('mousedown', function(e) {
-        //         if (tool.activeOverlay) {
-        //             tool.activeOverlay.assignedBtn = e.target.id
-        //             e.target.textContent = tool.activeOverlay.relatedElement.textContent
-        //             tool.activeOverlay = false
-        //             tool.nextActiveArg(e.target.id)
-
-        //         }
-        //     });
-        // }
     },
 
     activate: function() {
@@ -438,7 +437,6 @@ const tool = {
             // not using innerHTML as it would break js event listeners of the page
             let div = document.getElementById("tool_wnd");
             tool.makeDraggable(div);
-            // tool.overlayHover = tool.spawnOverlay(div, "tool_overlay", "tool_hover");
 
             tool.addEventListeners()
         });
