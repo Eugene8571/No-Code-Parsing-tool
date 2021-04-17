@@ -21,11 +21,13 @@ const tool = {
     tableLenth: 5, // число колонок в таблице выбранного + 1
 
     activeArg: false,
-    targetingMod: false,
+    // targetingMod: false,
 
     coverHovered: function() {
         if (!tool.hoveredElement) return;
-
+        if (!tool.overlayHover) {
+            tool.overlayHover = tool.spawnOverlay(false, "tool_overlay", "tool_hover")
+        }
         // display PathHTML
         document.querySelector('#tool_current_elm').innerHTML = tool.getPathHTML(tool.hoveredElement, tool.transpose);
         document.querySelector('#tool_current_elm').scrollTop = 9999;
@@ -126,7 +128,7 @@ const tool = {
         //     var overlay = tool.activeOverlay;
         //     tool.resizeOverlay(overlay, e.target);
         // }
-        tool.targetingMod = false;
+        tool.activeArg = false;
         tool.overlayHover.remove();
 
         if (tool.selectedElems.includes(e.target)) { // toggle select   //
@@ -154,7 +156,7 @@ const tool = {
     },
 
     mouseover: function(e) {
-        if (!tool.targetingMod) return;
+        if (!tool.activeArg) return;
         if (tool.isChildOfToolWindow(e.target)) return;
         if (tool.hoveredElement != e.target) {
             tool.transpose = 0;
@@ -276,6 +278,9 @@ const tool = {
     },
 
     spawnOverlay: function(target, id, _class) {
+        if (!target) {
+            target = document.getElementById("tool_wnd")
+        }
 
         if (target.relatedOverlay) {
             target.relatedOverlay.remove();
@@ -395,23 +400,18 @@ const tool = {
 
         div.querySelector('#tool_area_btn').addEventListener('mousedown', function(e) {
             tool.activeArg = "area"
-            if (tool.overlayHover) {
-                tool.resizeOverlay(tool.overlayHover, div)
-            } else {
-            tool.overlayHover = tool.spawnOverlay(div, "tool_overlay", "tool_hover"); // ---
-            }
-            tool.targetingMod = true // ---
+            // tool.targetingMod = true // ---
 
         });
 
         div.querySelector('#tool_row_btn').addEventListener('mousedown', function(e) {
             tool.activeArg = "row"
-            if (tool.overlayHover) {
-                tool.resizeOverlay(tool.overlayHover, div)
-            } else {
-            tool.overlayHover = tool.spawnOverlay(div, "tool_overlay", "tool_hover"); // ---
-            }
-            tool.targetingMod = true 
+            // if (tool.overlayHover) {
+            //     tool.resizeOverlay(tool.overlayHover, div)
+            // } else {
+            // tool.overlayHover = tool.spawnOverlay(div, "tool_overlay", "tool_hover"); // ---
+            // }
+            // tool.targetingMod = true 
         });
 
         for (var i = 1; i < tool.tableLenth; i++) {
