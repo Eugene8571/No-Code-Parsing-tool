@@ -261,11 +261,6 @@ const tool = {
         overlay.transpose = 0;
         target.relatedOverlay = overlay;
         document.body.appendChild(overlay);
-        // if (tool.activeArg) {
-        //     overlay.innerText = tool.activeArg
-        //     overlay.arg = tool.activeArg
-        //     tool.activeArg = tool.nextActiveArg(tool.activeArg)
-        // }
         return overlay;
     },
 
@@ -352,29 +347,43 @@ const tool = {
         document.addEventListener('mouseup', tool.preventEvent, true);
         document.addEventListener('click', tool.preventEvent, true);
 
+        let btns = div.querySelectorAll("table.table div")
 
-
-        div.querySelector('#tool_area_btn').addEventListener('mousedown', function(e) {
-            tool.activeArg = "area"
-            var overlays = document.getElementsByClassName("tool_selected");
-            for (let i = 0; i < overlays.length; i++) {
-                if (overlays[i].arg === tool.activeArg) {
-                    tool.activeOverlay = overlays[i]
+        for (let i = 0; i < btns.length; i++) {
+            btns[i].addEventListener('mousedown', function(e) {
+                tool.activeArg = btns[i].id
+                var overlays = document.getElementsByClassName("tool_selected");
+                for (let i = 0; i < overlays.length; i++) {
+                    if (overlays[i].arg === tool.activeArg) {
+                        tool.activeOverlay = overlays[i]
+                    }
                 }
-            }
+            })
 
-        });
+        }
 
-        div.querySelector('#tool_row_btn').addEventListener('mousedown', function(e) { // ---
-            tool.activeArg = "row"
-            var overlays = document.getElementsByClassName("tool_selected");
-            for (let i = 0; i < overlays.length; i++) {
-                if (overlays[i].arg === tool.activeArg) {
-                    tool.activeOverlay = overlays[i]
-                }
-            }
 
-        });
+        // div.querySelector('#tool_area_btn').addEventListener('mousedown', function(e) {
+        //     tool.activeArg = "area"
+        //     var overlays = document.getElementsByClassName("tool_selected");
+        //     for (let i = 0; i < overlays.length; i++) {
+        //         if (overlays[i].arg === tool.activeArg) {
+        //             tool.activeOverlay = overlays[i]
+        //         }
+        //     }
+
+        // });
+
+        // div.querySelector('#tool_row_btn').addEventListener('mousedown', function(e) { // ---
+        //     tool.activeArg = "row"
+        //     var overlays = document.getElementsByClassName("tool_selected");
+        //     for (let i = 0; i < overlays.length; i++) {
+        //         if (overlays[i].arg === tool.activeArg) {
+        //             tool.activeOverlay = overlays[i]
+        //         }
+        //     }
+
+        // });
 
     },
 
