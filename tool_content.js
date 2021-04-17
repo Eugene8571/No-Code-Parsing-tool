@@ -147,7 +147,7 @@ const tool = {
             var n = Object.keys(tool.apiArgs).length;
             tool.apiArgs['block' + n.toString()] = line;
             tool.updateElementList();
-            tool.triggerResize();
+            // tool.triggerResize();
         }
 
 
@@ -196,11 +196,11 @@ const tool = {
         return false;
     },
 
-    triggerResize: function() {
-        let evt = document.createEvent('UIEvents');
-        evt.initUIEvent('resize', true, false, window, 0);
-        window.dispatchEvent(evt);
-    },
+    // triggerResize: function() {
+    //     let evt = document.createEvent('UIEvents');
+    //     evt.initUIEvent('resize', true, false, window, 0);
+    //     window.dispatchEvent(evt);
+    // },
 
     getPathHTML: function(element, transpose) {
         function getElmName(elm) {
