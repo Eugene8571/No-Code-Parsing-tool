@@ -45,8 +45,10 @@
 }
 
 #tool_wnd table.table td div {
+  display:block;
   width: 100%;
   height: 21px;
+  background: #F6F6F6;
 }
 
 /*#tool_wnd table.table td.tool_cell_resize:hover {
