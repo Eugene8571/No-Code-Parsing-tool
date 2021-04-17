@@ -128,10 +128,8 @@ const tool = {
         // }
         tool.targetingMod = false;
         tool.overlayHover.remove();
-        // let div = document.getElementById("tool_wnd")
-        // tool.resizeOverlay(tool.overlayHover, div);// ---
 
-        if (tool.selectedElems.includes(e.target)) { // toggle select
+        if (tool.selectedElems.includes(e.target)) { // toggle select   //
             tool.selectedElems.splice(tool.selectedElems.indexOf(e.target), 1);
             return;
         };
@@ -141,7 +139,7 @@ const tool = {
 
         if (e.target) {
 
-            e.target.relatedOverlay = overlay;
+            e.target.relatedOverlay = tool.activeOverlay;
             tool.activeElement = e.target;
             tool.selectedElement = e.target;
 
@@ -397,21 +395,23 @@ const tool = {
 
         div.querySelector('#tool_area_btn').addEventListener('mousedown', function(e) {
             tool.activeArg = "area"
-            tool.targetingMod = true 
+            if (tool.overlayHover) {
+                tool.resizeOverlay(tool.overlayHover, div)
+            } else {
             tool.overlayHover = tool.spawnOverlay(div, "tool_overlay", "tool_hover"); // ---
-            // if (tool.activeOverlay) {
-            //     tool.activeOverlay.assignedBtn = e.target.id
-            //     e.target.innerHTML = tool.activeOverlay.relatedElement.innerHTML
-            //     tool.activeOverlay = false
-            // }
+            }
+            tool.targetingMod = true // ---
+
         });
 
         div.querySelector('#tool_row_btn').addEventListener('mousedown', function(e) {
-            if (tool.activeOverlay) {
-                tool.activeOverlay.assignedBtn = e.target.id
-                e.target.innerHTML = tool.activeOverlay.relatedElement.innerHTML
-                tool.activeOverlay = false
+            tool.activeArg = "row"
+            if (tool.overlayHover) {
+                tool.resizeOverlay(tool.overlayHover, div)
+            } else {
+            tool.overlayHover = tool.spawnOverlay(div, "tool_overlay", "tool_hover"); // ---
             }
+            tool.targetingMod = true 
         });
 
         for (var i = 1; i < tool.tableLenth; i++) {
