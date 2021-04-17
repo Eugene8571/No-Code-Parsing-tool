@@ -36,7 +36,7 @@ const tool = {
         };
 
         let elem = tool.activeOverlay.clickedElement;
-        console.log(elem);
+        // console.log(elem);
         for (i = 0; i < overlay.transpose; i++) {
             let i = 0;
             if (elem.parentNode != window.document) {
