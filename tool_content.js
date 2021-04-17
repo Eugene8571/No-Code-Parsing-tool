@@ -39,9 +39,6 @@ const tool = {
 
     resizeActive: function(delta) {
         if (!tool.activeOverlay) return;
-        // if (!tool.activeElement.relatedOverlay) {
-        //     tool.activeElement.relatedOverlay = tool.overlayHover;
-        // };
 
         let overlay = tool.activeOverlay;
         overlay.transpose += delta;
@@ -115,7 +112,7 @@ const tool = {
             tool.selectedElems.push(e.target);
             var n = Object.keys(tool.apiArgs).length;
             tool.apiArgs['block' + n.toString()] = line;
-            tool.updateElementList();
+            tool.updateDisplay();
         }
 
 
@@ -164,12 +161,6 @@ const tool = {
         return false;
     },
 
-    // triggerResize: function() {
-    //     let evt = document.createEvent('UIEvents');
-    //     evt.initUIEvent('resize', true, false, window, 0);
-    //     window.dispatchEvent(evt);
-    // },
-
     getPathHTML: function(element, transpose) {
         function getElmName(elm) {
             if (elm.id) {
@@ -208,7 +199,7 @@ const tool = {
     },
 
 
-    updateElementList: function() {
+    updateDisplay: function() {
         if (!tool.helpWindow) return;
 
         let elmList_selected = document.querySelector('#tool_selected_elm');
