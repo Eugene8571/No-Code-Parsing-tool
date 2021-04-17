@@ -2,12 +2,12 @@ var HOME_URL = "http://127.0.0.1:8000/";
 
 const tool = {
     hoveredElement: false,
-    markedElement: false,
-    highlightedHover: false,
-    highlightedSelect: false,
+    // markedElement: false,
+    // highlightedHover: false,
+    // highlightedSelect: false,
     // activeElement: false,
     activeOverlay: false,
-    selectedElement: false,
+    // selectedElement: false,
     transpose: 0,
     selectedElems: [],
     apiArgs: {},
@@ -107,7 +107,7 @@ const tool = {
 
             e.target.relatedOverlay = tool.activeOverlay;
             tool.activeElement = e.target;
-            tool.selectedElement = e.target;
+            // tool.selectedElement = e.target;
 
             tool.selectedElems.push(e.target);
             var n = Object.keys(tool.apiArgs).length;
@@ -207,7 +207,8 @@ const tool = {
         let line = "";
 
         if (tool.selectedElems.length) {
-            line = tool.getPathHTML(tool.selectedElement);
+            // line = tool.getPathHTML(tool.selectedElement);
+            line = tool.getPathHTML(tool.activeOverlay.relatedElement);
         }
 
         elmList_selected.innerHTML = line;
@@ -361,30 +362,6 @@ const tool = {
             })
 
         }
-
-
-        // div.querySelector('#tool_area_btn').addEventListener('mousedown', function(e) {
-        //     tool.activeArg = "area"
-        //     var overlays = document.getElementsByClassName("tool_selected");
-        //     for (let i = 0; i < overlays.length; i++) {
-        //         if (overlays[i].arg === tool.activeArg) {
-        //             tool.activeOverlay = overlays[i]
-        //         }
-        //     }
-
-        // });
-
-        // div.querySelector('#tool_row_btn').addEventListener('mousedown', function(e) { // ---
-        //     tool.activeArg = "row"
-        //     var overlays = document.getElementsByClassName("tool_selected");
-        //     for (let i = 0; i < overlays.length; i++) {
-        //         if (overlays[i].arg === tool.activeArg) {
-        //             tool.activeOverlay = overlays[i]
-        //         }
-        //     }
-
-        // });
-
     },
 
     activate: function() {
@@ -442,8 +419,8 @@ const tool = {
     deactivate: function() { //
 
         tool.apiArgs = {};
-        tool.markedElement = false;
-        tool.selectedElement = false;
+        // tool.markedElement = false;
+        // tool.selectedElement = false;
         tool.activeElement = false;
         tool.helpWindow.parentNode.removeChild(tool.helpWindow);
         tool.helpWindow = false;
