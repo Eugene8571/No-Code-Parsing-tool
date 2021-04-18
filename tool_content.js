@@ -12,6 +12,8 @@ const tool = {
     selektEffect: "inset 0px 0px 13px 1px rgba(65,167,225, 0.5)",
     tilinkedEffect: "inset 0px 0px 13px 1px rgba(100,67,225, 0.5)",
 
+    overlays: [],
+
     coverHovered: function(e) {
         if (!e.target) return;
         if (!tool.activeArg) return;
@@ -74,7 +76,8 @@ const tool = {
         if (tool.isChildOfToolWindow(e.target)) return; 
 
         if (!tool.activeOverlay || (tool.activeOverlay.arg !== tool.activeArg)) {
-            var overlay = tool.spawnOverlay(e.target, '', 'tool_selected');
+            var overlay = tool.spawnOverlay(e.target, '', 'tool_selected')
+            tool.overlays.push(overlay)
             overlay.innerText = "tool.activeArg: " + tool.activeArg // --- show
             tool.activeOverlay = overlay;
             tool.activeOverlay.arg = tool.activeArg;
@@ -330,20 +333,20 @@ const tool = {
     },
 
     tilinkSelectedOff: function(e) {
-        var overlays = document.getElementsByClassName("tool_selected")
-        for (let i = 0; i < overlays.length; i++) {
-            if (overlays[i].arg === e.target.id) {
-                overlays[i].style.boxShadow = tool.selektEffect
+        // var overlays = document.getElementsByClassName("tool_selected")
+        for (let i = 0; i < tool.overlays.length; i++) {
+            if (tool.overlays[i].arg === e.target.id) {
+                tool.overlays[i].style.boxShadow = tool.selektEffect
                 console.log(e.target.id)
             }
         }
     },
 
     tilinkSelectedOn: function(e) {
-        var overlays = document.getElementsByClassName("tool_selected")
-        for (let i = 0; i < overlays.length; i++) {
-            if (overlays[i].arg === e.target.id) {
-                overlays[i].style.boxShadow = tool.tilinkedEffect
+        // var overlays = document.getElementsByClassName("tool_selected")
+        for (let i = 0; i < tool.overlays.length; i++) {
+            if (tool.overlays[i].arg === e.target.id) {
+                tool.overlays[i].style.boxShadow = tool.tilinkedEffect
                 console.log(e.target.id)
             }
         }
@@ -401,10 +404,10 @@ const tool = {
 
     activateSelectMod: function (e) {
         tool.activeArg = e.target.id
-        var overlays = document.getElementsByClassName("tool_selected");
-        for (let i = 0; i < overlays.length; i++) {
-            if (overlays[i].arg === tool.activeArg) {
-                tool.activeOverlay = overlays[i]
+        // var overlays = document.getElementsByClassName("tool_selected");
+        for (let i = 0; i < tool.overlays.length; i++) {
+            if (tool.overlays[i].arg === tool.activeArg) {
+                tool.activeOverlay = tool.overlays[i]
             }
         }
     },
@@ -515,12 +518,10 @@ const tool = {
 
         tool.activeArg = false
 
-        var overlays = document.getElementsByClassName("tool_selected")
-
-        for (let i = 0; i < overlays.length; i++) {
-            overlays[i].remove()
+        for (let i = 0; i < tool.overlays.length; i++) {
+            tool.overlays[i].remove()
         }
-        document.getElementsByClassName("tool_selected")[0].remove() // последний не удаляется в цикле почему-то
+        tool.overlays = []
 
     },
 
