@@ -294,21 +294,7 @@ const tool = {
         });
 
         div.querySelector('.send_selected').addEventListener('click', function(e) {
-            var elements = document.getElementsByClassName("tool_selected");
-
-            var url = document.location.href;
-
-            var line = ""
-
-            // line += encodeURIComponent(HOME_URL) + '?'+ url
-            line += HOME_URL + '\n\n?' + url
-
-            for (let i = 0, length1 = elements.length; i < length1; i++) {
-                line += "\n\n" + "&" + elements[i].arg + "=" + tool.getPathHTML(elements[i])
-            }
-
-            // window.location = line;
-            alert(line);
+            tool.sendSelected();
         });
 
         div.querySelector('.ct_close').addEventListener('click', function(e) {
@@ -325,6 +311,24 @@ const tool = {
         for (let i = 0; i < btns.length; i++) {
             btns[i].addEventListener('mousedown', tool.activateSelectMod, true)
         }
+    },
+
+    sendSelected: function() {
+        var elements = document.getElementsByClassName("tool_selected");
+
+        var url = document.location.href;
+
+        var line = ""
+
+        // line += encodeURIComponent(HOME_URL) + '?'+ url
+        line += HOME_URL + '\n\n?' + url
+
+        for (let i = 0, length1 = elements.length; i < length1; i++) {
+            line += "\n\n" + "&" + elements[i].arg + "=" + tool.getPathHTML(elements[i])
+        }
+
+        // window.location = line;
+        alert(line); // [Violation] 'click' handler took 2350ms
     },
 
     activateSelectMod: function (e) {
