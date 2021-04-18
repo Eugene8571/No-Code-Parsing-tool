@@ -21,15 +21,11 @@
 
 #tool_wnd table.table {
   border-spacing: 0px;
-  /* margin: 10px; */
   margin-top: 50px;
-  /* width:100%; */
 }
 
 #tool_wnd table.controls {
   margin: 16px auto 12px auto;
-  /* margin-bottom: 12px; */
-  
 }
 
 
@@ -51,43 +47,16 @@
   background: #F6F6F6;
 }
 
-/*#tool_wnd table.table td.tool_cell_resize:hover {
-  width: 100px;
-}
-*/
 
 #tool_wnd table.table tr.tool_table_decor_bot td {
   height: 5px;
   border-bottom: none;
-  
-  
 }
-
-/* #tool_wnd table tr.tool_table_decor_top td {
-  height: 5px;
-  border-top: none;
-} */
 
 #tool_wnd table.table td div {
   overflow: hidden;
   max-width: 56px;
   max-height: 21px;
-}
-
-#tool_wnd table.controls div#path {
-  /*background:green;*/
-  /* width: 50%; */
-    
-}
-#tool_wnd table.controls a#path {
-  /*background:yellow;*/
-  /* width: 50%; */
-    
-}
-
-#tool_wnd table#path_show {
-   /*display: none; */
-  /* margin-top: 15px; */
 }
 
 #tool_wnd div#tool_display {
@@ -134,11 +103,7 @@
   line-height: 28px;
   box-sizing: border-box;
   display: inline-block;
-  /* margin-top: 10px; */
 }
-
-
-
 
 #tool_wnd .ct_close {
   position: absolute;
@@ -170,13 +135,11 @@
 
 #tool_wnd table#path_show {
   width:100%;
-  /*display:none;*/
 }
 
 #tool_current_elm,
 #tool_clicked_elm,
 #tool_selected_elm {
-  /* width: 100%; */
   width:550px;
   margin-top: 5px;
   background: #f7f7f7;
@@ -189,38 +152,6 @@
 
 }
 
-.ncpt_border_active {
-  box-shadow: 0 0 11px rgba(65, 167, 225, 0.4);
-}
-
-.ncpt_border_hover {
-  box-shadow: inset 0px 0px 13px 1px rgba(65, 167, 225, 0.5);
-}
-
-.ncpt_border_selected {
-  box-shadow: inset 0px 0px 13px 1px rgba(30, 126, 134, 0.5);
-}
-
-.ncpt_border_important {
-  box-shadow: inset 0px 0px 13px 1px rgba(225, 65, 84, 0.5);
-}
-
 #tool_overlay {
   z-index: 2147483645;
-}
-
-.overlay_selected {
-  background-color: rgba(225, 132, 65, 0.1);
-  border: 1px solid rgba(65, 167, 225, 1);
-  z-index: 2147483545;
-}
-
-.overlay_highlight {
-  background-color: rgba(0, 132, 65, 0.2);
-  border: 1px solid rgba(65, 167, 225, 1);
-}
-
-.tool_have_value {
-  background-color: rgba(225, 132, 0, 0.1);
-  border: 1px solid rgba(190, 167, 225, 1);
 }
