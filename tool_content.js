@@ -126,10 +126,10 @@ const tool = {
 
         // if (e.keyCode == 87) { // W
         //     if (tool.transpose > 0) tool.transpose--;
-        //     tool.highlightSelected();
+        //     tool.__();
         // } else if (e.keyCode == 81) { // Q
         //     tool.transpose++;
-        //     tool.highlightSelected();
+        //     tool.__();
         // }
         return false;
     },
@@ -310,6 +310,7 @@ const tool = {
         let btns = div.querySelectorAll("table.table div")
         for (let i = 0; i < btns.length; i++) {
             btns[i].addEventListener('mousedown', tool.activateSelectMod, true)
+            btns[i].addEventListener('mouseover', tool.tilinkSelected, true) // TODO if active arg
         }
 
         div.querySelector('#tool_next').addEventListener(
@@ -320,6 +321,16 @@ const tool = {
         div.querySelector('#tool_selected_elm_copy').addEventListener(
             'mousedown', tool.copySelectedElemPath, true)
 
+    },
+
+    tilinkSelected: function(e) {
+        var overlays = document.getElementsByClassName("tool_selected")
+        for (let i = 0; i < overlays.length; i++) {
+            if (overlays[i].arg === e.target.id) {
+                overlays[i].style.boxShadow = "inset 0px 0px 13px 1px rgba(100,67,225, 0.5)"
+                console.log(e.target.id)
+            }
+        }
     },
 
     copySelectedElemPath: function(e) {
