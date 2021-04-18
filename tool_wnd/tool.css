@@ -115,50 +115,6 @@
   width: 50px!;
 }
 
-
-
-/* .tool_column_elem,
-.tool_value_elem {
-  width: 50px;
-  height: 30px;
-  overflow: hidden;
-  background-color: #F2F2F2;
-  border: 1px solid black;
-  line-height: 30px;
-  box-sizing: border-box;
-} */
-
-#tool_flip_page_area {
-  width: 100px;
-  height: 40px;
-  font-size: 21px;
-  /* position: relative; */
-  background-color: #F2F2F2;
-  line-height: 50px;
-  box-sizing: border-box;
-  /* margin: auto; */
-  display: inline-block;
-}
-
-#tool_page_number_elem {
-  display: inline-block;
-  background-color: #F2F2F2;
-  width: 30px;
-  height: 30px;
-  position: absolute;
-  margin: 5px 0px 0px -55px;
-  border: 1px solid black;
-  box-sizing: border-box;
-  font-size: 21px;
-  line-height: 30px;
-}
-
-.tool_cleare_selected {
-  border: none;
-  background: transparent;
-  color: #E65A1A;
-  font-weight: 500;
-}
 /* 
 #tool_Q_W {
   display: inline-block;
