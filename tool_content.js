@@ -12,18 +12,20 @@ const tool = {
     selektEffect: "inset 0px 0px 13px 1px rgba(65,167,225, 0.5)",
     tilinkedEffect: "inset 0px 0px 13px 1px rgba(100,67,225, 0.5)",
 
-    coverHovered: function() {
-        if (!tool.hoveredElement) return;
+    coverHovered: function(e) {
+        if (!e.target) return;
         if (!tool.activeArg) return;
 
         if (!tool.overlayHover) {
             tool.overlayHover = tool.spawnOverlay(false, "tool_overlay", "tool_hover")
         }
         // display PathHTML
-        document.querySelector('#tool_current_elm').innerHTML = tool.getPathHTML(tool.hoveredElement, tool.transpose);
+        document.querySelector('#tool_current_elm').innerHTML = tool.getPathHTML(e.target, tool.transpose);
         document.querySelector('#tool_current_elm').scrollTop = 9999;
-
-        tool.resizeOverlay(tool.overlayHover, tool.hoveredElement);
+        if (!tool.overlayHover) {
+            alert("!tool.overlayHover")
+        }
+        tool.resizeOverlay(tool.overlayHover, e.target);
 
     },
 
@@ -104,7 +106,7 @@ const tool = {
         if (tool.hoveredElement != e.target) {
             tool.transpose = 0;
             tool.hoveredElement = e.target;
-            tool.coverHovered();
+            tool.coverHovered(e);
         }
     },
 
@@ -217,7 +219,7 @@ const tool = {
         if (target.relatedOverlay) {
             target.relatedOverlay.remove();
             target.relatedOverlay = false;
-            return;
+            // return;
         };
 
         let overlay = document.createElement('div');
@@ -461,14 +463,54 @@ const tool = {
     },
 
     deactivate: function() {
-        tool.activeElement = false;
-        tool.helpWindow.parentNode.removeChild(tool.helpWindow);
-        tool.helpWindow = false;
 
+        let div = document.getElementById("tool_wnd");
+
+        div.querySelector('.longer').removeEventListener('click', function(e) {
+            tool.resizeActive(-1);
+        });
+        div.querySelector('.shorter').removeEventListener('click', function(e) {
+            tool.resizeActive(1);
+        });
+
+        div.querySelector('.send_selected').removeEventListener('click', function(e) {
+            tool.sendSelected();
+        });
+
+        div.querySelector('.ct_close').removeEventListener('click', function(e) {
+            tool.deactivate();
+        });
+
+        tool.helpWindow = div;
         document.removeEventListener('mouseover', tool.mouseover, true);
         document.removeEventListener('mousedown', tool.selectElement, true);
         document.removeEventListener('mouseup', tool.preventEvent, true);
         document.removeEventListener('click', tool.preventEvent, true);
+
+        let btns = div.querySelectorAll("table.table div")
+        for (let i = 0; i < btns.length; i++) {
+            btns[i].removeEventListener('mousedown', tool.activateSelectMod, true)
+            btns[i].removeEventListener('mouseover', tool.tilinkSelectedOn, true)
+            btns[i].removeEventListener('mouseout', tool.tilinkSelectedOff, true)
+
+        }
+
+        div.querySelector('#tool_next').removeEventListener(
+            'mousedown', tool.activateSelectMod, true)
+
+        div.querySelector('#tool_display').removeEventListener(
+            'mousedown', tool.toggleDisplay, true)
+        div.querySelector('#tool_selected_elm_copy').removeEventListener(
+            'mousedown', tool.copySelectedElemPath, true)
+
+        tool.activeElement = false;
+        tool.helpWindow.parentNode.removeChild(tool.helpWindow);
+        tool.helpWindow = false;
+
+        // var overlays = document.getElementsByClassName("tool_selected")
+        // for (let i = 0; i < overlays.length; i++) {
+        //     overlays[i].remove()
+        // }
 
     },
 
