@@ -85,12 +85,12 @@
     
 }
 
-#tool_wnd div#path_show {
-  /* display: none; */
+#tool_wnd table#path_show {
+   /*display: none; */
   /* margin-top: 15px; */
 }
 
-#tool_wnd div#path_show_btn {
+#tool_wnd div#tool_display {
   color: #A3A3A3;
 }
 

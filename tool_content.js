@@ -311,6 +311,21 @@ const tool = {
         for (let i = 0; i < btns.length; i++) {
             btns[i].addEventListener('mousedown', tool.activateSelectMod, true)
         }
+
+        div.querySelector('#tool_next').addEventListener('mousedown', tool.activateSelectMod, true)
+
+        div.querySelector('#tool_display').addEventListener('mousedown', tool.toggleDisplay, true)
+
+
+    },
+
+    toggleDisplay: function() {
+        display = document.querySelector("#tool_wnd table#path_show")
+        if (display.hidden) {
+            display.hidden = false
+        } else {
+            display.hidden = true
+        }
     },
 
     sendSelected: function() {
