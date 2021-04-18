@@ -507,10 +507,20 @@ const tool = {
         tool.helpWindow.parentNode.removeChild(tool.helpWindow);
         tool.helpWindow = false;
 
-        // var overlays = document.getElementsByClassName("tool_selected")
-        // for (let i = 0; i < overlays.length; i++) {
-        //     overlays[i].remove()
-        // }
+        tool.hoveredElement = false
+        tool.activeOverlay = false
+        tool.transpose = 0
+        tool.overlayHover = false
+        tool.tableLenth = 5 // число колонок в таблице выбранного + 1
+
+        tool.activeArg = false
+
+        var overlays = document.getElementsByClassName("tool_selected")
+
+        for (let i = 0; i < overlays.length; i++) {
+            overlays[i].remove()
+        }
+        document.getElementsByClassName("tool_selected")[0].remove() // последний не удаляется в цикле почему-то
 
     },
 
