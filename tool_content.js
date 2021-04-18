@@ -9,6 +9,8 @@ const tool = {
     tableLenth: 5, // число колонок в таблице выбранного + 1
 
     activeArg: false,
+    selektEffect: "inset 0px 0px 13px 1px rgba(65,167,225, 0.5)",
+    tilinkedEffect: "inset 0px 0px 13px 1px rgba(100,67,225, 0.5)",
 
     coverHovered: function() {
         if (!tool.hoveredElement) return;
@@ -201,7 +203,7 @@ const tool = {
         overlay.style.width = rect.width + "px";
         overlay.style.height = rect.height + "px";
         overlay.style.border = "1px solid rgba(65,167,225,1)"
-        overlay.style.boxShadow = "inset 0px 0px 13px 1px rgba(65,167,225, 0.5)"
+        overlay.style.boxShadow = tool.selektEffect
 
         overlay.style.zIndex = tool.maxZIndex - 2;
         overlay.relatedElement = new_target;
@@ -310,7 +312,9 @@ const tool = {
         let btns = div.querySelectorAll("table.table div")
         for (let i = 0; i < btns.length; i++) {
             btns[i].addEventListener('mousedown', tool.activateSelectMod, true)
-            btns[i].addEventListener('mouseover', tool.tilinkSelected, true) // TODO if active arg
+            btns[i].addEventListener('mouseover', tool.tilinkSelectedOn, true) // TODO if active arg
+            btns[i].addEventListener('mouseout', tool.tilinkSelectedOff, true) // TODO if active arg
+
         }
 
         div.querySelector('#tool_next').addEventListener(
@@ -323,11 +327,21 @@ const tool = {
 
     },
 
-    tilinkSelected: function(e) {
+    tilinkSelectedOff: function(e) {
         var overlays = document.getElementsByClassName("tool_selected")
         for (let i = 0; i < overlays.length; i++) {
             if (overlays[i].arg === e.target.id) {
-                overlays[i].style.boxShadow = "inset 0px 0px 13px 1px rgba(100,67,225, 0.5)"
+                overlays[i].style.boxShadow = tool.selektEffect
+                console.log(e.target.id)
+            }
+        }
+    },
+
+    tilinkSelectedOn: function(e) {
+        var overlays = document.getElementsByClassName("tool_selected")
+        for (let i = 0; i < overlays.length; i++) {
+            if (overlays[i].arg === e.target.id) {
+                overlays[i].style.boxShadow = tool.tilinkedEffect
                 console.log(e.target.id)
             }
         }
