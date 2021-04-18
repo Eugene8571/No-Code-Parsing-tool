@@ -320,8 +320,6 @@ const tool = {
         div.querySelector('#tool_selected_elm_copy').addEventListener(
             'mousedown', tool.copySelectedElemPath, true)
 
-
-
     },
 
     copySelectedElemPath: function(e) {
