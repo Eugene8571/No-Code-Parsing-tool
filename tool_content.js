@@ -322,20 +322,21 @@ const tool = {
         document.addEventListener('click', tool.preventEvent, true);
 
         let btns = div.querySelectorAll("table.table div")
-
         for (let i = 0; i < btns.length; i++) {
-            btns[i].addEventListener('mousedown', function(e) {
-                tool.activeArg = btns[i].id
-                var overlays = document.getElementsByClassName("tool_selected");
-                for (let i = 0; i < overlays.length; i++) {
-                    if (overlays[i].arg === tool.activeArg) {
-                        tool.activeOverlay = overlays[i]
-                    }
-                }
-            })
-
+            btns[i].addEventListener('mousedown', tool.activateSelectMod, true)
         }
     },
+
+    activateSelectMod: function (e) {
+        tool.activeArg = e.target.id
+        var overlays = document.getElementsByClassName("tool_selected");
+        for (let i = 0; i < overlays.length; i++) {
+            if (overlays[i].arg === tool.activeArg) {
+                tool.activeOverlay = overlays[i]
+            }
+        }
+    },
+
 
     activate: function() {
 
