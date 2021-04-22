@@ -1,7 +1,7 @@
 {
 	"name": "__MSG_extensionName__",
 	"version": "0.0.0.1",
-	"manifest_version": 3,
+	"manifest_version": 2,
 	"default_locale":"ru", 
 	"description": "__MSG_extensionDescription__",
 	"icons": {
