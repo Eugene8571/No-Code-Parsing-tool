@@ -1,4 +1,4 @@
-var HOME_URL = "http://127.0.0.1:8000/";
+var HOME_URL = "http://127.0.0.1:8000/bench";
 
 const tool = {
     hoveredElement: false,
@@ -396,6 +396,20 @@ const tool = {
 
         // window.location = line;
         alert(line);
+
+        var url = document.location.href;
+        var line = ""
+
+        // line += encodeURIComponent(HOME_URL) + '?'+ url
+        line += HOME_URL + '/?url=' + encodeURIComponent(url)
+
+        for (let i = 0, length1 = tool.overlays.length; i < length1; i++) {
+            line += "&" + tool.overlays[i].arg + "=" + encodeURIComponent(tool.getPathHTML(tool.overlays[i].relatedElement))
+        }
+
+        window.location = line;
+        // alert(line);
+
     },
 
     activateSelectMod: function (e) {
