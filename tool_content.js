@@ -222,7 +222,6 @@ const tool = {
         if (target.relatedOverlay) {
             target.relatedOverlay.remove();
             target.relatedOverlay = false;
-            // return;
         };
 
         let overlay = document.createElement('div');
@@ -385,26 +384,22 @@ const tool = {
     },
 
     sendSelected: function() {
-        var elements = document.getElementsByClassName("tool_selected");
-
         var url = document.location.href;
-
         var line = ""
 
         // line += encodeURIComponent(HOME_URL) + '?'+ url
         line += HOME_URL + '\n\n?' + url
 
-        for (let i = 0, length1 = elements.length; i < length1; i++) {
-            line += "\n\n" + "&" + elements[i].arg + "=" + tool.getPathHTML(elements[i])
+        for (let i = 0, length1 = tool.overlays.length; i < length1; i++) {
+            line += "\n\n" + "&" + tool.overlays[i].arg + "=" + tool.getPathHTML(tool.overlays[i].relatedElement)
         }
 
         // window.location = line;
-        alert(line); // [Violation] 'click' handler took 2350ms
+        alert(line);
     },
 
     activateSelectMod: function (e) {
         tool.activeArg = e.target.id
-        // var overlays = document.getElementsByClassName("tool_selected");
         for (let i = 0; i < tool.overlays.length; i++) {
             if (tool.overlays[i].arg === tool.activeArg) {
                 tool.activeOverlay = tool.overlays[i]
