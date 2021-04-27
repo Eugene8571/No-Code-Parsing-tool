@@ -384,23 +384,22 @@ const tool = {
     },
 
     sendSelected: function() {
+        // var url = document.location.href;
+        // var line = ""
+
+        // // line += encodeURIComponent(HOME_URL) + '?'+ url
+        // line += HOME_URL + '\n\n?' + url
+
+        // for (let i = 0, length1 = tool.overlays.length; i < length1; i++) {
+        //     line += "\n\n" + "&" + tool.overlays[i].arg + "=" + tool.getPathHTML(tool.overlays[i].relatedElement)
+        // }
+
+        // // window.location = line;
+        // alert(line);
+
         var url = document.location.href;
         var line = ""
 
-        // line += encodeURIComponent(HOME_URL) + '?'+ url
-        line += HOME_URL + '\n\n?' + url
-
-        for (let i = 0, length1 = tool.overlays.length; i < length1; i++) {
-            line += "\n\n" + "&" + tool.overlays[i].arg + "=" + tool.getPathHTML(tool.overlays[i].relatedElement)
-        }
-
-        // window.location = line;
-        alert(line);
-
-        var url = document.location.href;
-        var line = ""
-
-        // line += encodeURIComponent(HOME_URL) + '?'+ url
         line += HOME_URL + '/?url=' + encodeURIComponent(url)
 
         for (let i = 0, length1 = tool.overlays.length; i < length1; i++) {
@@ -408,8 +407,6 @@ const tool = {
         }
 
         window.location = line;
-        // alert(line);
-
     },
 
     activateSelectMod: function (e) {
