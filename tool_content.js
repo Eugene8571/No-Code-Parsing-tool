@@ -105,8 +105,10 @@ const tool = {
         if (cell_el && cell_el.classList.contains("clicked_cell")) {
             cell_el.classList.remove("clicked_cell");
         }
-        cell_el.innerText = e.target.innerText
 
+        if (cell_el.id !== 'tool_next') {
+            cell_el.innerText = e.target.innerText
+        }
 
     },
 
@@ -330,6 +332,10 @@ const tool = {
 
         div.querySelector('#tool_next').addEventListener(
             'mousedown', tool.activateSelectMod, true)
+        div.querySelector('#tool_next').addEventListener(
+            'mouseover', tool.highLightSelectedOn, true)
+        div.querySelector('#tool_next').addEventListener(
+            'mouseout', tool.highLightSelectedOff, true)
 
         div.querySelector('#tool_display').addEventListener(
             'mousedown', tool.toggleDisplay, true)
