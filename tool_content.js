@@ -106,7 +106,9 @@ const tool = {
             cell_el.classList.remove("clicked_cell");
         }
 
-        if (cell_el.id !== 'tool_next') {
+        if ((cell_el.id !== 'tool_area_btn') 
+            && (cell_el.id !== 'tool_row_btn') 
+            && (cell_el.id !== 'tool_next')) {
             cell_el.innerText = e.target.innerText
         }
 
@@ -330,13 +332,6 @@ const tool = {
 
         }
 
-        div.querySelector('#tool_next').addEventListener(
-            'mousedown', tool.activateSelectMod, true)
-        div.querySelector('#tool_next').addEventListener(
-            'mouseover', tool.highLightSelectedOn, true)
-        div.querySelector('#tool_next').addEventListener(
-            'mouseout', tool.highLightSelectedOff, true)
-
         div.querySelector('#tool_display').addEventListener(
             'mousedown', tool.toggleDisplay, true)
         div.querySelector('#tool_selected_elm_copy').addEventListener(
@@ -455,38 +450,6 @@ const tool = {
         });
     },
 
-    nextActiveArg: function(arg) {
-        let btn = document.querySelector("#" + arg)
-        btn.style.border = "0"
-
-        let next_arg = false
-
-        if (arg == "tool_area_btn") {
-            next_arg = "tool_row_btn"
-        } else if (arg == "tool_row_btn") {
-            next_arg = "tool_col_1"
-        }
-        let i = arg.match(/\d+/);
-        i = parseInt(i);
-        if (!i) { next_arg = false }
-        if (arg == ("tool_val_" + (tool.tableLenth - 1).toString())) {
-            next_arg = false
-        }
-
-        if (arg.substr(5, 3) == "col") {
-            next_arg = "tool_val_" + i.toString()
-        } else {
-            next_arg = "tool_col_" + (i + 1).toString()
-        }
-
-        let next_btn = document.querySelector("#" + next_arg)
-        next_btn.style.border = "1px solid green"
-
-        tool.activeArg = next_arg
-
-
-
-    },
 
     preventEvent: function(e) {
         if (tool.isChildOfToolWindow(e.target)) return;
@@ -527,9 +490,6 @@ const tool = {
             btns[i].removeEventListener('mouseout', tool.highLightSelectedOff, true)
 
         }
-
-        div.querySelector('#tool_next').removeEventListener(
-            'mousedown', tool.activateSelectMod, true)
 
         div.querySelector('#tool_display').removeEventListener(
             'mousedown', tool.toggleDisplay, true)
