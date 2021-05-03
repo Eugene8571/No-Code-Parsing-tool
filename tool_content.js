@@ -360,7 +360,6 @@ const tool = {
             prev_el.classList.remove("highlight_effect");
         }
 
-        // var overlays = document.getElementsByClassName("tool_selected")
         for (let i = 0; i < tool.overlays.length; i++) {
             if (tool.overlays[i].arg === e.target.id) {
                 tool.overlays[i].style.boxShadow = tool.highLightedEffect
