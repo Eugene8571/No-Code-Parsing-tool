@@ -316,8 +316,8 @@ const tool = {
         let btns = div.querySelectorAll("table.table div")
         for (let i = 0; i < btns.length; i++) {
             btns[i].addEventListener('mousedown', tool.activateSelectMod, true)
-            btns[i].addEventListener('mouseover', tool.tilinkSelectedOn, true) // TODO if active arg
-            btns[i].addEventListener('mouseout', tool.tilinkSelectedOff, true) // TODO if active arg
+            btns[i].addEventListener('mouseover', tool.highLightSelectedOn, true) // TODO if active arg
+            btns[i].addEventListener('mouseout', tool.highLightSelectedOff, true) // TODO if active arg
 
         }
 
@@ -331,7 +331,7 @@ const tool = {
 
     },
 
-    tilinkSelectedOff: function(e) {
+    highLightSelectedOff: function(e) {
         // var overlays = document.getElementsByClassName("tool_selected")
         for (let i = 0; i < tool.overlays.length; i++) {
             if (tool.overlays[i].arg === e.target.id) {
@@ -341,7 +341,7 @@ const tool = {
         }
     },
 
-    tilinkSelectedOn: function(e) {
+    highLightSelectedOn: function(e) {
         // var overlays = document.getElementsByClassName("tool_selected")
         for (let i = 0; i < tool.overlays.length; i++) {
             if (tool.overlays[i].arg === e.target.id) {
@@ -499,8 +499,8 @@ const tool = {
         let btns = div.querySelectorAll("table.table div")
         for (let i = 0; i < btns.length; i++) {
             btns[i].removeEventListener('mousedown', tool.activateSelectMod, true)
-            btns[i].removeEventListener('mouseover', tool.tilinkSelectedOn, true)
-            btns[i].removeEventListener('mouseout', tool.tilinkSelectedOff, true)
+            btns[i].removeEventListener('mouseover', tool.highLightSelectedOn, true)
+            btns[i].removeEventListener('mouseout', tool.highLightSelectedOff, true)
 
         }
 
