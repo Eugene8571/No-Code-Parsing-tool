@@ -10,7 +10,7 @@ const tool = {
 
     activeArg: false,
     selektEffect: "inset 0px 0px 13px 1px rgba(65,167,225, 0.5)",
-    tilinkedEffect: "inset 0px 0px 13px 1px rgba(100,67,225, 0.5)",
+    highLightedEffect: "inset 0px 0px 13px 1px rgba(100,67,225, 0.5)",
 
     overlays: [],
 
@@ -99,6 +99,13 @@ const tool = {
             tool.activeElement = e.target;
             tool.updateDisplay();
         }
+
+
+        cell_el = document.querySelector('#tool_wnd div.clicked_cell')
+        if (cell_el && cell_el.classList.contains("clicked_cell")) {
+            cell_el.classList.remove("clicked_cell");
+        }
+        cell_el.innerText = e.target.innerText
 
 
     },
@@ -342,10 +349,16 @@ const tool = {
     },
 
     highLightSelectedOn: function(e) {
+        prev_el = document.querySelector('#tool_wnd div.highlight_effect')
+        if (prev_el && prev_el.classList.contains("highlight_effect")) {
+            prev_el.classList.remove("highlight_effect");
+        }
+
         // var overlays = document.getElementsByClassName("tool_selected")
         for (let i = 0; i < tool.overlays.length; i++) {
             if (tool.overlays[i].arg === e.target.id) {
-                tool.overlays[i].style.boxShadow = tool.tilinkedEffect
+                tool.overlays[i].style.boxShadow = tool.highLightedEffect
+                e.target.setAttribute("class", 'highlight_effect');
                 console.log(e.target.id)
             }
         }
@@ -410,6 +423,13 @@ const tool = {
     },
 
     activateSelectMod: function (e) {
+        prev_el = document.querySelector('#tool_wnd div.clicked_cell')
+        if (prev_el && prev_el.classList.contains("clicked_cell")) {
+            prev_el.classList.remove("clicked_cell");
+        }
+
+        e.target.setAttribute("class", 'clicked_cell');
+
         tool.activeArg = e.target.id
         for (let i = 0; i < tool.overlays.length; i++) {
             if (tool.overlays[i].arg === tool.activeArg) {
