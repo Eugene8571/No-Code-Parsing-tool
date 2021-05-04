@@ -22,15 +22,11 @@
 		"all_frames": false,
 		"js": [ "tool_content.js" ],
 		"css": [ "tool_wnd/tool.css" ],
-		"matches": [ 
-			"http://*/*", 
-			"https://*/*" ],
 		"run_at": "document_end"
 	} ],
-	"permissions": [
-	    "http://*/*", 
-		"https://*/*"
-	],
+	
+	"permissions": ["activeTab"],
+
 	"web_accessible_resources": [ 
 		"tool_wnd/tool.html"
 	]
