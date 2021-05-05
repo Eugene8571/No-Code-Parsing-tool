@@ -23,8 +23,7 @@
 		"js": [ "tool_content.js" ],
 		"css": [ "tool_wnd/tool.css" ],
 		"matches": [ 
-			"http://*/*", 
-			"https://*/*" ],
+			"*://*/*"],
 		"run_at": "document_end"
 	} ],
 	
