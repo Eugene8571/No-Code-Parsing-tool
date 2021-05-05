@@ -1,4 +1,4 @@
-var HOME_URL = "http://127.0.0.1:8000/bench";
+var HOME_URL = "http://127.0.0.1:8000/recive";
 
 const tool = {
     hoveredElement: false,
